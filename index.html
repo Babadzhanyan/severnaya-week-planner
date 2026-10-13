@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Северная: интерактивный макет планирования производства и продаж, схемы разделки, мощности и экономика всей корзины">
+<meta name="theme-color" content="#003c72">
+<title>Северная – планировщик недели</title>
+<style>
+@font-face{font-family:'Source Sans Pro';src:url('assets/SourceSansPro-Regular.ttf') format('truetype');font-weight:400;font-display:swap}
+@font-face{font-family:'Source Sans Pro';src:url('assets/SourceSansPro-Semibold.ttf') format('truetype');font-weight:600;font-display:swap}
+@font-face{font-family:'Source Sans Pro';src:url('assets/SourceSansPro-Bold.ttf') format('truetype');font-weight:700;font-display:swap}
+</style>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="components.css">
+<script defer src="model.js"></script>
+<script defer src="app.js"></script>
+</head>
+<body>
+<div id="app">
+<aside class="sidebar" aria-label="Навигация платформы">
+ <a class="brand" href="#plan" aria-label="Северная, план недели"><span class="brand-mark">с</span><span class="brand-name">Северная<span>Планировщик недели</span></span></a>
+ <nav id="navigation" aria-label="Рабочие состояния"></nav>
+ <div class="sidebar-bottom"><button class="nav-button" data-action="tour"><span class="nav-icon">▷</span><span class="nav-label">Показать<br>платформу</span></button><button class="nav-button" data-action="concept"><span class="nav-icon">?</span><span class="nav-label">Логика решения</span></button><span class="sidebar-caption">Визуальный макет<br>Учебные данные</span></div>
+</aside>
+<div class="shell">
+ <header class="topbar"><div class="period"><span class="period-label">Неделя 43</span><span>19–25 октября 2026</span></div><div class="top-actions"><button class="badge" id="version-status" data-action="version">Черновик П1</button><button class="badge data-badge" data-action="data"><span class="status-dot"></span>Данные и источники</button><button class="icon-button" data-action="fullscreen" aria-label="Развернуть на весь экран" title="Развернуть на весь экран">⛶</button></div></header>
+ <main id="content" aria-live="polite"></main>
+ <footer class="bottomline"><span id="context-line">Учебная неделя / т охлаждённой тушки / руб</span><button class="text-button" data-action="sources">Основа расчёта</button></footer>
+</div>
+</div>
+<div id="overlay" class="hidden"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" tabindex="-1"><div class="modal-header"><div><span class="eyebrow" id="modal-eyebrow"></span><h2 id="modal-title"></h2></div><button class="icon-button" data-action="close" aria-label="Закрыть окно">×</button></div><div class="modal-tabs" id="modal-tabs"></div><div class="modal-body" id="modal-body"></div><div class="modal-footer" id="modal-footer"></div></section></div>
+<div id="tooltip" class="hidden" role="tooltip"></div>
+<div id="tour-layer" class="hidden"><div class="tour-dim"></div><div class="tour-spot"></div><section class="tour-card" role="dialog" aria-modal="true" aria-label="Показ платформы" tabindex="-1"><div class="tour-counter"></div><h3></h3><p></p><div class="tour-actions"><button class="text-button" data-action="tour-close">Завершить показ</button><button class="secondary" data-action="tour-prev">Назад</button><button class="primary" data-action="tour-next">Далее</button></div></section></div>
+<div id="toast" class="toast hidden" role="status"></div>
+</body>
+</html>

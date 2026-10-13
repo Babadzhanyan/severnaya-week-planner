@@ -260,7 +260,7 @@ def check_request(input_params, request):
     covered = row(result)["sold"]
     delta = result["contribution"] - before["contribution"]
     can_apply = result["feasible"] and covered >= r["quantity"] - EPS
-    return {"valid": True, "feasible": can_apply, "duplicate": False, "canApply": can_apply, "errors": [], "violations": result["violations"], "params": result["params"], "result": result, "requested": r["quantity"], "covered": covered, "acceptedQuantity": covered, "shortfall": r["quantity"] - covered, "forecastConsumed": forecast_consumed, "incrementalDemand": r["quantity"] - forecast_consumed, "extraCut": result["cut"] - before["cut"], "additionalCut": result["cut"] - before["cut"], "relatedOutputs": {key: result["produced"][key] - before["produced"][key] for key in IDS if key != product}, "deltaContribution": delta, "currentCoverage": row(current)["sold"], "requiresReplan": abs(result["cut"] - before["cut"]) > EPS, "message": "Заявка получает полный резерв" if can_apply else "Заявка требует изменения плана", "explanation": "Покрытие " + display(covered) + " из " + display(r["quantity"]) + " т; перевод прогноза в заказ " + display(forecast_consumed) + " т; изменение вклада " + display(delta / 1000) + " тыс руб"}
+    return {"valid": True, "feasible": can_apply, "duplicate": False, "canApply": can_apply, "errors": [], "violations": result["violations"], "params": result["params"], "result": result, "requested": r["quantity"], "covered": covered, "acceptedQuantity": covered, "shortfall": r["quantity"] - covered, "forecastConsumed": forecast_consumed, "incrementalDemand": r["quantity"] - forecast_consumed, "extraCut": result["cut"] - before["cut"], "additionalCut": result["cut"] - before["cut"], "relatedOutputs": {key: result["produced"][key] - before["produced"][key] for key in IDS if key != product}, "deltaContribution": delta, "currentCoverage": row(current)["sold"], "requiresReplan": abs(result["cut"] - before["cut"]) > EPS, "message": "Заявка получает полный резерв" if can_apply else "Заявка требует изменения плана", "explanation": "Покрытие " + display(covered) + " из " + display(r["quantity"]) + " т; перевод прогноза в заказ " + display(forecast_consumed) + " т; изменение вклада " + display(delta / 1000) + " тыс. руб."}
 
 
 def snapshot(input_params, confirmations=None):
@@ -288,7 +288,7 @@ def fact(input_params):
     actual = evaluate(p)
     price_delta = price_result["contribution"] - plan["contribution"]
     cost_delta = actual["contribution"] - price_result["contribution"]
-    return {"valid": True, "plan": plan["contribution"], "actual": actual["contribution"], "delta": actual["contribution"] - plan["contribution"], "priceDelta": price_delta, "costDelta": cost_delta, "execution": actual["contribution"] / plan["contribution"] if plan["contribution"] > 0 else None, "planResult": plan, "actualResult": actual, "rows": [{"id": "plan", "name": "Утверждённый план", "value": plan["contribution"], "kind": "total"}, {"id": "price", "name": "Цена филе", "value": price_delta, "kind": "delta", "owner": "Коммерция", "formula": "Объём проданного филе × изменение цены"}, {"id": "cost", "name": "Затраты разделки", "value": cost_delta, "kind": "delta", "owner": "Производство", "formula": "Вход разделки × −0,2 руб/кг"}, {"id": "actual", "name": "Учебный факт", "value": actual["contribution"], "kind": "total"}], "label": "Иллюстрация: снижение цены филе в пределах 5 руб/кг, затраты разделки +0,2 руб/кг"}
+    return {"valid": True, "plan": plan["contribution"], "actual": actual["contribution"], "delta": actual["contribution"] - plan["contribution"], "priceDelta": price_delta, "costDelta": cost_delta, "execution": actual["contribution"] / plan["contribution"] if plan["contribution"] > 0 else None, "planResult": plan, "actualResult": actual, "rows": [{"id": "plan", "name": "Утверждённый план", "value": plan["contribution"], "kind": "total"}, {"id": "price", "name": "Цена филе", "value": price_delta, "kind": "delta", "owner": "Коммерция", "formula": "Объём проданного филе × изменение цены"}, {"id": "cost", "name": "Затраты разделки", "value": cost_delta, "kind": "delta", "owner": "Производство", "formula": "Вход разделки × −0,2 руб. / кг"}, {"id": "actual", "name": "Учебный факт", "value": actual["contribution"], "kind": "total"}], "label": "Иллюстрация: снижение цены филе в пределах 5 руб. / кг, затраты разделки +0,2 руб. / кг"}
 
 
 def roi(input_params, options=None):
@@ -325,17 +325,17 @@ def commercial(client):
 def change_levers(input_params, comparison=None):
     p = normalize(input_params)
     b = normalize(comparison or {**defaults(), "cut": 40})
-    fields = [("totalInput", "Доступная тушка", "т"), ("rawCost", "Цена сырья", "руб/кг"), ("capacity", "Мощность разделки", "т"), ("hours", "Доступные часы", "ч"), ("rate", "Скорость разделки", "т/ч"), ("minWhole", "Заказ тушки", "т"), ("cut", "Вход разделки", "т"), ("coldCapacity", "Ёмкость хранения", "т")]
+    fields = [("totalInput", "Доступная тушка", "т"), ("rawCost", "Цена сырья", "руб. / кг"), ("capacity", "Мощность разделки", "т"), ("hours", "Доступные часы", "ч"), ("rate", "Скорость разделки", "т/ч"), ("minWhole", "Заказ тушки", "т"), ("cut", "Вход разделки", "т"), ("coldCapacity", "Ёмкость хранения", "т")]
     changes = [{"key": key, "name": name, "before": b[key], "after": p[key], "unit": unit} for key, name, unit in fields if p[key] != b[key]]
     if p["route"] != b["route"]:
         changes.append({"key": "route", "name": "Схема разделки", "before": ROUTES[b["route"]]["name"], "after": ROUTES[p["route"]]["name"], "unit": ""})
     for field in ("prices", "demand", "service"):
         for product in IDS:
             if p[field][product] != b[field][product]:
-                changes.append({"key": field + "." + product, "name": PRODUCTS[product]["name"] + ": " + {"prices": "цена", "demand": "спрос", "service": "обслуживание"}[field], "before": b[field][product], "after": p[field][product], "unit": "т" if field == "demand" else "руб/кг"})
+                changes.append({"key": field + "." + product, "name": PRODUCTS[product]["name"] + ": " + {"prices": "цена", "demand": "спрос", "service": "обслуживание"}[field], "before": b[field][product], "after": p[field][product], "unit": "т" if field == "demand" else "руб. / кг"})
     for route in ROUTES:
         if p["routeCosts"][route] != b["routeCosts"][route]:
-            changes.append({"key": "routeCosts." + route, "name": ROUTES[route]["name"] + ": переменные затраты", "before": b["routeCosts"][route], "after": p["routeCosts"][route], "unit": "руб/кг входа"})
+            changes.append({"key": "routeCosts." + route, "name": ROUTES[route]["name"] + ": переменные затраты", "before": b["routeCosts"][route], "after": p["routeCosts"][route], "unit": "руб. / кг входа"})
     for stage_id, name in {"deboning": "Обвалка", "packing": "Упаковка", "freezing": "Заморозка"}.items():
         if p["stageCapacity"][stage_id] != b["stageCapacity"][stage_id]:
             changes.append({"key": "stageCapacity." + stage_id, "name": name + ": мощность", "before": b["stageCapacity"][stage_id], "after": p["stageCapacity"][stage_id], "unit": "т/неделю"})

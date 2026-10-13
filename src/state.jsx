@@ -84,9 +84,9 @@ export function PlannerProvider({children}) {
   function setConfirm(id,value){opGeneration.current++;setS(s=>({...s,confirms:{...s.confirms,[id]:value}}));}
   function go(view){if(!VIEWS.some(([id])=>id===view))return;setTooltip(null);setModal(null);setS(s=>({...s,view}));history.replaceState(null,'','#'+view);}
   function chooseCandidate(index){const c=calculation?.a.candidates[index];if(c){updateParams(c.params);notify('Вариант выбран. Подтверждения относятся к новым условиям');}}
-  function startTour(){setModal(null);setTooltip(null);setToast('');clearTimeout(toastTimer.current);setTour(0);setS(s=>({...s,view:TOUR[0][0]}));}
+  function startTour(){setModal(null);setTooltip(null);setToast('');clearTimeout(toastTimer.current);setTour(0);go(TOUR[0][0]);}
   function endTour(){setTour(-1);setTooltip(null);}
-  function moveTour(change){const next=Math.max(0,tour+change);if(next>=TOUR.length){setTour(-1);notify('Показ завершён. Параметры доступны для самостоятельной проверки');return;}setTour(next);setS(s=>({...s,view:TOUR[next][0]}));}
+  function moveTour(change){const next=Math.max(0,tour+change);if(next>=TOUR.length){setTour(-1);notify('Показ завершён. Параметры доступны для самостоятельной проверки');return;}setTour(next);go(TOUR[next][0]);}
   function showTooltip(text,target){if(tour>=0||modal)return;const rect=target.getBoundingClientRect();setTooltip({text,x:Math.max(8,Math.min(innerWidth-290,rect.left)),y:rect.bottom+8});}
   function hideTooltip(){setTooltip(null);}
   function download(){const s=stateRef.current;const blob=new Blob([JSON.stringify({status:'Учебный пример',version:s.approved||{params:s.p},exported:new Date().toISOString()},null,2)],{type:'application/json'});const url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download='Северная_версия_плана.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}

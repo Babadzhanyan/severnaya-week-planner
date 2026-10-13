@@ -204,7 +204,7 @@
     const covered = row ? row.sold : 0;
     const relatedOutputs = Object.fromEntries(ids.filter(id => id !== r.product).map(id => [id, result.produced[id] - before.produced[id]]));
     const canApply = result.feasible && covered >= r.quantity - EPS;
-    return { valid: true, feasible: canApply, duplicate: false, canApply, errors: [], violations: result.violations, params: result.params, result, requested: r.quantity, covered, acceptedQuantity: covered, shortfall: r.quantity - covered, forecastConsumed, incrementalDemand: r.quantity - forecastConsumed, extraCut: result.cut - before.cut, additionalCut: result.cut - before.cut, relatedOutputs, deltaContribution: result.contribution - before.contribution, currentCoverage: current.allocations[r.product].requestRows.find(v => v.requestId === r.requestId).sold, requiresReplan: Math.abs(result.cut - before.cut) > EPS, message: canApply ? 'Заявка получает полный резерв' : 'Заявка требует изменения плана', explanation: 'Покрытие ' + display(covered) + ' из ' + display(r.quantity) + ' т; перевод прогноза в заказ ' + display(forecastConsumed) + ' т; изменение вклада ' + display((result.contribution - before.contribution) / 1000) + ' тыс руб' };
+    return { valid: true, feasible: canApply, duplicate: false, canApply, errors: [], violations: result.violations, params: result.params, result, requested: r.quantity, covered, acceptedQuantity: covered, shortfall: r.quantity - covered, forecastConsumed, incrementalDemand: r.quantity - forecastConsumed, extraCut: result.cut - before.cut, additionalCut: result.cut - before.cut, relatedOutputs, deltaContribution: result.contribution - before.contribution, currentCoverage: current.allocations[r.product].requestRows.find(v => v.requestId === r.requestId).sold, requiresReplan: Math.abs(result.cut - before.cut) > EPS, message: canApply ? 'Заявка получает полный резерв' : 'Заявка требует изменения плана', explanation: 'Покрытие ' + display(covered) + ' из ' + display(r.quantity) + ' т; перевод прогноза в заказ ' + display(forecastConsumed) + ' т; изменение вклада ' + display((result.contribution - before.contribution) / 1000) + ' тыс. руб.' };
   }
   function snapshot(input, confirmations) {
     const result = evaluate(input);
@@ -226,7 +226,7 @@
     const actualResult = evaluate(p);
     const priceDelta = priceResult.contribution - planResult.contribution;
     const costDelta = actualResult.contribution - priceResult.contribution;
-    return { valid: true, plan: planResult.contribution, actual: actualResult.contribution, delta: actualResult.contribution - planResult.contribution, priceDelta, costDelta, execution: planResult.contribution > 0 ? actualResult.contribution / planResult.contribution : null, planResult, actualResult, rows: [{ id: 'plan', name: 'Утверждённый план', value: planResult.contribution, kind: 'total' }, { id: 'price', name: 'Цена филе', value: priceDelta, kind: 'delta', owner: 'Коммерция', formula: 'Объём проданного филе × изменение цены' }, { id: 'cost', name: 'Затраты разделки', value: costDelta, kind: 'delta', owner: 'Производство', formula: 'Вход разделки × −0,2 руб/кг' }, { id: 'actual', name: 'Учебный факт', value: actualResult.contribution, kind: 'total' }], label: 'Иллюстрация: снижение цены филе в пределах 5 руб/кг, затраты разделки +0,2 руб/кг' };
+    return { valid: true, plan: planResult.contribution, actual: actualResult.contribution, delta: actualResult.contribution - planResult.contribution, priceDelta, costDelta, execution: planResult.contribution > 0 ? actualResult.contribution / planResult.contribution : null, planResult, actualResult, rows: [{ id: 'plan', name: 'Утверждённый план', value: planResult.contribution, kind: 'total' }, { id: 'price', name: 'Цена филе', value: priceDelta, kind: 'delta', owner: 'Коммерция', formula: 'Объём проданного филе × изменение цены' }, { id: 'cost', name: 'Затраты разделки', value: costDelta, kind: 'delta', owner: 'Производство', formula: 'Вход разделки × −0,2 руб. / кг' }, { id: 'actual', name: 'Учебный факт', value: actualResult.contribution, kind: 'total' }], label: 'Иллюстрация: снижение цены филе в пределах 5 руб. / кг, затраты разделки +0,2 руб. / кг' };
   }
   function roi(input, options) {
     const o = { weeks: 52, execution: 1, investment: null, annualOpex: null, ...options };
@@ -249,15 +249,15 @@
   }
   function changeLevers(input, comparison) {
     const p = normalize(input), b = normalize(comparison || { ...defaults(), cut: 40 });
-    const fields = [['totalInput', 'Доступная тушка', 'т'], ['rawCost', 'Цена сырья', 'руб/кг'], ['capacity', 'Мощность разделки', 'т'], ['hours', 'Доступные часы', 'ч'], ['rate', 'Скорость разделки', 'т/ч'], ['minWhole', 'Заказ тушки', 'т'], ['cut', 'Вход разделки', 'т'], ['coldCapacity', 'Ёмкость хранения', 'т']];
+    const fields = [['totalInput', 'Доступная тушка', 'т'], ['rawCost', 'Цена сырья', 'руб. / кг'], ['capacity', 'Мощность разделки', 'т'], ['hours', 'Доступные часы', 'ч'], ['rate', 'Скорость разделки', 'т/ч'], ['minWhole', 'Заказ тушки', 'т'], ['cut', 'Вход разделки', 'т'], ['coldCapacity', 'Ёмкость хранения', 'т']];
     const changes = fields.filter(([key]) => p[key] !== b[key]).map(([key, name, unit]) => ({ key, name, before: b[key], after: p[key], unit }));
     if (p.route !== b.route) changes.push({ key: 'route', name: 'Схема разделки', before: routes[b.route]?.name, after: routes[p.route]?.name, unit: '' });
-    for (const field of ['prices', 'demand', 'service']) for (const id of ids) if (p[field][id] !== b[field][id]) changes.push({ key: field + '.' + id, name: products[id].name + ': ' + ({ prices: 'цена', demand: 'спрос', service: 'обслуживание' })[field], before: b[field][id], after: p[field][id], unit: field === 'demand' ? 'т' : 'руб/кг' });
-    for (const id of Object.keys(routes)) if (p.routeCosts[id] !== b.routeCosts[id]) changes.push({ key: 'routeCosts.' + id, name: routes[id].name + ': переменные затраты', before: b.routeCosts[id], after: p.routeCosts[id], unit: 'руб/кг входа' });
+    for (const field of ['prices', 'demand', 'service']) for (const id of ids) if (p[field][id] !== b[field][id]) changes.push({ key: field + '.' + id, name: products[id].name + ': ' + ({ prices: 'цена', demand: 'спрос', service: 'обслуживание' })[field], before: b[field][id], after: p[field][id], unit: field === 'demand' ? 'т' : 'руб. / кг' });
+    for (const id of Object.keys(routes)) if (p.routeCosts[id] !== b.routeCosts[id]) changes.push({ key: 'routeCosts.' + id, name: routes[id].name + ': переменные затраты', before: b.routeCosts[id], after: p.routeCosts[id], unit: 'руб. / кг входа' });
     for (const [id, name] of Object.entries({ deboning: 'Обвалка', packing: 'Упаковка', freezing: 'Заморозка' })) if (p.stageCapacity[id] !== b.stageCapacity[id]) changes.push({ key: 'stageCapacity.' + id, name: name + ': мощность', before: b.stageCapacity[id], after: p.stageCapacity[id], unit: 'т/неделю' });
     return changes;
   }
-  const api = { defaults, evaluate, alternatives, checkRequest, snapshot, fact, roi, changeLevers, routes, products, version: '2.0', units: { mass: 'т', price: 'руб/кг', money: 'руб' } };
+  const api = { defaults, evaluate, alternatives, checkRequest, snapshot, fact, roi, changeLevers, routes, products, version: '2.0', units: { mass: 'т', price: 'руб. / кг', money: 'руб.' } };
   if (typeof module === 'object' && module.exports) module.exports = api;
   if (root) root.PlannerModel = api;
 })(typeof window === 'object' ? window : null);

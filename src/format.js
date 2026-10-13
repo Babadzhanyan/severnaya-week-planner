@@ -1,7 +1,7 @@
-export const n = (v, d = 1) => Number(v || 0).toLocaleString('ru-RU', { maximumFractionDigits: d });
+export const n = (v, d = 1) => Number(v || 0).toLocaleString('ru-RU', { maximumFractionDigits: d }).replace(/^-/, '−');
 export const weekLabel = value => { const count = Math.abs(Math.trunc(Number(value))), last = count % 10, two = count % 100; return last === 1 && two !== 11 ? 'неделя' : last >= 2 && last <= 4 && (two < 12 || two > 14) ? 'недели' : 'недель'; };
 export const money = v => n(v / 1e6, 2) + ' млн';
-export const delta = v => (v > 0 ? '+' : v < 0 ? '−' : '') + n(Math.abs(v) / 1000, 1) + ' тыс';
+export const delta = v => (v > 0 ? '+' : v < 0 ? '−' : '') + n(Math.abs(v) / 1000, 1) + ' тыс.';
 export const clone = o => JSON.parse(JSON.stringify(o));
 export const pathGet = (obj, path) => path.split('.').reduce((o, k) => o?.[k], obj);
 export function pathSet(obj, path, value) {

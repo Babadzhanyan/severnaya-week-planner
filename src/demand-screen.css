@@ -70,3 +70,14 @@
 .ds-outcome{margin-top:15px;gap:10px}
 @media(max-height:780px) and (min-width:769px){.ds-request-fields{margin-top:10px;gap:12px}.ds-request-fields .lever-field label{font-size:13px;margin-bottom:4px}.ds-outcome{margin-top:12px;gap:8px}.ds-outcome h3{font-size:20px}.ds-money{gap:0}.ds-money>span{font-size:13px}.ds-money>strong{font-size:22px}.ds-reason{gap:4px}.ds-result-actions{margin-top:0;gap:3px}.ds-secondary-actions{column-gap:9px}.ds-secondary-actions>.text-button{font-size:12px;min-height:24px}}
 @media(max-width:768px){.ds-request-fields{margin-top:0;gap:16px}.ds-request-fields input{height:40px;font-size:17px}.ds-outcome{margin-top:16px;gap:10px}.ds-outcome h3{font-size:22px}.ds-request-form{margin-top:16px}}
+
+/* Компактный корпус сохраняет видимые условия заявки и один следующий шаг */
+.ds-request-title h2{margin-top:0}
+.ds-output>strong,.ds-plan-price strong,.ds-money>strong{font-family:var(--font-head,Georgia,serif);font-weight:700}
+@media(min-width:901px) and (max-height:800px){
+ .demand-screen{gap:10px}.ds-heading .ds-eyebrow{display:none}.ds-heading h1{font-size:25px;line-height:1.15;margin-top:0}
+ .ds-balance h2,.ds-request-title h2{font-size:17px;line-height:1.2}.ds-workspace{grid-template-columns:minmax(0,1fr) 350px;gap:26px}
+ .ds-product-line{padding-bottom:10px}.ds-output{margin-top:12px}.ds-output>strong{font-size:27px}
+ .ds-request-fields{margin-top:12px}.ds-outcome h3{font-size:18px;line-height:1.2}.ds-outcome{gap:8px;margin-top:12px}.ds-money>strong{font-size:22px}
+ .ds-request-form{margin-top:14px}.ds-result-actions>.primary{min-height:40px}.ds-reason{font-size:13px;line-height:1.35}
+}

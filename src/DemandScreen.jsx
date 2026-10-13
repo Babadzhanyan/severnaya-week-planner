@@ -14,9 +14,8 @@ function RequestOutcome() {
   const canConfirm = result.canApply === true;
   return <div className="ds-outcome" id="request-result" aria-live="polite">
     <h3>{canConfirm ? <>Можно подтвердить <span>{n(covered)} т</span></> : result.duplicate ? 'Заявка уже включена в план' : covered != null ? <>Выпуск покрывает <span>{n(covered)} из {n(requested)} т</span></> : 'Уточните параметры заявки'}</h3>
-    {typeof change === 'number' && <div className="ds-money"><span>Изменение к текущему плану</span><strong className={change < 0 ? 'negative' : ''}>{delta(change)} руб</strong></div>}
+    {typeof change === 'number' && <div className="ds-money"><span>Изменение к текущему плану</span><strong className={change < 0 ? 'negative' : ''}>{delta(change)} руб.</strong></div>}
     <div className="ds-reason">
-      {change < 0 && <p className="negative">Результат недели снизится на {n(Math.abs(change) / 1000)} тыс руб</p>}
       {canConfirm && <p>{result.extraCut > 0 ? <>Потребуется дополнительно разделать {n(result.extraCut)} т сырья</> : result.extraCut < 0 ? <>План уменьшает разделку на {n(Math.abs(result.extraCut))} т и увеличивает выпуск целой тушки</> : <>Текущий выпуск покрывает заявку</>}</p>}
       {result.forecastConsumed > 0 && <p>{n(result.forecastConsumed)} т прогноза перейдут в подтверждённый заказ</p>}
       {result.shortfall > 0 && <p className="negative">Ещё {n(result.shortfall)} т требуют другого срока или изменения плана</p>}
@@ -53,7 +52,7 @@ export function DemandScreen() {
     </header>
     <div className="ds-product-line">
       <ProductPicker all={false}/>
-      <div className="ds-plan-price"><span>Цена в плане</span><strong>{n(price)} <small>руб / кг</small></strong></div>
+      <div className="ds-plan-price"><span>Цена в плане</span><strong>{n(price)} <small>руб. / кг</small></strong></div>
       <ActionButton action="prices">Изменить спрос и цены</ActionButton>
     </div>
     <div className="ds-mobile-tabs" role="tablist" aria-label="Спрос и проверка заявки">
@@ -82,12 +81,12 @@ export function DemandScreen() {
         <button className="primary ds-mobile-start" type="button" onClick={() => setMobileTab('request')}>Проверить новую заявку</button>
       </section>
       <aside className="ds-request-panel" aria-label="Новая заявка выбранного продукта">
-        <div className="ds-request-title"><span className="ds-eyebrow">Новая заявка</span><h2>{prodName(product, M)}</h2></div>
+        <div className="ds-request-title"><h2>Новая заявка</h2></div>
         <div className="ds-request-fields">
           <Field label="Объём заявки" scope="request" path="quantity" min={0.1} max={1000} step={0.1} unit="т"/>
-          <Field label="Цена продажи" scope="request" path="price" max={2000} step={1} unit="руб / кг"/>
+          <Field label="Цена продажи" scope="request" path="price" max={2000} step={1} unit="руб. / кг"/>
         </div>
-        {S.request.service > 0 && <p className="ds-service">Обслуживание {n(S.request.service)} руб / кг; после обслуживания {n(S.request.price - S.request.service)} руб / кг</p>}
+        {S.request.service > 0 && <p className="ds-service">Обслуживание {n(S.request.service)} руб. / кг; после обслуживания {n(S.request.price - S.request.service)} руб. / кг</p>}
         {requestResult ? <RequestOutcome/> : <div className="ds-request-form">
           <p className="ds-form-help">Расчёт покажет, сколько можно подтвердить и как заявка изменит результат всей недели</p>
           <ActionButton className="primary" action="check-request" disabled={busy || !!error}>{busy ? 'Обновляем расчёт' : 'Проверить заявку'}</ActionButton>

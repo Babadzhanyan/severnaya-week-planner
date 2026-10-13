@@ -2,6 +2,7 @@ import React from 'react';
 import {usePlanner} from './state.jsx';
 import {ActionButton,Field,RouteSelect,Hint,Status} from './ui.jsx';
 import {n,money,delta,prodName} from './format.js';
+import {MoneyBridge} from './charts.jsx';
 import './plan-screen.css';
 
 export function PlanScreen(){
@@ -10,7 +11,6 @@ export function PlanScreen(){
   const produced=Object.values(r.produced).reduce((sum,value)=>sum+value,0);
   const stages=r.stages.filter(stage=>stage.active);
   const limited=stages.filter(stage=>stage.binding);
-  const costs=r.routeCost+r.serviceCost+r.freezeCost;
   const difference=r.contribution-base.contribution;
   const selectionReady=!busy&&!error;
   const explain=r.violations.length?r.violations[0]:r.inventoryT>.001?`${n(r.inventoryT)} т останутся на складе. Коммерция подтверждает покупателя и срок продажи`:limited.length?`${limited[0].name}: ${n(limited[0].load)} из ${n(limited[0].capacity)} т мощности заняты`:`Разделка: запас мощности ${n(Math.max(0,r.effectiveCapacity-r.cut))} т. Заказы требуют сохранить ${n(r.allocations.whole.orders)} т целой тушки`;
@@ -47,17 +47,19 @@ export function PlanScreen(){
           const selected=Math.abs(candidate.params.cut-p.cut)<.001&&candidate.params.route===p.route;
           const isBest=a.best?.id===candidate.id;
           const label=p.route==='whole'?'Вся партия целиком':index===0?'Больше тушки':index===1?(p.route==='fillet'?'Базовый план':'Разделка 40%'):'Больше разделки';
-          return <button key={candidate.id} className={`quick-option ${selected?'selected':''}`} aria-pressed={selected} disabled={!selectionReady} data-candidate={index} onClick={()=>chooseCandidate(index)}><span className="option-name">{isBest&&a.candidates.length>1?'Лучший из трёх':label}</span><strong>{n(candidate.result.contribution/1e6,3)} млн руб.</strong><span>{n(candidate.result.whole)} т целиком / {n(candidate.params.cut)} т разделка</span><span className={candidate.result.feasible?'option-status':'negative'}>{candidate.result.feasible?'Выполним':candidate.result.violations[0]}</span></button>;
+          return <button key={candidate.id} className={`quick-option ${selected?'selected':''}`} aria-pressed={selected} disabled={!selectionReady} data-candidate={index} onClick={()=>chooseCandidate(index)}><span className="option-name">{isBest&&a.candidates.length>1?'Лучший из трёх':label}</span><strong className={candidate.result.contribution<0?'negative':''}>{n(candidate.result.contribution/1e6,3)} млн руб.</strong><span>{n(candidate.result.whole)} т целиком / {n(candidate.params.cut)} т разделка</span><span className={candidate.result.feasible?'option-status':'negative'}>{candidate.result.feasible?'Выполним':candidate.result.violations[0]}</span></button>;
         })}</div></div>
         <div className="plan-capacity"><div className="compact-stages" id="bottlenecks">{stages.map(stage=><Hint key={stage.id} text={`${stage.name}: ${n(stage.load)} из ${n(stage.capacity)} т за неделю`} className="compact-stage"><span>{stage.name}</span><b className={stage.load>stage.capacity?'negative':''}>{stage.utilization===null?'Требуется ресурс':n(stage.utilization*100,1)+'%'}</b><div><i style={{width:`${Math.min(100,(stage.utilization??1)*100)}%`,background:stage.load>stage.capacity?'var(--bad)':undefined}}/></div></Hint>)}</div></div>
       </div>
 
       <aside className="plan-result" id="week-result">
         <div className="plan-section-title"><span>3</span><h2>Результат недели</h2></div>
-        <div className="result-total"><span>Вклад после переменных затрат</span><strong>{money(r.contribution)} <small>руб.</small></strong><p>На постоянные расходы и прибыль</p></div>
-        <p className="calculation-unit">Расчёт вклада, млн руб.</p><dl className="result-calculation" aria-label="Расчёт вклада, млн руб."><div><dt>Выручка</dt><dd>{n(r.revenue/1e6,3)}</dd></div><div><dt>− Сырьё</dt><dd>{n(r.rawCost/1e6,3)}</dd></div><div><dt>− Обработка и сбыт</dt><dd>{n(costs/1e6,3)}</dd></div></dl>
-        <div className="result-difference"><strong className={difference<0?'negative':''}>{a.comparable?delta(difference)+' руб.':'База требует проверки'}</strong><span>к базе: {n(base.cut)} т разделки на филе и ножки</span><span>Вклад базы: {money(base.contribution)} руб.</span><ActionButton action="economics">Раскрыть расчёт</ActionButton></div>
-        <div className="plan-next-step"><Status level={r.feasible?'ok':'bad'}>{r.feasible?'План выполним':'Требуется изменить план'}</Status><p>{explain}</p>{limited.length>0&&r.whole<=r.allocations.whole.orders+.001&&r.allocations.whole.orders>0&&<p className="plan-caption">Заказы требуют сохранить {n(r.allocations.whole.orders)} т целой тушки</p>}<ActionButton action={r.inventoryT>0?'prices':'levers-resources'}>{r.inventoryT>0?'Уточнить спрос':'Проверить мощности'}</ActionButton></div>
+        <div className="result-summary">
+          <div className="result-total"><span>Вклад недели</span><strong className={r.contribution<0?'negative':''}>{n(r.contribution/1e6,3)} млн <small>руб.</small></strong><p>На постоянные расходы и прибыль</p></div>
+          <div className="result-difference"><span>Изменение к базе</span><strong className={`${difference<0?'negative':''} ${a.comparable?'comparable':''}`}>{a.comparable?delta(difference)+' руб.':'База требует проверки'}</strong><Hint text={`База: ${n(base.cut)} т разделки на филе и ножки, ${n(base.whole)} т целой тушки, вклад ${money(base.contribution)} руб.`}><span>{n(base.cut)} т разделки / {money(base.contribution)} руб.</span></Hint></div>
+        </div>
+        <figure className="plan-money" id="money-bridge"><figcaption><h3>Выручка превращается во вклад</h3><span>млн руб.</span></figcaption><MoneyBridge result={r} compact/><div className="plan-money-detail"><Hint text="Обработка включает затраты переделов, сбыт и заморозку"><span>Переделы, сбыт и заморозка</span></Hint><ActionButton action="economics">Раскрыть расчёт</ActionButton></div>{r.inventoryT>.001&&<p className="plan-stock-note">Остаток {n(r.inventoryT)} т / будущая продажа {money(r.inventoryValue)} руб. отдельно</p>}</figure>
+        <div className="plan-next-step"><div className="plan-status-row"><Status level={r.feasible?'ok':'bad'}>{r.feasible?'План выполним':'Требуется изменить план'}</Status><ActionButton action={r.inventoryT>0?'prices':'levers-resources'}>{r.inventoryT>0?'Уточнить спрос':'Проверить мощности'}</ActionButton></div><p>{explain}</p>{limited.length>0&&r.whole<=r.allocations.whole.orders+.001&&r.allocations.whole.orders>0&&<p className="plan-caption">Заказы требуют сохранить {n(r.allocations.whole.orders)} т целой тушки</p>}</div>
         <ActionButton className="primary" view="approval" disabled={!r.feasible||!selectionReady}>Передать на согласование</ActionButton>
       </aside>
     </div>

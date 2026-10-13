@@ -20,5 +20,6 @@ jobs:
       - run: npm ci
       - run: npm run build
       - run: node tests/legacy-model.test.cjs
+      - run: npm run test:charts
       - run: pip install -r requirements.txt -r backend/requirements-test.txt
       - run: python -m pytest backend/tests -q

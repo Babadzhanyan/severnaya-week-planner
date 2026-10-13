@@ -8,7 +8,8 @@
     "build": "vite build",
     "build:demo": "VITE_DEMO_MODE=true vite build",
     "preview": "vite preview --host 127.0.0.1",
-    "test:legacy": "node tests/legacy-model.test.cjs"
+    "test:legacy": "node tests/legacy-model.test.cjs",
+    "test:charts": "node tests/money-bridge.test.mjs"
   },
   "dependencies": { "react": "^19.1.1", "react-dom": "^19.1.1" },
   "devDependencies": { "@vitejs/plugin-react": "^5.0.4", "vite": "^7.1.7" }

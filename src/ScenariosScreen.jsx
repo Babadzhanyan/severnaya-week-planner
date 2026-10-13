@@ -1,43 +1,10 @@
 import React, {useEffect, useId, useState} from 'react';
 import {usePlanner} from './state.jsx';
 import {n, money, delta} from './format.js';
+import {MoneyBridge} from './charts.jsx';
 import './scenarios-screen.css';
 
 const EPS = 1e-6;
-const processingCost = r => ['routeCost', 'serviceCost', 'freezeCost'].reduce((sum, key) => sum + (r[key] || 0), 0);
-function MoneyBridge({result}) {
-  const bars = [
-    {name:'Выручка', value:result.revenue, total:true},
-    {name:'Сырьё', value:-result.rawCost},
-    {name:'Обработка', value:-processingCost(result)},
-    {name:'Вклад недели', value:result.contribution, total:true}
-  ];
-  let running = 0;
-  const segments = bars.map(bar => {
-    const from = bar.total ? 0 : running, to = bar.total ? bar.value : running + bar.value;
-    running = to;
-    return {...bar, from, to};
-  });
-  const min = Math.min(0, ...segments.flatMap(bar => [bar.from, bar.to]));
-  const max = Math.max(1, ...segments.flatMap(bar => [bar.from, bar.to]));
-  const y = value => 172 - (value - min) / (max - min) * 126;
-  const label = value => (value < 0 ? '−' : '') + n(Math.abs(value) / 1e6, 3);
-  return <div className="ss-bridge"><svg viewBox="0 0 580 218" role="img" aria-label={`Выручка ${n(result.revenue)} руб.; сырьё ${n(result.rawCost)} руб.; обработка ${n(processingCost(result))} руб.; вклад недели ${n(result.contribution)} руб.`}>
-    <line x1="4" x2="576" y1={y(0)} y2={y(0)} stroke="#becbd5"/>
-    {segments.map((bar, i) => {
-      const x = 14 + i * 144, top = y(Math.max(bar.from, bar.to));
-      const color = bar.total ? (bar.value < 0 ? '#a6372d' : '#003c72') : i === 1 ? '#a9bac8' : '#6f8da5';
-      return <g key={bar.name}>
-        <title>{bar.name}: {n(bar.value)} руб.</title>
-        <rect x={x} y={top} width="104" height={Math.abs(y(bar.from) - y(bar.to))} fill={color}/>
-        <text x={x + 52} y={Math.max(18, top - 24)} textAnchor="middle" className={`ss-bridge-value ${bar.total && bar.value < 0 ? 'ss-bridge-negative' : ''}`}>{label(bar.value)}</text>
-        <text x={x + 52} y={Math.max(32, top - 9)} textAnchor="middle" className="ss-bridge-unit">млн руб.</text>
-        <text x={x + 52} y="204" textAnchor="middle" className="ss-bridge-name">{bar.name}</text>
-        {i < 3 && <line x1={x + 104} x2={x + 144} y1={y(bar.to)} y2={y(bar.to)} stroke="#9baeba" strokeWidth="1.2" strokeDasharray="3 3"/>}
-      </g>;
-    })}
-  </svg></div>;
-}
 function limitation(r,p){
   if(r.violations?.length)return r.violations.slice(0,2).join('. ');
   const active=(r.stages||[]).filter(s=>s.active!==false),binding=active.filter(s=>s.load>EPS&&s.load>=s.capacity-EPS);

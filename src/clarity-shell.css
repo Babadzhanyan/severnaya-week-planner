@@ -26,9 +26,9 @@
 /* Georgia Bold выделяет выводы; подписи и таблицы сохраняют плотность */
 .clarity-app h1,.clarity-app h2,.clarity-app h3,.modal h2,.modal h3,.tour-card h3{font-family:var(--font-head);font-weight:700;color:var(--blue)}
 .clarity-brand strong,.result-total>strong,.result-difference>strong,.quick-option strong,.metric>strong,.equation-total strong{font-family:var(--font-head);font-weight:700}
-.clarity-brand strong{font-size:23px;letter-spacing:-.5px}
+.clarity-brand strong{font-size:23px;letter-spacing:normal}
 .clarity-app .page-heading h1{font-size:28px;line-height:1.15}
-.clarity-app .metric>strong{font-size:29px;letter-spacing:-.6px}
+.clarity-app .metric>strong{font-size:29px;letter-spacing:normal}
 .clarity-app .metric>strong.disabled-value{font-family:var(--font-body);font-size:21px;letter-spacing:0;white-space:normal}
 .clarity-app .visual-header h2,.clarity-app .action-pane h2{font-size:17px}
 .clarity-app .metric label,.clarity-app .metric small{font-size:12px}

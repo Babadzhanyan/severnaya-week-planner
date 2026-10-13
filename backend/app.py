@@ -1,4 +1,4 @@
-"""FastAPI для учебного планировщика. Состояние плана хранит клиент."""
+"""FastAPI для планировщика. Состояние плана хранит клиент."""
 from copy import deepcopy
 import hashlib
 import json
@@ -9,9 +9,13 @@ from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from pydantic import ValidationError
 from . import model
+from .files_capacity import router as files_capacity_router
+from .files_economics import router as files_economics_router
 from .schemas import CommercialBody, EvaluationBody, FactBody, Params, RequestBody, RoiBody, SnapshotBody
 
-app = FastAPI(title="Учебный планировщик «Северная»", version=model.VERSION, docs_url="/api/docs", openapi_url="/api/openapi.json", redoc_url=None)
+app = FastAPI(title="Планировщик «Северная»", version=model.VERSION, docs_url="/api/docs", openapi_url="/api/openapi.json", redoc_url=None)
+app.include_router(files_capacity_router)
+app.include_router(files_economics_router)
 
 
 class BodyLimitMiddleware:
@@ -119,7 +123,7 @@ def same_result(left, right):
 
 @app.get("/api/health")
 def health():
-    return {"status": "ok", "mode": "Учебная демонстрация"}
+    return {"status": "ok", "mode": "Планирование производства и продаж"}
 
 
 @app.get("/api/catalog")

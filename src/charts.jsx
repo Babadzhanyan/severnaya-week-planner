@@ -22,13 +22,20 @@ export function HorizontalBars({items,max,unit}){return <><div className="deskto
 export function Waterfall({items}){const W=900,H=330,step=W/items.length,barWidth=step*.68,mobileMax=Math.max(...items.map(x=>Math.abs(x.value)),1),max=Math.max(...items.filter(x=>x.total).map(x=>x.value),1)*1.12,min=Math.min(0,...items.filter(x=>x.total).map(x=>x.value)),Y=v=>H-55-(v-min)/(max-min)*(H-90);let running=0;return <><div className="desktop-chart"><svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Мост вклада по причинам изменения">{items.map((x,i)=>{const start=x.total?0:running,end=x.total?x.value:running+x.value;running=end;const bx=12+i*step,by=Y(Math.max(start,end)),bh=Math.abs(Y(start)-Y(end));return <g key={x.name}><rect x={bx} y={by} width={barWidth} height={bh} fill={x.total?'#003c72':x.value<0?'#B03A2E':'#849BAD'} rx="3"/><text x={bx} y={by-12} fill={x.value<0?'#B03A2E':'#003c72'} fontSize="23" fontWeight="600">{x.total?money(x.value):delta(x.value)}</text><text x={bx} y={H-23} fontSize="17">{x.name}</text>{i<items.length-1&&<path d={`M${bx+barWidth} ${Y(end)}H${bx+step}`} stroke="#A9B4BE" strokeDasharray="4 4"/>}</g>;})}<text x="20" y="327" fill="#666666" fontSize="13">руб. / изменение вклада всей корзины</text></svg></div><div className="mobile-bars">{items.map(x=><div className="mobile-bar-row" key={x.name}><div><span>{x.name}</span><strong className={x.value<0?'negative':''}>{x.total?money(x.value):delta(x.value)} руб.</strong></div><span className="bar-track"><span style={{width:`${Math.min(100,Math.abs(x.value)/mobileMax*100)}%`,background:x.value<0?'#B03A2E':'#003c72'}}/></span></div>)}</div></>;}
 
 const processingCost = r => ['routeCost', 'serviceCost', 'freezeCost'].reduce((sum, key) => sum + (r[key] || 0), 0);
-export function MoneyBridge({result,compact=false}) {
-  const bars = [
+export function MoneyBridge({result,compact=false,items,unit,divisor}) {
+  const [active,setActive] = React.useState(null);
+  const tooltipId = React.useId();
+  const custom = Array.isArray(items);
+  const bars = custom ? items : [
     {name:'Выручка', value:result.revenue, total:true},
     {name:'Сырьё', value:-result.rawCost},
     {name:'Обработка', value:-processingCost(result)},
     {name:'Вклад недели', value:result.contribution, total:true}
   ];
+  const displayDivisor = divisor ?? (custom ? 1 : 1e6);
+  const displayUnit = unit ?? (custom ? 'руб. / кг' : 'млн руб.');
+  const valid = bars.length > 0 && bars.every(bar => Number.isFinite(bar.value)) && Number.isFinite(displayDivisor) && displayDivisor > 0;
+  if (!valid) return <div className="money-bridge money-bridge-empty">Требуется расчёт</div>;
   let running = 0;
   const segments = bars.map(bar => {
     const from = bar.total ? 0 : running, to = bar.total ? bar.value : running + bar.value;
@@ -36,23 +43,51 @@ export function MoneyBridge({result,compact=false}) {
     return {...bar, from, to};
   });
   const min = Math.min(0, ...segments.flatMap(bar => [bar.from, bar.to]));
-  const max = Math.max(1, ...segments.flatMap(bar => [bar.from, bar.to]));
-  const y = value => (compact ? 146 : 172) - (value - min) / (max - min) * (compact ? 104 : 126);
-  const label = value => (value < 0 ? '−' : '') + n(Math.abs(value) / 1e6, 3);
-  return <div className={`money-bridge ${compact ? 'compact-bridge' : ''}`}><svg viewBox={compact ? '0 0 360 180' : '0 0 580 218'} role="img" aria-label={`Выручка ${n(result.revenue)} руб.; сырьё ${n(result.rawCost)} руб.; обработка ${n(processingCost(result))} руб.; вклад недели ${n(result.contribution)} руб.`}>
-    <line x1="4" x2={compact ? 356 : 576} y1={y(0)} y2={y(0)} stroke="#becbd5"/>
+  const max = Math.max(custom ? 0 : 1, ...segments.flatMap(bar => [bar.from, bar.to]));
+  const W = custom ? 410 : compact ? 360 : 580;
+  const H = custom ? 230 : compact ? 180 : 218;
+  const bottom = custom ? 166 : compact ? 146 : 172;
+  const chartHeight = custom ? 126 : compact ? 104 : 126;
+  const y = value => bottom - (value - min) / (max - min || 1) * chartHeight;
+  const label = (value,total) => {
+    const magnitude=Math.abs(value)/displayDivisor;
+    const number=custom ? Number(magnitude.toPrecision(3)).toLocaleString('ru-RU',{maximumSignificantDigits:3}) : n(magnitude,3);
+    return (value<0?'−':custom&&!total&&value>0?'+':'')+number;
+  };
+  const plainName = name => String(name).replace(/\n/g,' ');
+  const fullLabel = bar => `${plainName(bar.name)}: ${n(bar.value / (custom ? displayDivisor : 1),custom ? 20 : 1)} ${custom ? displayUnit : 'руб.'}`;
+  const nameLines = (bar,i) => {
+    if (!custom) return [compact && i === bars.length-1 ? 'Вклад' : bar.name];
+    const text = String(bar.name);
+    if (text.includes('\n')) return text.split('\n');
+    const words=text.split(' ');
+    if (text.length<=11 || words.length===1) return [text];
+    let split=1;
+    for (let j=1;j<words.length;j++) if(Math.abs(words.slice(0,j).join(' ').length-words.slice(j).join(' ').length)<Math.abs(words.slice(0,split).join(' ').length-words.slice(split).join(' ').length)) split=j;
+    return [words.slice(0,split).join(' '),words.slice(split).join(' ')];
+  };
+  const step = custom ? 80 : compact ? 90 : 144;
+  const spacing = custom ? (W-10) / bars.length : step;
+  const width = custom ? spacing*.73 : compact ? 68 : 104;
+  const firstX = custom ? 5+(spacing-width)/2 : compact ? 8 : 14;
+  const description = custom ? `Изменение результата после упаковки. ${bars.map(fullLabel).join('; ')}` : `Выручка ${n(result.revenue)} руб.; сырьё ${n(result.rawCost)} руб.; обработка ${n(processingCost(result))} руб.; вклад недели ${n(result.contribution)} руб.`;
+  const current = active === null ? null : segments[active];
+  return <div className={`money-bridge ${compact && !custom ? 'compact-bridge' : ''} ${custom ? 'source-money-bridge' : ''}`} onMouseLeave={event=>{if(!event.currentTarget.contains(document.activeElement))setActive(null);}}><svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={description}>
+    {custom && <text x="5" y="15" className="money-bridge-scale-unit">{displayUnit}</text>}
+    <line x1="4" x2={W-4} y1={y(0)} y2={y(0)} stroke="#becbd5"/>
     {segments.map((bar, i) => {
-      const step = compact ? 90 : 144, width = compact ? 68 : 104;
-      const x = (compact ? 8 : 14) + i * step, top = y(Math.max(bar.from, bar.to));
-      const color = bar.total ? (bar.value < 0 ? '#a6372d' : '#003c72') : i === 1 ? '#a9bac8' : '#6f8da5';
-      return <g key={bar.name}>
-        <title>{`${bar.name}: ${n(bar.value)} руб.`}</title>
+      const x = firstX + i * spacing, top = y(Math.max(bar.from, bar.to));
+      const last = i === segments.length-1;
+      const color = bar.total ? (bar.value < 0 ? '#a6372d' : custom && last ? '#28704f' : '#003c72') : custom ? (bar.value < 0 ? (/упаковк/i.test(bar.name) ? '#a9bac8' : '#b46961') : '#6f8da5') : i === 1 ? '#a9bac8' : '#6f8da5';
+      const title = fullLabel(bar);
+      return <g key={`${bar.name}-${i}`} className={`money-bridge-step ${active===i?'is-active':''}`} tabIndex="0" role="img" aria-label={title} aria-describedby={active===i?tooltipId:undefined} onFocus={()=>setActive(i)} onBlur={()=>setActive(null)} onMouseEnter={()=>setActive(i)} onKeyDown={event=>{if(event.key==='Escape')setActive(null);}}>
+        <title>{title}</title>
         <rect x={x} y={top} width={width} height={Math.abs(y(bar.from) - y(bar.to))} fill={color}/>
-        <text x={x + width / 2} y={Math.max(18, top - (compact ? 10 : 24))} textAnchor="middle" className={`money-bridge-value ${bar.total && bar.value < 0 ? 'money-bridge-negative' : ''}`}>{label(bar.value)}</text>
-        {!compact && <text x={x + width / 2} y={Math.max(32, top - 9)} textAnchor="middle" className="money-bridge-unit">млн руб.</text>}
-        <text x={x + width / 2} y={compact ? 174 : 204} textAnchor="middle" className="money-bridge-name">{compact && i === 3 ? 'Вклад' : bar.name}</text>
-        {i < 3 && <line x1={x + width} x2={x + step} y1={y(bar.to)} y2={y(bar.to)} stroke="#9baeba" strokeWidth="1.2" strokeDasharray="3 3"/>}
+        <text x={x + width / 2} y={Math.max(custom ? 31 : 18, top - (custom ? 9 : compact ? 10 : 24))} textAnchor="middle" className={`money-bridge-value ${bar.total && bar.value < 0 ? 'money-bridge-negative' : custom && last && bar.value>0 ? 'money-bridge-positive' : ''}`}>{label(bar.value,bar.total)}</text>
+        {!compact && !custom && <text x={x + width / 2} y={Math.max(32, top - 9)} textAnchor="middle" className="money-bridge-unit">{displayUnit}</text>}
+        <text x={x + width / 2} y={custom ? 194 : compact ? 174 : 204} textAnchor="middle" className="money-bridge-name">{custom ? nameLines(bar,i).map((line,j)=><tspan key={j} x={x+width/2} dy={j?18:0}>{line}</tspan>) : nameLines(bar,i)[0]}</text>
+        {!last && <line x1={x + width} x2={x + spacing} y1={y(bar.to)} y2={y(bar.to)} stroke="#9baeba" strokeWidth="1.2" strokeDasharray="3 3"/>}
       </g>;
     })}
-  </svg></div>;
+  </svg>{current && <div id={tooltipId} role="tooltip" className="money-bridge-tooltip">{fullLabel(current)}</div>}</div>;
 }

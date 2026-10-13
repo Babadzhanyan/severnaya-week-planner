@@ -94,7 +94,56 @@ try {
     }
     console.log(`Проверено: ${name}`);
   }
-  console.log(`Готово: ${cases.length} сценариев, ${cases.length * 2} рендеров, ${checks} проверок`);
+  const customCases = [
+    ['Сохранённый расчёт', [155, -140, 5, -4, 16], [true, false, false, false, true]],
+    ['Промежуточный максимум', [5, 7, -4, -2, 6], [true, false, false, false, true]],
+    ['Отрицательный результат', [10, -15, 2, -1, -4], [true, false, false, false, true]],
+    ['Переход через ноль', [0, -12, 15, -1, 2], [true, false, false, false, true]],
+    ['Нулевой результат', [10, -12, 3, -1, 0], [true, false, false, false, true]],
+    ['Все ступени нулевые', [0,0,0,0,0], [true, false, false, false, true]],
+    ['Доли рубля', [.05,-.04,.005,-.002,.013], [true, false, false, false, true]],
+    ['Точная исходная цена', [153.466060,-141.59138833330678,4.622280343936141,-4.608580,11.888372010629366], [true, false, false, false, true]],
+    ['Шесть ступеней', [100,-20,-30,5,-10,45], [true, false, false, false, false, true]],
+  ];
+  for (const [name,values,totals] of customCases) {
+    const names = values.length===5 ? ['Разделка','Тушка','Возврат\nупаковки','Упаковка','Результат'] : ['Начало','Затраты 1','Затраты 2','Возврат','Затраты 3','Результат'];
+    const items=values.map((value,i)=>({name:names[i],value,total:totals[i]}));
+    let running=0;
+    const ranges=items.map(item=>{const from=item.total?0:running,to=item.total?item.value:running+item.value;running=to;return [from,to];});
+    const min=Math.min(0,...ranges.flat()),max=Math.max(0,...ranges.flat()),scale=126/(max-min||1),y=v=>166-(v-min)*scale;
+    const html=renderToStaticMarkup(React.createElement(MoneyBridge,{items,unit:'руб. / кг',divisor:1}));
+    const svg=tags(html,'svg')[0],groups=tags(svg.text,'g');
+    check(svg.viewBox==='0 0 410 230',`${name}: размер нового графика`);
+    check(groups.length===items.length,`${name}: все ступени показаны`);
+    check(svg['aria-label'].includes('руб. / кг'),`${name}: единица исходного расчёта`);
+    check(!html.includes('NaN')&&!html.includes('Infinity'),`${name}: конечные координаты`);
+    groups.forEach((g,i)=>{
+      const rect=tags(g.text,'rect')[0],texts=tags(g.text,'text'),connector=tags(g.text,'line')[0];
+      const [from,to]=ranges[i];
+      near(Number(rect.y),Math.min(y(from),y(to)),`${name}: положение ступени ${i}`);
+      near(Number(rect.height),Math.abs(to-from)*scale,`${name}: количественная высота ${i}`);
+      check(Number(rect.x)>=0&&Number(rect.x)+Number(rect.width)<=410,`${name}: горизонтальные границы ${i}`);
+      check(Number(rect.y)>=40-1e-7&&Number(rect.y)+Number(rect.height)<=166+1e-7,`${name}: границы общей шкалы ${i}`);
+      check(g.tabindex==='0'&&g['aria-label'].includes('руб. / кг'),`${name}: подсказка с клавиатуры ${i}`);
+      const shown=Number(texts[0].text.replace('−','-').replace(/\s/g,'').replace(',','.'));
+      near(shown,Number(values[i].toPrecision(3)),`${name}: три значащих цифры ${i}`);
+      if(name==='Точная исходная цена') {
+        check(texts[0].text===['153','−142','+4,62','−4,61','11,9'][i],`${name}: короткая подпись ${i}`);
+        const exactValue=values[i].toLocaleString('ru-RU',{maximumFractionDigits:20}).replace(/^-/,'−');
+        const exactTitle=`${names[i].replace(/\n/g,' ')}: ${exactValue} руб. / кг`;
+        check(tags(g.text,'title')[0].text===exactTitle&&g['aria-label']===exactTitle,`${name}: точная сумма в подсказке ${i}`);
+      }
+      if(!items[i].total&&values[i]>0)check(texts[0].text.startsWith('+'),`${name}: знак положительного изменения ${i}`);
+      if(connector){near(Number(connector.y1),y(to),`${name}: переход ${i}`);near(Number(connector.y2),y(to),`${name}: горизонтальный переход ${i}`);}
+      if(i===items.length-1&&values[i]<0)check(rect.fill==='#a6372d',`${name}: отрицательный итог`);
+      if(i===items.length-1&&values[i]>0)check(rect.fill==='#28704f',`${name}: положительный итог`);
+      if(names[i].includes('\n'))check(tags(g.text,'tspan').length===2,`${name}: две строки подписи`);
+    });
+    console.log(`Проверено: ${name}`);
+  }
+  const unavailable=renderToStaticMarkup(React.createElement(MoneyBridge,{items:[{name:'Сумма',value:NaN,total:true}],divisor:1}));
+  check(unavailable.includes('Требуется расчёт')&&!unavailable.includes('<svg'), 'Пропущенное число получает явный статус');
+  console.log(`Готово: ${cases.length+customCases.length} сценариев, ${cases.length*2+customCases.length} рендеров, ${checks} проверок`);
 } finally {
   await server.close();
 }

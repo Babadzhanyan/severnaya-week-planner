@@ -1,6 +1,9 @@
-'use strict';
+const fs = require('node:fs');
+const vm = require('node:vm');
 const assert = require('node:assert/strict');
-const M = require('./model.js');
+const context = {module:{exports:{}}};
+vm.runInNewContext(fs.readFileSync(new URL('../model.js', 'file://' + __filename), 'utf8'), context);
+const M = context.module.exports;
 let checks = 0;
 function near(actual, expected, label) {
   assert.ok(Math.abs(actual - expected) < 1e-6, label + ': ' + actual + ' / ' + expected);

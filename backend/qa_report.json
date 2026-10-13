@@ -1,0 +1,35 @@
+{
+  "verdict": "Проверка пройдена",
+  "python": "3.12.14",
+  "tests": 1910,
+  "failures": 0,
+  "errors": 0,
+  "parity_cases": 1874,
+  "api_cases": 36,
+  "canonical_inputs": 412,
+  "request_cases": 120,
+  "formula_control": {
+    "contribution": 2600000,
+    "baseline": 2520000,
+    "weekly_effect": 80000,
+    "fact": 2510000
+  },
+  "notes": [
+    "Полные ответы Python сопоставлены с каноническим JavaScript, включая русские сигналы",
+    "Запуск сервера использует Python",
+    "Предупреждение Starlette относится к будущему переходу тестового транспорта с httpx на httpx2"
+  ],
+  "sha256": {
+    "backend/model.py": "02ec56f12de2893eb330dad9b2435114171244efebeb17146e7d2c71424cff33",
+    "backend/app.py": "4aeca2d5f55dd01afb49f0babf5f9f29a82a51ae0c85aad601c867d3c1828abc",
+    "backend/main.py": "629f63df5ade0ec217068afe1d1b16b2609dc94f9e869495940e03884367aef8",
+    "backend/schemas.py": "81ac0b45043dcda9cde8224f4efdcf4923b90b46397ab05be962766705ead1fa",
+    "backend/catalog.json": "8bb0371779653491e9fd8693ac26d46761f68e68069d19090bd6f1d16b13d276",
+    "backend/tests/test_api.py": "d630f8c2f67d6e2d0d036392d6b38e3779f3192ae66ebf64479fbaa3f7a209a8",
+    "backend/tests/test_parity.py": "3317a93207d42c798ebf291d6041599bf450d884f5108dc4948b538655042a48",
+    "requirements.txt": "bd62df965af87f46d7903a4c86d2e43d7622bbcb6145a04466e29dc6c0e0c22b",
+    "backend/requirements-test.txt": "3bd7a27b67db97799bb8afd34eb20f61c5fe6ac25d331936c3e2ac383adabb0d",
+    "api/index.py": "2c5df01229c6bd5c005dca41fb3a8d1db38f706a2e0a73700447a97cc592e4a5",
+    "model.js": "b958a1b00782cbc870085c1653b842d8d5a93e325419a8f34bfc5bc3aed0b5e5"
+  }
+}

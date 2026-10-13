@@ -1,0 +1,181 @@
+{
+  "defaults": {
+    "totalInput": 100,
+    "rawCost": 140,
+    "capacity": 50,
+    "hours": 80,
+    "rate": 0.625,
+    "minWhole": 50,
+    "cut": 50,
+    "route": "fillet",
+    "coldCapacity": 6,
+    "stageCapacity": {
+      "deboning": 40,
+      "packing": 100,
+      "freezing": 6
+    },
+    "prices": {
+      "whole": 170,
+      "fillet": 300,
+      "legs": 190,
+      "wing": 180,
+      "frame": 40,
+      "breast": 225,
+      "legMeat": 285,
+      "legBone": 30,
+      "legSkin": 35
+    },
+    "demand": {
+      "whole": 70,
+      "fillet": 16,
+      "legs": 17.5,
+      "wing": 5.5,
+      "frame": 10,
+      "breast": 20,
+      "legMeat": 12,
+      "legBone": 3.75,
+      "legSkin": 1.25
+    },
+    "orders": {
+      "whole": 0,
+      "fillet": 0,
+      "legs": 0,
+      "wing": 0,
+      "frame": 0,
+      "breast": 0,
+      "legMeat": 0,
+      "legBone": 0,
+      "legSkin": 0
+    },
+    "service": {
+      "whole": 0,
+      "fillet": 0,
+      "legs": 0,
+      "wing": 0,
+      "frame": 0,
+      "breast": 0,
+      "legMeat": 0,
+      "legBone": 0,
+      "legSkin": 0
+    },
+    "routeCosts": {
+      "whole": 8,
+      "coarse": 19,
+      "fillet": 20.3,
+      "deep": 28
+    },
+    "frozenPrices": {
+      "whole": 140,
+      "fillet": 220,
+      "legs": 145,
+      "wing": 135,
+      "frame": 20,
+      "breast": 180,
+      "legMeat": 210,
+      "legBone": 20,
+      "legSkin": 20
+    },
+    "freezeCost": 10,
+    "requests": {},
+    "label": "Иллюстрация: учебные данные"
+  },
+  "routes": {
+    "whole": {
+      "name": "Целая тушка",
+      "description": "Упаковка целой тушки",
+      "yields": {},
+      "loss": 0,
+      "variableCost": 8,
+      "deboneInputShare": 0,
+      "sourceStatus": "Учебный пример из паспорта расчётов"
+    },
+    "coarse": {
+      "name": "Крупная разделка",
+      "description": "Грудка на кости, ножки, крыло и каркас",
+      "yields": {
+        "breast": 0.4,
+        "legs": 0.35,
+        "wing": 0.11,
+        "frame": 0.13
+      },
+      "loss": 0.01,
+      "variableCost": 19,
+      "deboneInputShare": 0,
+      "sourceStatus": "Учебная схема; нормы и ставки требуют подтверждения"
+    },
+    "fillet": {
+      "name": "Филе и ножки",
+      "description": "Филе грудки, ножки, крыло и каркас",
+      "yields": {
+        "fillet": 0.32,
+        "legs": 0.35,
+        "wing": 0.11,
+        "frame": 0.2
+      },
+      "loss": 0.02,
+      "variableCost": 20.3,
+      "deboneInputShare": 0.4,
+      "sourceStatus": "Учебный пример из паспорта расчётов; загрузка обвалки условная"
+    },
+    "deep": {
+      "name": "Обвалка грудки и ножки",
+      "description": "Филе грудки, мякоть ножки, кость, кожа, крыло и каркас",
+      "yields": {
+        "fillet": 0.32,
+        "legMeat": 0.24,
+        "legBone": 0.075,
+        "legSkin": 0.025,
+        "wing": 0.11,
+        "frame": 0.2
+      },
+      "loss": 0.03,
+      "variableCost": 28,
+      "deboneInputShare": 0.75,
+      "sourceStatus": "Учебная схема; нормы и ставки требуют подтверждения"
+    }
+  },
+  "products": {
+    "whole": {
+      "name": "Тушка",
+      "short": "Тушка"
+    },
+    "fillet": {
+      "name": "Филе грудки",
+      "short": "Филе"
+    },
+    "legs": {
+      "name": "Ножки",
+      "short": "Ножки"
+    },
+    "wing": {
+      "name": "Крыло",
+      "short": "Крыло"
+    },
+    "frame": {
+      "name": "Каркас",
+      "short": "Каркас"
+    },
+    "breast": {
+      "name": "Грудка на кости",
+      "short": "Грудка"
+    },
+    "legMeat": {
+      "name": "Мякоть ножки",
+      "short": "Мякоть"
+    },
+    "legBone": {
+      "name": "Кость ножки",
+      "short": "Кость"
+    },
+    "legSkin": {
+      "name": "Кожа ножки",
+      "short": "Кожа"
+    }
+  },
+  "units": {
+    "mass": "т",
+    "price": "руб/кг",
+    "money": "руб"
+  },
+  "version": "2.0"
+}

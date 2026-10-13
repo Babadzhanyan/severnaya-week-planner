@@ -1,2 +1,15 @@
 .DS_Store
 node_modules/
+dist/
+.venv/
+.vercel/
+__pycache__/
+.pytest_cache/
+*.pyc
+.env
+.env.local
+.env.*.local
+.vercel
+.env*
+dist-demo/
+!.env.example

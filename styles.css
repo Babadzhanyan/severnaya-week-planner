@@ -327,6 +327,14 @@ select { padding-right: 25px; cursor: pointer; }
   #content .capacity-block .stage-list { margin: 8px 0; }
   #content .capacity-block .stage-row { padding-top: 5px; padding-bottom: 5px; }
   #content .stage-summary .stage-list.compact { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 16px; }
+  #modal-body .capacity-source td { padding-top: 4px; padding-bottom: 4px; font-size: 13px; }
+  #modal-body .capacity-source th { padding-top: 6px; padding-bottom: 6px; }
+  #modal-body .capacity-source { line-height: 1.25; }
+  #modal-body .capacity-source small { font-size: 11px; line-height: 1.2; margin-top: 2px; }
+  #modal-body .capacity-source + .source-takeaway { margin-top: 14px; }
+  #modal-body .capacity-source + .source-takeaway p { font-size: 14px; margin-top: 6px; }
+  #modal-body .capacity-source ~ .source-note { margin-top: 9px; font-size: 12px; }
+  #modal-body:has(.capacity-source) .source-period { margin-bottom: 8px; }
 }
 
 /* Заголовок использует всю ширину телефона, действие занимает строку контекста */
@@ -339,6 +347,8 @@ select { padding-right: 25px; cursor: pointer; }
   #content .metric label { min-height: 28px; }
   #content .effect-equation { min-height: 110px; row-gap: 8px; }
   #content .effect-equation strong { line-height: 1.15; }
+  #modal-body .capacity-source td { padding-top: 4px; padding-bottom: 4px; font-size: 12px; }
+  #modal-body .capacity-source small { font-size: 11px; }
 }
 
 @media print {

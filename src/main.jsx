@@ -5,6 +5,7 @@ import App from './App.jsx';
 import '../styles.css';
 import '../components.css';
 import './runtime.css';
+import './clarity-shell.css';
 
 class ErrorBoundary extends React.Component {
  constructor(props){super(props);this.state={error:false};}

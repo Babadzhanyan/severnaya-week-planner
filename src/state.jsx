@@ -19,6 +19,7 @@ function loadState(defaults) {
     const stored = saved?.schema === 4 ? saved.state : old?.schema === 3 ? {...old.state,approved:null,confirms:confirmations()} : null;
     if (stored?.p && typeof stored.p === 'object') state = {...state,...stored,p:{...defaults,...stored.p}};
   } catch { /* Отсутствующий либо повреждённый снимок заменяется начальным примером */ }
+  state.view = 'plan';
   const hash = location.hash.slice(1);
   if (VIEWS.some(([id]) => id === hash)) state.view = hash;
   if (!VIEWS.some(([id]) => id === state.view)) state.view = 'plan';

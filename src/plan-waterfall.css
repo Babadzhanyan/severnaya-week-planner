@@ -1,0 +1,52 @@
+/* Шесть денежных ступеней сохраняют общую шкалу и место для решения. */
+.plan-screen .plan-waterfall{padding-top:8px;gap:0}
+.plan-screen .plan-waterfall figcaption,.plan-screen .plan-waterfall h3{width:100%}
+.plan-screen .plan-waterfall-open{width:100%;min-height:25px;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0;border:0;background:transparent;color:var(--data);text-align:left;font:700 16px/1.2 Georgia,serif;cursor:pointer}
+.plan-screen .plan-waterfall-link{flex:none;font:400 12px/1.2 var(--font-body,'Source Sans Pro',sans-serif);color:var(--muted)}
+.plan-screen .plan-waterfall-open:focus-visible{outline:2px solid var(--data);outline-offset:4px}
+.plan-screen .plan-waterfall-chart{min-width:0;cursor:pointer;margin-bottom:-24px}
+.plan-screen .plan-waterfall .money-bridge svg{height:244px;max-height:none;min-height:0}
+.plan-screen .plan-waterfall .money-bridge-value{font-size:19px;letter-spacing:normal}
+.plan-screen .plan-waterfall .money-bridge-name{font-size:13px;letter-spacing:normal}
+.plan-screen .plan-waterfall .money-bridge-step>line{stroke:var(--steel);stroke-width:1.4;stroke-dasharray:3 3}
+.plan-screen .plan-waterfall .money-bridge-tooltip{bottom:0;max-width:100%;font-size:14px;pointer-events:none}
+.plan-screen .plan-waterfall .plan-stock-note{margin-top:0;line-height:1.25;font-size:12px}
+@media(min-width:1101px){
+ .plan-screen .plan-workbench{grid-template-columns:208px minmax(0,1fr) 450px;gap:20px}
+ .plan-screen .plan-result{padding-left:19px}
+ .plan-screen .result-summary{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:14px}
+ .plan-screen .result-summary .result-total>strong{font-size:27px}
+ .plan-screen .result-summary .result-difference>strong{font-size:21px}
+ .plan-screen .result-summary .result-total p{font-size:11px;white-space:nowrap}
+}
+@media(min-width:1101px) and (max-height:800px){
+ .plan-screen .plan-result{gap:6px}
+ .plan-screen .plan-waterfall .money-bridge svg{height:244px}
+ .plan-screen .result-summary .result-total>strong{font-size:26px}
+ .plan-screen .result-summary .result-difference>strong{font-size:20px}
+ .plan-screen .plan-next-step{padding-top:7px;gap:4px}
+ .plan-screen .plan-next-step>p{font-size:12px;line-height:1.25}
+}
+@media(min-width:1101px) and (max-height:680px){
+ .plan-screen .plan-result{gap:3px}
+ .plan-screen .plan-waterfall{padding-top:4px}
+ .plan-screen .plan-waterfall .money-bridge svg{height:240px}
+ .plan-screen .plan-waterfall-open{font-size:15px;min-height:22px}
+ .plan-screen .result-summary .result-total>strong{font-size:25px}
+ .plan-screen .result-summary .result-difference>strong{font-size:19px}
+ .plan-screen .result-summary .result-total p{margin-top:1px}
+ .plan-screen .plan-next-step{padding-top:5px;gap:3px}
+ .plan-screen .plan-next-step>.plan-caption{font-size:11px}
+ .plan-screen .plan-waterfall .plan-stock-note{font-size:11px}
+}
+@media(max-width:1100px){
+ .plan-screen .plan-waterfall .money-bridge svg{height:220px}
+ .plan-screen .plan-waterfall .money-bridge-value{font-size:18px}
+}
+@media(max-width:600px){
+ .plan-screen .plan-result{padding-inline:10px}
+ .plan-screen .plan-waterfall .money-bridge svg{height:190px}
+ .plan-screen .plan-waterfall-open{font-size:14px}
+ .plan-screen .plan-waterfall-link{font-size:11px}
+ .plan-screen .plan-waterfall .money-bridge-name{font-size:13px}
+}

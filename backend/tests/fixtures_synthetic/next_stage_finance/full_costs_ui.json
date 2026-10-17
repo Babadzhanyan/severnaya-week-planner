@@ -1,0 +1,222 @@
+{
+  "schemaVersion": 1,
+  "method": "stage_allocation",
+  "periods": [
+    "2000-01",
+    "2000-02"
+  ],
+  "source": {
+    "file": "пример.xlsx",
+    "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "costBasis": "output_kg",
+  "costBasisLabel": "Выпуск, кг",
+  "taxBasis": null,
+  "taxBasisStatus": "Требуется подтверждение: налоговая основа",
+  "fullCostStatus": "Требуется подтверждение: состав расходов",
+  "logisticsStatus": "Распределённая ставка логистики",
+  "breakdownStatus": "Корректировка связывает детализацию с регистром",
+  "stageCatalog": [
+    {
+      "id": "cutting",
+      "name": "Разделка"
+    },
+    {
+      "id": "allocation_adjustment",
+      "name": "Корректировка"
+    }
+  ],
+  "articleCatalog": [
+    {
+      "id": "labour",
+      "name": "Труд"
+    },
+    {
+      "id": "other",
+      "name": "Прочие расходы"
+    },
+    {
+      "id": "allocation_adjustment",
+      "name": "Корректировка"
+    }
+  ],
+  "issueLabels": {
+    "raw_cost_requires_confirmation": "Требуется подтверждение: сырьё",
+    "stage_details_missing": "Требуется детализация",
+    "source_values_missing": "Требуются значения"
+  },
+  "statusLabels": {
+    "saved": "Сохранено",
+    "zero": "Сохранённый ноль",
+    "error": "Ошибка источника",
+    "requires_data": "Требуются данные"
+  },
+  "skuRows": [
+    {
+      "period": "2000-01",
+      "product_key": "Товар исходный",
+      "name": "Товар исходный",
+      "volumeKg": 2000,
+      "rawCostRubKg": 100.0,
+      "processingCostRubKg": 30.0,
+      "packingRubKg": 5.0,
+      "productionCostRubKg": 135.0,
+      "logisticsRubKg": 7.0,
+      "logisticsIncluded": false,
+      "fullCostRubKg": null,
+      "fullCostConfirmed": false,
+      "coverage": "allocated_production",
+      "status": "saved",
+      "issues": [],
+      "fieldStatus": {
+        "rawCostRubKg": "saved",
+        "processingCostRubKg": "saved",
+        "packingRubKg": "saved",
+        "productionCostRubKg": "saved",
+        "logisticsRubKg": "saved"
+      },
+      "stageBreakdown": [
+        {
+          "id": "cutting",
+          "rubKg": 33.0
+        },
+        {
+          "id": "allocation_adjustment",
+          "rubKg": -3.0
+        }
+      ],
+      "articleBreakdown": [
+        {
+          "id": "labour",
+          "rubKg": 28.0
+        },
+        {
+          "id": "other",
+          "rubKg": 5.0
+        },
+        {
+          "id": "allocation_adjustment",
+          "rubKg": -3.0
+        }
+      ],
+      "sourceRefs": {
+        "register": "Регистр!A2:O2",
+        "stages": "Переделы!A4:CD4",
+        "adjustments": "Расчёт!BU14,BU17"
+      }
+    },
+    {
+      "period": "2000-02",
+      "product_key": "Товар исходный",
+      "name": "Товар исходный",
+      "volumeKg": 2000,
+      "rawCostRubKg": 100.0,
+      "processingCostRubKg": 30.0,
+      "packingRubKg": 5.0,
+      "productionCostRubKg": 135.0,
+      "logisticsRubKg": 7.0,
+      "logisticsIncluded": false,
+      "fullCostRubKg": null,
+      "fullCostConfirmed": false,
+      "coverage": "allocated_production",
+      "status": "saved",
+      "issues": [],
+      "fieldStatus": {
+        "rawCostRubKg": "saved",
+        "processingCostRubKg": "saved",
+        "packingRubKg": "saved",
+        "productionCostRubKg": "saved",
+        "logisticsRubKg": "saved"
+      },
+      "stageBreakdown": [
+        {
+          "id": "cutting",
+          "rubKg": 33.0
+        },
+        {
+          "id": "allocation_adjustment",
+          "rubKg": -3.0
+        }
+      ],
+      "articleBreakdown": [
+        {
+          "id": "labour",
+          "rubKg": 28.0
+        },
+        {
+          "id": "other",
+          "rubKg": 5.0
+        },
+        {
+          "id": "allocation_adjustment",
+          "rubKg": -3.0
+        }
+      ],
+      "sourceRefs": {
+        "register": "Регистр!A2:O2",
+        "stages": "Переделы!A4:CD4",
+        "adjustments": "Расчёт!BU14,BU17"
+      }
+    },
+    {
+      "period": "2000-02",
+      "product_key": "Товар Б",
+      "name": "Товар Б",
+      "volumeKg": 2000,
+      "rawCostRubKg": 0.0,
+      "processingCostRubKg": 30.0,
+      "packingRubKg": 5.0,
+      "productionCostRubKg": 35.0,
+      "logisticsRubKg": 7.0,
+      "logisticsIncluded": false,
+      "fullCostRubKg": null,
+      "fullCostConfirmed": false,
+      "coverage": "partial",
+      "status": "requires_data",
+      "issues": [
+        "raw_cost_requires_confirmation"
+      ],
+      "fieldStatus": {
+        "rawCostRubKg": "zero",
+        "processingCostRubKg": "saved",
+        "packingRubKg": "saved",
+        "productionCostRubKg": "saved",
+        "logisticsRubKg": "saved"
+      },
+      "stageBreakdown": [
+        {
+          "id": "cutting",
+          "rubKg": 33.0
+        },
+        {
+          "id": "allocation_adjustment",
+          "rubKg": -3.0
+        }
+      ],
+      "articleBreakdown": [
+        {
+          "id": "labour",
+          "rubKg": 28.0
+        },
+        {
+          "id": "other",
+          "rubKg": 5.0
+        },
+        {
+          "id": "allocation_adjustment",
+          "rubKg": -3.0
+        }
+      ],
+      "sourceRefs": {
+        "register": "Регистр!A2:O2",
+        "stages": "Переделы!A4:CD4",
+        "adjustments": "Расчёт!BU14,BU17"
+      }
+    }
+  ],
+  "quality": {
+    "rowCount": 3,
+    "partialRowCount": 1
+  },
+  "internal_audit": "Служебное содержимое"
+}

@@ -1,0 +1,95 @@
+/* Экран «Ввод заказов»: палитра и размеры из дизайн-системы планировщика (разделы 3 и 4). Токены заданы только внутри экрана.
+   Тени, градиенты, анимации и рамки по периметру блоков не используются.
+   Высота: от ширины 1200 px экран занимает основную область. Основная область = высота окна минус шапка 54, полоса вкладок 48 и подвал 26 px (clarity-shell.css, правило min-width 1100 px). Таблица строк прокручивается внутри себя, итоги стоят внизу. */
+.orders-screen{--c-data:#003C72;--c-secondary:#6E8CA8;--c-tint:#E6EEF5;--c-selected:#FFF3D1;--c-risk:#C0392B;--c-ok:#2E8B57;--c-text:#1A1A1A;--c-muted:#52677D;--c-line:#D9E2EA;--c-bg:#FFFFFF;
+  box-sizing:border-box;display:flex;flex-direction:column;gap:12px;min-width:0;padding:12px 24px;background:var(--c-bg);color:var(--c-text);font-family:'Source Sans Pro','Source Sans 3',Arial,sans-serif;font-size:14px;line-height:1.4}
+@media (min-width:1200px){.orders-screen{height:calc(100dvh - 128px)}}
+.orders-screen h2,.orders-screen h3,.orders-screen h4,.orders-screen p{margin:0}
+.orders-screen :focus-visible{outline:2px solid var(--c-data);outline-offset:2px}
+.orders-screen .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.orders-screen>*{flex:0 0 auto}
+
+/* Шапка: заголовок-вывод, неделя и статус сохранения в одну строку высотой 40 px. */
+.orders-head{display:flex;align-items:center;justify-content:space-between;gap:24px;height:40px;min-width:0}
+.orders-head-main{display:flex;align-items:baseline;gap:16px;min-width:0}
+.orders-title{font:700 20px/1.25 Georgia,'Times New Roman',serif;color:var(--c-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.orders-head .orders-sub{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.orders-status{font-size:14px;white-space:nowrap}
+.orders-sub{font-size:13px;color:var(--c-muted)}
+.orders-hint{font-size:12px;color:var(--c-muted)}
+.orders-notice{font-size:14px}
+.orders-error,.orders-errors{font-size:14px;color:var(--c-risk)}
+.orders-errors ul,.orders-line-errors{margin:4px 0 0;padding-left:20px}
+.orders-empty{font-size:14px;color:var(--c-muted)}
+.tone-ok .sym{color:var(--c-ok)}
+.tone-risk .sym{color:var(--c-risk)}
+.tone-none .sym{color:var(--c-muted)}
+
+/* Блоки: заголовок блока и содержимое, между блоками 12 px. Линия сверху только у итогов. */
+.orders-block{display:flex;flex-direction:column;gap:8px;min-width:0}
+.orders-block-head{display:flex;flex-wrap:nowrap;align-items:baseline;gap:16px;min-width:0}
+.orders-block-title{font:700 18px/1.3 Georgia,'Times New Roman',serif;white-space:nowrap}
+.orders-block-head .orders-hint{margin-left:auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.orders-totals-title{margin-bottom:6px;font-size:14px;font-weight:600}
+
+/* Форма: одна строка полей высотой 48 px (подпись 12 px, поле 32 px) и кнопка справа. */
+.orders-form-grid{display:grid;grid-template-columns:minmax(76px,.8fr) minmax(120px,1.4fr) minmax(96px,1fr) minmax(76px,.9fr) minmax(76px,.9fr) minmax(68px,.8fr) minmax(84px,.9fr) minmax(120px,1.2fr) minmax(76px,.8fr) minmax(110px,1.6fr) auto;align-items:end;gap:0 8px}
+.orders-form-actions{display:flex;flex-wrap:nowrap;align-items:flex-end;gap:8px;height:48px}
+.orders-field{display:flex;flex-direction:column;gap:4px;min-width:0;color:var(--c-muted)}
+.orders-field>span{display:block;height:12px;font-size:12px;line-height:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.orders-field input,.orders-field select,.orders-field textarea{box-sizing:border-box;width:100%;min-width:0;height:32px;padding:0 8px;border:1px solid var(--c-line);border-radius:2px;background:var(--c-bg);color:var(--c-text);font:inherit;font-size:14px}
+.orders-field textarea{height:auto;min-height:96px;padding:6px 8px;resize:vertical}
+.orders-field input:disabled{background:var(--c-tint);color:var(--c-muted)}
+
+/* Кнопки: основная одна на блок, вторичная с рамкой, текстовая без подчеркивания. */
+.orders-buttons{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.orders-screen button,.orders-file-button{font:inherit;font-size:14px;line-height:1;height:36px;padding:0 16px;border-radius:2px;white-space:nowrap;cursor:pointer}
+.orders-screen button.primary{border:0;background:var(--c-data);color:var(--c-bg);font-weight:600}
+.orders-screen button.secondary,.orders-file-button{display:inline-flex;align-items:center;border:1px solid var(--c-line);background:var(--c-bg);color:var(--c-text)}
+.orders-screen button.secondary:hover,.orders-file-button:hover{border-color:var(--c-data)}
+.orders-screen button.danger{border:1px solid var(--c-risk);background:var(--c-bg);color:var(--c-risk)}
+.orders-screen button.text{height:auto;padding:6px 4px;border:0;background:none;color:var(--c-data)}
+.orders-screen button:disabled{border:0;background:var(--c-tint);color:var(--c-muted);cursor:not-allowed}
+.orders-file-button{position:relative}
+.orders-toggles{display:flex;flex-wrap:nowrap;align-items:baseline;gap:16px;margin-left:auto}
+
+/* Таблица строк: блок занимает остаток высоты, таблица прокручивается внутри себя, заголовок столбцов закреплен. */
+.orders-table-block{flex:1 1 auto;min-height:0}
+.orders-table-wrap{flex:1 1 auto;min-height:96px;min-width:0;overflow:auto}
+.orders-table{width:100%;border-collapse:collapse;font-size:14px}
+.orders-table th{position:sticky;top:0;z-index:1;padding:6px 8px;border-bottom:1px solid var(--c-line);background:var(--c-bg);font-size:12px;font-weight:400;color:var(--c-muted);text-align:left;white-space:nowrap}
+.orders-table td{padding:6px 8px;border-bottom:1px solid var(--c-line);vertical-align:middle}
+.orders-table td:first-child{white-space:nowrap}
+.orders-table .num{font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+.orders-table tr.is-selected td{background:var(--c-selected)}
+.orders-actions{white-space:nowrap}
+.orders-actions .text+.text,.orders-actions .text+.danger,.orders-actions .danger+.text{margin-left:8px}
+.orders-move td{padding:0 8px 12px;background:var(--c-bg)}
+.orders-move-panel{display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px 16px;padding-top:8px}
+.orders-move-panel .orders-field{width:200px}
+.orders-move-panel .orders-error{flex-basis:100%}
+
+/* Раскрывающиеся панели импорта и файла недели: по умолчанию закрыты, при открытии прокручиваются внутри себя. */
+.orders-panel{display:flex;flex-direction:column;gap:8px;flex:0 1 auto;min-height:120px;max-height:50%;overflow:auto;padding-bottom:8px;border-bottom:1px solid var(--c-line)}
+.orders-preview{display:flex;flex-direction:column;gap:8px;min-width:0}
+
+/* Итоги: полоса внизу экрана в одну строку, разбивка раскрывается кнопкой. */
+.orders-totals{flex:0 0 auto;display:flex;flex-direction:column;gap:8px;padding-top:8px;border-top:1px solid var(--c-line)}
+.orders-totals-row{flex:0 0 auto;display:flex;flex-wrap:nowrap;align-items:center;gap:24px;min-width:0;min-height:28px}
+.orders-totals-row>button{margin-left:auto}
+.orders-summary{display:flex;flex-wrap:nowrap;align-items:baseline;gap:24px;margin:0;min-width:0}
+.orders-summary>div{display:flex;align-items:baseline;gap:8px;white-space:nowrap}
+.orders-summary dt{font-size:12px;color:var(--c-muted)}
+.orders-summary dd{margin:0;font:700 16px/1.2 Georgia,'Times New Roman',serif;font-variant-numeric:tabular-nums}
+.orders-totals-detail{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));align-items:start;gap:16px;flex:0 0 auto;max-height:160px;overflow:auto}
+
+/* Узкие окна (до 1200 px): страница прокручивается целиком, высота экрана не фиксируется. */
+@media (max-width:1199px){
+  .orders-form-grid{grid-template-columns:repeat(auto-fill,minmax(168px,1fr));row-gap:12px}
+  .orders-form-actions{grid-column:1/-1;height:auto}
+  .orders-table-wrap{max-height:360px}
+}
+@media (max-width:768px){
+  .orders-screen{padding:12px 16px}
+  .orders-title{font-size:18px}
+}

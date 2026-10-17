@@ -1,99 +1,255 @@
-.plan-screen{height:100%;min-height:0;display:flex;flex-direction:column;gap:22px}
-.plan-title{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-shrink:0}.plan-title h1{font-size:28px;line-height:1.15;margin-top:4px}.plan-title .secondary{flex-shrink:0}
-.plan-workbench{display:grid;grid-template-columns:208px minmax(0,1fr) 360px;gap:25px;min-height:0;flex:1}.plan-inputs,.plan-production,.plan-result{min-width:0;min-height:0;display:flex;flex-direction:column;gap:12px}.plan-inputs{border-right:1px solid var(--line);padding-right:24px}.plan-result{border-left:1px solid var(--line);padding-left:24px}
-.plan-section-title{display:flex;align-items:center;gap:9px;margin-bottom:2px}.plan-section-title>span{font-size:13px;font-weight:600;color:var(--blue);display:grid;place-items:center;width:24px;height:24px;flex:0 0 24px;border:1px solid #b9c6d2;border-radius:50%}.plan-section-title h2{font-size:18px}
-.input-facts,.result-calculation{margin:0;display:grid;gap:9px}.input-facts>div,.result-calculation>div{display:flex;justify-content:space-between;gap:8px;align-items:baseline}.input-facts dt,.result-calculation dt{font-size:14px;color:var(--muted)}.input-facts dd,.result-calculation dd{margin:0;font-size:16px;font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums}.input-facts small{font-size:13px;font-weight:400;color:var(--muted)}
-.plan-caption{font-size:12px;color:var(--muted);line-height:1.3}.plan-inputs>.text-button{align-self:flex-start;font-size:13px;padding:0}.plan-choice{border-top:1px solid var(--line);padding-top:17px;display:flex;flex-direction:column;gap:13px;margin-top:1px}.plan-choice h3{font-size:16px}.plan-choice .lever-field{gap:5px}.plan-choice .lever-field label{font-size:14px}.plan-choice select{font-size:14px;width:100%;padding:9px}.cut-control .field-row input{font-size:20px;height:39px;font-weight:600;color:var(--blue)}.cut-control input[type=range]{display:block;accent-color:var(--blue);width:100%;margin:9px 0 0;cursor:pointer}.range-ends{display:flex;justify-content:space-between;font-size:11px;color:var(--muted)}.cut-remainder{font-size:14px}.cut-remainder strong{display:block;color:var(--blue);font-size:20px}.plan-choice .text-button,.plan-data-link .text-button{font-size:13px;padding:0}.plan-data-link{margin-top:auto;padding-top:8px}
-.plan-split{display:flex;flex-direction:column;gap:8px}.split-labels{display:flex;justify-content:space-between;gap:12px;font-size:14px}.split-labels strong{display:block;font-size:22px;font-weight:600;color:var(--blue)}.split-labels>span:last-child{text-align:right}.split-track{height:10px;display:flex;width:100%;background:#e5e7eb}.split-track>span{background:#aebdca}.split-track>b{background:var(--blue)}
-.basket-table-wrap{min-height:0;flex-shrink:0}.basket-table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}.basket-table caption{text-align:left;font-size:14px;font-weight:600;padding:5px 0 9px}.basket-table caption span{float:right;font-size:12px;color:var(--muted);font-weight:400}.basket-table th{font-weight:400;color:var(--muted);border-bottom:1px solid #bcc8d2;font-size:12px;padding:5px 4px;text-align:right;white-space:nowrap}.basket-table th:first-child{text-align:left}.basket-table td{padding:7px 4px;border-bottom:1px solid var(--line);font-size:14px;text-align:right}.basket-table td:first-child{text-align:left}.basket-table td:nth-child(5){font-weight:600}.product-row-link{padding:0;background:transparent;border:0;color:var(--blue);font-size:14px;white-space:nowrap;display:flex;align-items:center;gap:6px}.product-row-link span{font-size:11px;opacity:.8}.mass-proof{font-size:12px;color:var(--muted)}
-.quick-comparison{margin-top:auto}.quick-comparison .section-inline,.plan-capacity .section-inline{margin-bottom:9px;gap:8px}.quick-comparison h3,.plan-capacity h3{font-size:15px}.quick-comparison .text-button,.plan-capacity .text-button{font-size:12px;padding:0}.quick-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.quick-option{border:1px solid #d8dfe4;border-top:3px solid #c8d1d8;background:white;padding:9px 9px 8px;display:flex;flex-direction:column;gap:3px;font-size:12px;line-height:1.25}.quick-option.selected{border-color:var(--blue);border-top-color:var(--blue);background:#f4f5f6}.quick-option strong{font-size:21px;color:var(--blue);white-space:nowrap}.quick-option .option-name{font-weight:600;color:var(--fg)}.option-name>span{display:block;min-height:14px;font-size:11px;font-weight:400;color:var(--muted)}.quick-option>span:not(.option-name){color:var(--muted);font-size:11px}.quick-option .negative{color:var(--bad)!important}.quick-option .option-status{color:var(--blue)!important}.quick-option:disabled{opacity:.6}.compact-stages{display:flex;gap:17px}.compact-stage{flex:1;min-width:0;display:grid;grid-template-columns:1fr auto;gap:4px;font-size:12px}.compact-stage b{font-weight:600}.compact-stage>div{grid-column:1/-1;height:4px;background:#edeff0}.compact-stage i{display:block;height:100%;background:var(--blue)}.plan-capacity{margin-top:3px}
-.result-total>span{font-size:13px;color:var(--muted)}.result-total>strong{display:block;color:var(--blue);font-size:37px;font-weight:600;line-height:1.25;white-space:nowrap}.result-total small{font-size:25px}.result-total p{font-size:12px;color:var(--muted)}.result-calculation{gap:6px;padding:6px 0}.result-calculation dt{font-size:13px}.result-calculation dd{font-size:14px}.result-difference{display:flex;flex-direction:column;gap:4px;border-top:1px solid var(--line);padding-top:12px}.result-difference>strong{font-size:26px;line-height:1.2;color:var(--blue)}.result-difference>strong.negative{color:var(--bad)}.result-difference>span{font-size:12px;color:var(--muted)}.result-difference .text-button{padding:0;margin-top:2px;align-self:flex-start;font-size:12px}.plan-next-step{border-top:1px solid var(--line);padding-top:12px;display:flex;flex-direction:column;gap:7px}.plan-next-step>.status{font-size:13px}.plan-next-step>p{font-size:14px;line-height:1.35}.plan-next-step>p.plan-caption{font-size:12px}.order-proof{font-size:13px}.plan-next-step .text-button{font-size:12px;padding:0;align-self:flex-start}.plan-result>.primary{margin-top:auto;font-size:14px;text-align:center;padding:12px 8px;width:100%}
-@media(min-width:1500px){.plan-workbench{grid-template-columns:240px minmax(0,1fr) 390px;gap:32px}.basket-table td{padding:11px 5px;font-size:16px}.product-row-link{font-size:16px}.basket-table th{font-size:14px}.quick-option{padding:13px}.quick-option strong{font-size:26px}.plan-production{gap:17px}.plan-title h1{font-size:32px}.plan-inputs,.plan-result{gap:18px}.result-total>strong{font-size:44px}}
-@media(max-height:800px) and (min-width:1001px){.plan-screen{gap:16px}.plan-workbench{gap:20px;grid-template-columns:215px minmax(0,1fr) 240px}.plan-inputs{padding-right:19px}.plan-result{padding-left:19px}.plan-title h1{font-size:26px}.plan-inputs,.plan-production,.plan-result{gap:9px}.plan-choice{gap:9px;padding-top:12px}.plan-section-title h2{font-size:17px}.input-facts{gap:7px}.basket-table td{padding:5px 4px}.quick-option{padding:6px}.quick-option strong{font-size:20px}.plan-next-step{gap:5px;padding-top:8px}.result-difference{padding-top:8px}.result-total>strong{font-size:32px}.cut-remainder strong{display:inline}.plan-data-link{padding-top:2px}.plan-caption{font-size:11px}.plan-title .secondary{font-size:13px}}
-@media(max-width:1100px) and (min-width:901px){.plan-workbench{grid-template-columns:190px minmax(0,1fr) 218px;gap:16px}.plan-inputs{padding-right:15px}.plan-result{padding-left:15px}.plan-section-title h2{font-size:15px}.input-facts dt{font-size:12px}.input-facts dd{font-size:14px}.product-row-link{font-size:12px}.basket-table td{font-size:13px}.basket-table th{font-size:11px}.result-total>strong{font-size:28px}.plan-title h1{font-size:23px}}
-@media(max-width:900px),(max-height:620px){.plan-screen{height:auto;min-height:100%}.plan-workbench{grid-template-columns:220px minmax(0,1fr);gap:20px}.plan-result{grid-column:1/-1;border:1px solid var(--line);padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:16px}.plan-result>.plan-section-title{grid-column:1/-1}.plan-result>.primary{align-self:end}.quick-comparison{margin-top:16px}.plan-title h1{font-size:23px}.plan-data-link{margin-top:12px}.plan-production{gap:15px}.basket-table-wrap{overflow:auto}.plan-title .secondary{font-size:12px}.plan-next-step{grid-column:2;grid-row:2/5}}
-@media(max-width:600px){.plan-title{align-items:flex-start;gap:12px}.plan-title h1{font-size:22px}.plan-title .secondary{max-width:90px;padding:7px;line-height:1.2}.plan-workbench{display:flex;flex-direction:column;gap:22px}.plan-inputs{border:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:12px}.plan-inputs>.plan-section-title{grid-column:1/-1}.input-facts{grid-column:1/-1;grid-template-columns:1fr 1fr;gap:8px 18px}.input-facts>div{display:block}.input-facts dt{font-size:12px}.input-facts dd{font-size:18px}.plan-choice{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:12px}.plan-choice>h3{grid-column:1/-1}.plan-choice>.lever-field{grid-column:1/-1}.cut-control{grid-row:3/5}.cut-remainder{align-self:center}.cut-remainder strong{display:block}.plan-choice>.text-button{grid-column:2}.plan-data-link{display:none}.plan-inputs>.text-button{text-align:right;justify-self:end}.plan-result{display:flex;padding:18px}.result-total>strong{font-size:40px}.result-calculation{gap:9px}.basket-table caption{font-size:13px}.basket-table caption span{float:none;display:block}.basket-table td{font-size:12px;padding:7px 3px}.basket-table th{font-size:11px;padding:5px 3px}.product-row-link{font-size:12px;white-space:normal}.product-row-link>span{display:none}.quick-options{gap:6px}.quick-option strong{font-size:19px}.quick-option{padding:7px 5px}.compact-stages{gap:10px;flex-wrap:wrap}.compact-stage{flex-basis:40%}.plan-section-title h2{font-size:18px}}
+/* Экран плана: зоны по разделу 5 дизайн-системы «Северная».
+   Шапка оболочки (бренд, разделы, неделя, сценарий) 0–48 px на 1280×650 и 0–56 px на 1366×768.
+   Зоны экрана сверху вниз: заголовок-вывод, путь сырья, основная область (условия, стакан, мост), результат, подвал.
+   Высоты задают переменные на #app: сетка 650 при высоте окна до 699 px, сетка 768 от 700 px.
+   Цвета и шрифты только из токенов --c-* и --fs-* (components.css). Основная область не прокручивается.
+   Ниже 1200 px по ширине экран переходит в один столбец, страница прокручивается, наложений нет. */
 
-/* Короткие ссылки и плотные строки сохраняют обзор на экране ноутбука */
-.plan-screen .text-button{min-height:22px;height:auto;line-height:1.25}
-.plan-screen .input-facts>div,.plan-screen .result-calculation>div{line-height:1.2}
-.plan-screen .input-facts dt,.plan-screen .input-facts dd,.plan-screen .result-calculation dt,.plan-screen .result-calculation dd{line-height:1.25}
-.plan-screen .split-labels{line-height:1.2}.plan-screen .split-labels strong{display:inline;margin-left:7px;font-size:21px;line-height:1.2}
-.plan-screen .product-row-link{min-height:0;height:auto;line-height:1.3}
-.plan-screen .plan-title .secondary{min-height:36px}
-@media(min-width:901px) and (max-height:800px){
- .plan-screen .plan-workbench{grid-template-columns:215px minmax(0,1fr) 260px}
- .plan-screen .input-facts{gap:9px}.plan-screen .input-facts>div{font-size:14px}
- .plan-screen .plan-choice{gap:9px}.plan-screen .cut-control .field-row input{min-height:36px;height:36px}.plan-screen .cut-control input[type=range]{min-height:17px;height:17px;margin-top:7px}.plan-screen .cut-remainder{font-size:13px;line-height:1.3}.plan-screen .cut-remainder strong{font-size:18px}
- .plan-screen .basket-table th{padding:4px}.plan-screen .basket-table td{padding:5px 4px;line-height:1.2}.plan-screen .basket-table caption{padding:4px 0 5px}.plan-screen .basket-table{font-size:14px}
- .plan-screen .quick-options .quick-option{gap:2px;padding:6px 7px}.plan-screen .quick-option>span{line-height:1.2}.plan-screen .option-name>span{min-height:13px}.plan-screen .quick-comparison .section-inline{margin-bottom:6px}.plan-screen .quick-comparison{margin-top:auto}
- .plan-screen .result-total{line-height:1.2}.plan-screen .result-total>strong{font-size:32px;line-height:1.2}.plan-screen .result-total>span{font-size:12px}.plan-screen .result-total>p{font-size:11px;line-height:1.2}
- .plan-screen .result-calculation{padding:3px 0;gap:5px}.plan-screen .result-difference{gap:3px}.plan-screen .result-difference>span{line-height:1.25}.plan-screen .plan-next-step>p{line-height:1.25;font-size:13px}.plan-screen .plan-next-step>p.plan-caption{font-size:12px}.plan-screen .plan-result>.primary{min-height:40px;height:40px;padding:9px 4px;font-size:13px}.plan-screen .plan-capacity .section-inline{margin-bottom:6px}
+#app.clarity-app:has(#content[data-view="plan"]){
+  --plan-head:48px; --plan-headline:40px; --plan-track-gap:8px; --plan-track:104px; --plan-main-gap:8px; --plan-main:344px;
+  --plan-result-gap:8px; --plan-result:44px; --plan-foot-gap:8px; --plan-foot:38px;
+  --plan-side:232px; --plan-row:38px; --plan-btn:36px; --plan-node:60px; --plan-icon:56px; --plan-field:32px;
+}
+@media (min-height:700px){
+  #app.clarity-app:has(#content[data-view="plan"]){
+    --plan-head:56px; --plan-headline:44px; --plan-track-gap:16px; --plan-track:112px; --plan-main-gap:16px; --plan-main:420px;
+    --plan-result-gap:16px; --plan-result:44px; --plan-foot-gap:8px; --plan-foot:36px;
+    --plan-side:248px; --plan-row:44px; --plan-btn:40px; --plan-node:64px; --plan-icon:64px;
+  }
 }
 
-.plan-screen .plan-capacity{padding-top:5px}.plan-screen .quick-option .option-name{min-height:16px}.plan-screen .basket-table-wrap{padding-top:4px}
+/* Оболочка: шапка и зона экрана занимают высоту окна; нижняя строка оболочки скрыта */
+#app.clarity-app:has(#content[data-view="plan"]) .shell{grid-template-rows:var(--plan-head) minmax(0,1fr)}
+#app.clarity-app:has(#content[data-view="plan"]) .bottomline{display:none}
+#app.clarity-app:has(#content[data-view="plan"]) #content{display:block; padding:0 24px; overflow:hidden}
 
-@media(min-width:901px) and (max-height:800px){.plan-screen .plan-production{gap:6px}.plan-screen .basket-table td{padding:4px}.plan-screen .quick-option{line-height:1.2}}
+/* Шапка плана: бренд слева, разделы по центру, неделя и сценарий справа */
+#app.clarity-app:has(#content[data-view="plan"]) .topbar{height:var(--plan-head); padding:0 24px; gap:24px; min-width:0}
+#app.clarity-app:has(#content[data-view="plan"]) .clarity-brand{flex:none; gap:12px; white-space:nowrap}
+#app.clarity-app:has(#content[data-view="plan"]) .clarity-brand strong{font-size:var(--fs-h3)}
+#app.clarity-app:has(#content[data-view="plan"]) .clarity-brand span{font-size:var(--fs-body)}
+#app.clarity-app:has(#content[data-view="plan"]) .work-navigation{flex:1 1 auto; min-width:0; height:100%; display:flex; align-items:stretch; justify-content:center; gap:4px; padding:0; border:0; overflow:hidden}
+#app.clarity-app:has(#content[data-view="plan"]) .work-navigation .nav-button{flex:0 0 auto; width:auto; height:100%; min-height:0; padding:0 12px; border:0; border-bottom:2px solid transparent; border-radius:0; background:transparent; color:var(--c-muted); font-size:var(--fs-body); font-weight:400; line-height:1.2; white-space:nowrap; gap:0}
+#app.clarity-app:has(#content[data-view="plan"]) .work-navigation .nav-button.active{border-bottom-color:var(--c-data); background:transparent; color:var(--c-data); font-weight:600}
+#app.clarity-app:has(#content[data-view="plan"]) .work-navigation .nav-number,
+#app.clarity-app:has(#content[data-view="plan"]) .work-navigation .nav-chip{display:none}
+#app.clarity-app:has(#content[data-view="plan"]) .work-navigation .nav-help{flex:0 0 auto; height:100%; padding:0 12px; border:0; background:transparent; color:var(--c-data); font-size:var(--fs-h3); font-weight:600}
+#app.clarity-app:has(#content[data-view="plan"]) .top-actions{flex:none; gap:8px}
+/* Статус пересчета: справа в строке заголовка-вывода, чтобы не сжимать разделы в шапке (1200 px и шире) */
+#app.clarity-app:has(#content[data-view="plan"]) .sync-status{position:absolute; right:24px; top:calc(var(--plan-head) + 12px); font-size:var(--fs-caption); color:var(--c-muted)}
+.plan-field{display:inline-flex; align-items:center; gap:8px; height:var(--plan-field); padding:0 12px; border:1px solid var(--c-line); font-size:var(--fs-body); white-space:nowrap}
+.plan-field>span{font-size:var(--fs-caption); color:var(--c-muted)}
+.plan-field>b{font-weight:600; white-space:nowrap}
 
-/* Единые оси трёх колонок связывают условия, расчёт и решение */
-.plan-screen{gap:18px}.plan-title h1{font-size:28px;line-height:1.15;letter-spacing:normal}
-.plan-section-title{padding-bottom:10px;border-bottom:1px solid #bac7d1;margin-bottom:3px;min-height:36px;flex-shrink:0}
-.plan-section-title h2{font-size:17px}.plan-section-title>span{border:0;border-radius:0;width:17px;flex-basis:17px;font-size:14px;color:var(--muted)}
-.plan-inputs,.plan-production,.plan-result{gap:12px}
-.plan-choice{gap:12px;padding-top:14px}.plan-screen .split-labels strong{font-family:var(--font-head);font-weight:700;font-size:20px}
-.plan-screen .quick-option strong{font-size:21px;letter-spacing:normal}.quick-option .option-name{font-size:12px}
-.plan-screen .quick-comparison h3{font-size:15px}.plan-screen .quick-option.selected{background:#fff;border-color:var(--blue);border-top-width:3px}
-.plan-screen .result-total>strong{font-size:32px;line-height:1.2;letter-spacing:normal}.result-total small{font-size:17px;letter-spacing:0}
-.plan-screen .result-difference>strong{font-size:25px;letter-spacing:normal}
-.calculation-unit{font-size:11px;color:var(--muted);margin:2px 0 -8px}
-.plan-screen .result-calculation{padding:0;gap:6px}.plan-screen .result-calculation dd{font-weight:600}
-.plan-screen .plan-next-step{gap:6px}.plan-screen .plan-result>.primary{min-height:40px;font-size:13px}
-@media(min-width:901px) and (max-height:800px){
- .plan-screen{gap:14px}.plan-title h1{font-size:25px}
- .plan-screen .plan-workbench{grid-template-columns:208px minmax(0,1fr) 360px;gap:20px}
- .plan-screen .plan-inputs,.plan-screen .plan-production,.plan-screen .plan-result{gap:8px}
- .plan-section-title{padding-bottom:8px;min-height:32px;margin:0}.plan-section-title h2{font-size:16px}
- .plan-screen .quick-option strong{font-size:19px}.plan-screen .quick-option{padding:7px}
- .plan-screen .result-total>strong{font-size:30px}.plan-screen .result-difference>strong{font-size:24px}
- .plan-screen .plan-choice{gap:10px;padding-top:12px}.plan-screen .basket-table-wrap{padding-top:0}
- .plan-screen .basket-table td{padding:4px}.plan-screen .quick-comparison .section-inline{margin-bottom:7px}
- .plan-screen .plan-capacity{padding-top:3px}.plan-screen .result-difference{gap:4px}
+/* Экран: пять зон по высоте без прокрутки; отступ сверху задает сетка 650 (8 px) или 768 (16 px) */
+.plan-screen{height:100%; min-height:0; display:flex; flex-direction:column; overflow:hidden; font-family:var(--f-ui); font-size:var(--fs-body); line-height:1.4; color:var(--c-text); background:var(--c-bg)}
+.plan-screen>*{flex:none; min-width:0}
+.plan-screen :focus-visible{outline:2px solid var(--c-data); outline-offset:2px}
+
+/* Заголовок-вывод: Georgia Bold 28 px одной строкой; зона 40 или 44 px */
+.plan-headline{height:var(--plan-headline); display:flex; align-items:center}
+.plan-headline h1{margin:0; font-family:var(--f-head); font-weight:700; font-size:var(--fs-title); line-height:1.25; color:var(--c-text); white-space:nowrap; min-width:0; overflow:hidden; text-overflow:ellipsis}
+/* Уведомление: полоска в этой же строке (класс vs-notice с экрана вариантов), справа от заголовка и слева от статуса пересчета (правый край 180 px).
+   Всплывающая строка #toast на экране плана скрыта: в нижней части она перекрывала панель действий. Высота строки не меняется, поэтому сетка зон не сдвигается. */
+body:has(.plan-screen) #toast{display:none}
+.plan-headline .plan-notice{display:block; flex:0 1 auto; min-width:0; max-width:560px; margin:0 180px 0 auto; overflow:hidden; white-space:nowrap; text-overflow:ellipsis}
+
+/* Заголовки блоков: Georgia Bold 20 px */
+.plan-section-title{display:flex; align-items:center; gap:8px; min-height:24px; margin:0; min-width:0}
+.plan-section-title h2{margin:0; font-family:var(--f-head); font-weight:700; font-size:var(--fs-h3); line-height:1.2; color:var(--c-text); white-space:nowrap; min-width:0; overflow:hidden; text-overflow:ellipsis}
+.plan-section-title .text-button{margin-left:auto; font-size:var(--fs-body); padding:0; white-space:nowrap}
+
+/* Путь сырья: заголовок блока и шесть узлов; зона 104 или 112 px */
+.plan-track{height:var(--plan-track); margin-top:var(--plan-track-gap); display:flex; flex-direction:column; gap:8px; min-width:0}
+.plan-track-nodes{height:var(--plan-node); margin:0; padding:0; list-style:none; display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:12px}
+.plan-node{position:relative; min-width:0; display:flex; align-items:center; gap:12px; font-size:var(--fs-body); line-height:1.2}
+.plan-node:not(:last-child)::after{content:''; position:absolute; top:calc(var(--plan-node) / 2); left:100%; width:12px; height:1px; background:var(--c-secondary)}
+.plan-node.is-selected{background:var(--c-selected)}
+.plan-node .chain-icon{flex:0 0 var(--plan-icon); width:var(--plan-icon); height:var(--plan-icon); color:var(--c-muted)}
+.plan-node.is-selected .chain-icon{color:var(--c-data)}
+.plan-node-text{min-width:0; height:100%; display:flex; flex-direction:column; justify-content:space-between; align-items:flex-start}
+.plan-node-name{max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-weight:600}
+.plan-node-value{font-family:var(--f-head); font-weight:700; font-size:var(--fs-h3); line-height:1.2; white-space:nowrap}
+.plan-node-value small{font-family:var(--f-ui); font-weight:400; font-size:var(--fs-body)}
+
+/* Основная область: условия, стакан и мост в три колонки 232/720/232 (650) или 248/774/248 (768) */
+.plan-main{position:relative; height:var(--plan-main); margin-top:var(--plan-main-gap); min-height:0; display:grid; grid-template-columns:var(--plan-side) minmax(0,1fr) var(--plan-side); grid-template-rows:minmax(0,1fr); column-gap:24px}
+.plan-inputs,.plan-steps,.plan-money-slot,.plan-blocked{min-width:0; min-height:0; display:flex; flex-direction:column; gap:6px; overflow:hidden}
+.plan-inputs{gap:4px; overflow:visible; position:relative; z-index:6}
+.plan-inputs>*,.plan-steps>*:not(.price-step-chart),.plan-blocked>*{flex:none}
+
+/* Условия: строки по высоте зоны (38 или 44 px), подпись слева и значение справа */
+.plan-facts{margin:0; display:flex; flex-direction:column; gap:0}
+.plan-facts>div{display:flex; align-items:center; justify-content:space-between; gap:8px; height:var(--plan-row); box-sizing:border-box; border-bottom:1px solid var(--c-line)}
+.plan-facts dt{color:var(--c-muted); font-size:var(--fs-body)}
+.plan-facts dd{margin:0; font-weight:600; text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums}
+.plan-facts .plan-missing{font-size:var(--fs-caption); font-weight:400; color:var(--c-muted); white-space:normal; max-width:150px; line-height:1.2}
+.plan-actions{display:flex; flex-wrap:wrap; gap:4px 12px}
+.plan-actions .text-button{min-height:0; height:auto; padding:0; line-height:1.2}
+.plan-choice{display:flex; flex-direction:column; gap:2px; padding-top:10px}
+.plan-choice .lever-field{display:flex; flex-direction:column; gap:2px; position:relative}
+.plan-choice .lever-field label{font-size:var(--fs-caption); line-height:14px; color:var(--c-muted)}
+.plan-screen .plan-inputs .plan-choice select,.plan-screen .plan-inputs .plan-choice .lever-field input[inputmode="decimal"]{height:var(--plan-field); min-height:0}
+.plan-screen .plan-inputs .plan-section-title{padding-bottom:4px; min-height:0}
+.plan-screen .plan-inputs .plan-section-title h2{white-space:normal; overflow:visible; text-overflow:clip; line-height:1.2}
+.plan-screen .plan-inputs .field-note-alert{position:absolute; left:0; right:0; bottom:100%; margin-bottom:4px; z-index:7; background:var(--c-bg); border:1px solid var(--c-risk); border-radius:3px; padding:6px 8px}
+
+/* Стакан: заполняет центр; высота не меньше 240 px, масштаб по ширине колонки */
+.plan-steps .price-step-chart{flex:1 1 auto; min-height:0; min-width:0; gap:4px}
+.plan-steps .chart-frame{position:relative; flex:1 1 auto; min-height:120px; min-width:0}
+.plan-steps .chart-frame>svg{position:absolute; inset:0; width:100%; height:100%}
+.plan-steps .price-stakan{min-height:240px}
+
+/* Мост: горизонтальный водопад в колонке */
+.plan-money-slot .plan-money{flex:1 1 auto; min-height:0; display:flex; flex-direction:column; gap:4px; margin:0}
+.plan-money-slot .plan-waterfall-chart{flex:1 1 auto; min-height:0; display:flex}
+.plan-money-slot .plan-stock-note{margin:0; font-size:var(--fs-caption); color:var(--c-risk)}
+.plan-scale-note{margin:0; font-size:var(--fs-caption); line-height:1.35; color:var(--c-text)}
+
+/* Подробности: блок в потоке под основной областью, без наложений на условия, стакан и мост.
+   Раскрытие расширяет экран: страница прокручивается (#content), основная область остается на месте. Закрытие кнопкой на пути сырья. */
+.plan-details{position:static; margin-top:var(--plan-main-gap); background:var(--c-bg); border:1px solid var(--c-line); padding:12px 16px}
+.plan-details:not([open]){display:none}
+.plan-details>summary{display:none}
+#app.clarity-app:has(#content[data-view="plan"]):has(.plan-details[open]) #content{overflow-y:auto; overflow-x:hidden}
+.plan-screen:has(.plan-details[open]){height:auto; overflow:visible}
+.plan-details-body{display:flex; flex-direction:column; gap:12px}
+.plan-details-body .basket-table-wrap{overflow-x:auto}
+
+/* Результат: ограничение и следующее действие слева, четыре кнопки справа; зона 44 px с линией сверху */
+.plan-result{height:var(--plan-result); margin-top:var(--plan-result-gap); box-sizing:border-box; display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; column-gap:24px; min-width:0; border-top:1px solid var(--c-line)}
+.plan-result-text{min-width:0; display:flex; flex-direction:column; justify-content:center; gap:2px}
+.plan-constraint,.plan-action-text{margin:0; font-size:var(--fs-body); line-height:17px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0}
+.plan-action-text{display:flex; align-items:center; gap:6px; height:20px}
+.plan-action-label{min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.plan-action-text>.next-action{flex:none; height:20px; min-height:0; padding:0; line-height:17px}
+.plan-action-text>strong{flex:none}
+.plan-result .plan-decision{display:flex; gap:8px; align-items:center; justify-content:flex-end; margin:0}
+#app .plan-screen .plan-result .decision-action{display:flex; grid-template-rows:none; row-gap:0; align-content:normal; min-width:0}
+.plan-result .decision-result{display:flex; min-width:0}
+
+/* Кнопки: основная – заливка, вторичные – тонкая линия; высота 36 px (1280) или 40 px (1366), подпись 14 px */
+.plan-screen button.primary,.plan-screen button.secondary{height:var(--plan-btn); min-height:0; padding:0 16px; border-radius:2px; font-family:var(--f-ui); font-size:var(--fs-body); font-weight:600; line-height:1; white-space:nowrap}
+.plan-screen button.primary{background:var(--c-data); border:0; color:var(--c-bg)}
+.plan-screen button.secondary{background:var(--c-bg); border:1px solid var(--c-line); color:var(--c-text)}
+.plan-screen button.secondary:hover{border-color:var(--c-data)}
+.plan-screen button:disabled{background:var(--c-tint); border-color:transparent; color:var(--c-muted)}
+#app .plan-screen .plan-decision .decision-action button{height:var(--plan-btn); min-height:var(--plan-btn); padding:0 16px; font-size:var(--fs-body); line-height:1.2}
+
+/* Подвал: легенда статусов и источник; зона 38 или 36 px с линией сверху */
+.plan-foot{height:var(--plan-foot); margin-top:var(--plan-foot-gap); box-sizing:border-box; display:flex; align-items:center; justify-content:space-between; gap:24px; min-width:0; border-top:1px solid var(--c-line)}
+.plan-legend{margin:0; padding:0; list-style:none; display:flex; gap:16px; font-size:var(--fs-body); white-space:nowrap}
+.plan-legend li{display:flex; align-items:center; gap:6px}
+.plan-sym{font-weight:700}
+.plan-sym.ok{color:var(--c-ok)}
+.plan-sym.warn{color:var(--c-secondary)}
+.plan-sym.risk{color:var(--c-risk)}
+.plan-sym.none{color:var(--c-muted)}
+.plan-source{margin:0; font-size:var(--fs-caption); color:var(--c-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0}
+
+/* Подписи и вложенные блоки подробностей */
+.plan-blocked>p{margin:0; font-size:var(--fs-body); line-height:1.4}
+.plan-blocked .plan-section-title h2{white-space:normal}
+.plan-caption{margin:0; font-size:var(--fs-caption); line-height:1.35; color:var(--c-muted)}
+.plan-explain{margin:0; font-size:var(--fs-caption); line-height:1.3; color:var(--c-muted)}
+.plan-links{display:flex; flex-wrap:wrap; gap:8px 16px}
+.plan-production{display:flex; flex-direction:column; gap:10px}
+.plan-screen .gap-grid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px 16px}
+.plan-screen .gap-item{display:flex; align-items:flex-start; gap:10px; font-size:var(--fs-body); line-height:1.35}
+.plan-screen .gap-item .chip{flex:0 0 auto}
+.plan-screen .basket-table{width:100%; border-collapse:collapse; font-variant-numeric:tabular-nums}
+.plan-screen .basket-table th{font-weight:400; color:var(--c-muted); border-bottom:1px solid var(--c-line); font-size:var(--fs-caption); padding:5px 4px; text-align:right; white-space:nowrap}
+.plan-screen .basket-table td{padding:6px 4px; border-bottom:1px solid var(--c-line); font-size:var(--fs-body); text-align:right}
+.plan-screen .basket-table th:first-child,.plan-screen .basket-table td:first-child{text-align:left}
+.plan-screen .basket-table td:nth-child(5){font-weight:600}
+.plan-screen .product-row-link{padding:0; min-height:0; background:transparent; border:0; color:var(--c-data); font-size:var(--fs-body); white-space:nowrap; display:flex; align-items:center; gap:6px}
+.plan-screen .product-row-link>span{font-size:11px; opacity:.8}
+.plan-screen .mass-balance{display:flex; flex-direction:column; gap:6px}
+.plan-screen .mass-track{display:flex; height:14px; background:var(--c-tint); overflow:hidden}
+.plan-screen .mass-product{display:block; height:100%; background:var(--c-data)}
+.plan-screen .mass-loss{display:block; height:100%; background:var(--c-secondary)}
+.plan-screen .mass-legend{display:flex; flex-wrap:wrap; gap:4px 16px; font-size:var(--fs-caption); color:var(--c-muted)}
+.plan-screen .mass-legend>span{display:inline-flex; align-items:center; gap:6px}
+.plan-screen .swatch{display:inline-block; width:10px; height:10px; border-radius:2px}
+.plan-screen .swatch.product{background:var(--c-data)}
+.plan-screen .swatch.loss{background:var(--c-secondary)}
+.plan-status-word{font-weight:700}
+.plan-status-label{color:inherit}
+
+/* Фронтир и варианты в подробностях */
+.plan-chart{margin:0; display:flex; flex-direction:column; gap:8px; min-width:0}
+.plan-chart figcaption{display:flex; flex-direction:column; gap:4px}
+.plan-chart h3{margin:0; font-family:var(--f-head); font-size:16px; font-weight:700; line-height:1.25; color:var(--c-data)}
+.plan-chart-note{margin:0; font-size:var(--fs-caption); line-height:1.4; color:var(--c-muted)}
+.plan-chart>svg{display:block; width:100%; max-width:100%; height:auto}
+.plan-chart-legend{margin:0; padding:0; list-style:none; display:flex; flex-wrap:wrap; gap:6px 16px; font-size:var(--fs-caption); line-height:1.3}
+.plan-chart-legend li{display:flex; align-items:center; gap:6px}
+.plan-chart-legend svg{width:12px; height:12px; flex:0 0 12px}
+.plan-chart-notes{margin:0; padding:0; list-style:none; display:grid; gap:4px; font-size:var(--fs-caption); line-height:1.4; color:var(--c-muted)}
+.plan-chart-notes li::before{content:'– '}
+.plan-chart-table{width:100%; border-collapse:collapse; font-size:var(--fs-caption); line-height:1.3; color:var(--c-text)}
+.plan-chart-table caption{caption-side:top; text-align:left; font-weight:700; padding-bottom:6px}
+.plan-chart-table th{padding:6px 8px; font-weight:700; color:var(--c-muted); border-bottom:1px solid var(--c-line); vertical-align:bottom; overflow-wrap:anywhere}
+.plan-chart-table td{padding:6px 8px; border-bottom:1px solid var(--c-line); vertical-align:top; overflow-wrap:anywhere}
+
+/* Статусы: заливка из палитры раздела 3, символ окрашен, слово в цвете текста. Золотой и мятный фоны на экране плана не используются. */
+.plan-screen .chip{min-height:0; padding:0 6px; line-height:1.3; font-size:var(--fs-body); font-weight:600; color:var(--c-text); background:var(--c-tint)}
+.plan-screen .chip-ok>span:first-child{color:var(--c-ok)}
+.plan-screen .chip-warn>span:first-child{color:var(--c-secondary)}
+.plan-screen .chip-risk>span:first-child{color:var(--c-risk)}
+.plan-screen .chip-none>span:first-child{color:var(--c-muted)}
+.plan-node .chip{align-self:flex-start}
+
+/* Мост вклада: горизонтальные строки, полоса 8 px в шкале 0–90 млн руб. (раздел 6 дизайн-системы) */
+.plan-money-slot .team-bridge{flex:none; display:flex; flex-direction:column; gap:10px; margin:0}
+.team-bridge h3{margin:0; font-family:var(--f-head); font-size:var(--fs-h3); font-weight:700; line-height:1.2; color:var(--c-text)}
+.team-bridge-rows{margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:12px}
+.team-bridge-line{display:flex; justify-content:space-between; gap:8px; font-size:var(--fs-body)}
+.team-bridge-value{font-weight:600; font-variant-numeric:tabular-nums; white-space:nowrap}
+.team-bridge-track{display:block; height:8px; background:var(--c-tint)}
+.team-bridge-track>span{display:block; height:100%}
+.team-bridge-track .is-total{background:var(--c-data)}
+.team-bridge-track .is-step{background:var(--c-secondary)}
+
+/* Ниже 1200 px по ширине: один столбец в порядке условия, стакан, мост, результат; страница прокручивается */
+@media (max-width:1199px){
+  #app.clarity-app:has(#content[data-view="plan"]) .shell{grid-template-rows:auto minmax(0,1fr)}
+  #app.clarity-app:has(#content[data-view="plan"]) .topbar{height:auto; min-height:var(--plan-head); flex-wrap:wrap; padding:8px 16px; row-gap:6px}
+  #app.clarity-app:has(#content[data-view="plan"]) .sync-status{position:static}
+  #app.clarity-app:has(#content[data-view="plan"]) .work-navigation{order:3; flex-basis:100%; height:auto; justify-content:flex-start; overflow-x:auto}
+  #app.clarity-app:has(#content[data-view="plan"]) .work-navigation .nav-button,
+  #app.clarity-app:has(#content[data-view="plan"]) .work-navigation .nav-help{height:44px}
+  #app.clarity-app:has(#content[data-view="plan"]) #content{overflow-y:auto; overflow-x:hidden; padding:0 16px 16px}
+  .plan-screen{height:auto; overflow:visible}
+  .plan-headline{height:auto; min-height:var(--plan-headline); padding:8px 0}
+  .plan-headline h1{white-space:normal; overflow:visible}
+  .plan-headline .plan-notice{margin-right:0}
+  .plan-track{height:auto; margin-top:12px}
+  .plan-track-nodes{height:auto; grid-template-columns:repeat(3,minmax(0,1fr)); row-gap:16px}
+  .plan-node::after{display:none}
+  .plan-node-name{white-space:normal}
+  .plan-main{height:auto; margin-top:16px; display:flex; flex-direction:column; gap:16px}
+  .plan-inputs,.plan-steps,.plan-money-slot,.plan-blocked{height:auto; overflow:visible}
+  .plan-steps .price-step-chart{flex:none}
+  .plan-steps .price-stakan{min-height:0}
+  .plan-details{position:static; inset:auto; overflow:visible}
+  .plan-result{height:auto; margin-top:16px; grid-template-columns:minmax(0,1fr); row-gap:10px; padding:12px 0 0}
+  .plan-constraint{white-space:normal; overflow:visible}
+  .plan-action-text{height:auto; flex-wrap:wrap}
+  .plan-action-label{white-space:normal; overflow:visible}
+  .plan-result .plan-decision{flex-wrap:wrap; justify-content:flex-start}
+  .plan-foot{height:auto; margin-top:16px; flex-wrap:wrap; padding:8px 0 0; row-gap:6px}
+  .plan-source{white-space:normal}
 }
-@media(min-width:1101px) and (max-height:680px){
- .plan-screen{gap:10px}.plan-screen .plan-inputs,.plan-screen .plan-production,.plan-screen .plan-result{gap:5px}
- .plan-title h1{font-size:24px}.plan-section-title{min-height:29px;padding-bottom:6px}
- .plan-screen .input-facts{gap:8px}.plan-screen .basket-table td{padding:2px 4px;font-size:13px}.plan-screen .product-row-link{font-size:13px}
- .plan-screen .plan-split{gap:6px}.plan-screen .split-labels{font-size:12px}.plan-screen .split-labels strong{font-size:18px}.plan-screen .split-track{height:8px}
- .plan-screen .quick-options .quick-option{gap:2px;padding:6px 7px}.plan-screen .quick-comparison .section-inline{margin-bottom:5px}
- .plan-screen .plan-choice{padding-top:9px;gap:8px}.plan-screen .result-difference{padding-top:7px;gap:3px}
- .plan-screen .result-total>strong{font-size:28px}.plan-screen .result-difference>strong{font-size:22px}
-}
-@media(max-width:1100px) and (min-width:901px){.plan-screen .plan-workbench{grid-template-columns:170px minmax(0,1fr) 320px;gap:15px}.plan-section-title h2{font-size:15px}.plan-screen .quick-option strong{font-size:16px}.plan-title h1{font-size:23px}.plan-screen .result-total>strong{font-size:26px}}
-@media(max-width:900px){.plan-title h1{font-size:24px}.plan-screen .quick-option strong{font-size:19px}}
-@media(max-width:600px){.plan-title h1{font-size:22px}.plan-screen .quick-option strong{font-size:16px}.plan-screen .split-labels strong{display:block;margin:3px 0 0}.plan-screen .plan-inputs{gap:12px}.plan-section-title{grid-column:1/-1}.plan-screen .plan-choice>.text-button{grid-column:2;grid-row:3}.plan-screen .plan-result{gap:12px}.plan-screen .result-total>strong{font-size:34px}}
 
-/* Стакан и итог используют одну ось результата на главном экране */
-.plan-screen .result-summary{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:10px;align-items:start;flex-shrink:0}
-.plan-screen .result-summary .result-total>strong{font-size:26px;line-height:1.2}
-.plan-screen .result-summary .result-total>strong.negative{color:var(--bad)}
-.plan-screen .result-summary .result-total small{font-size:14px}
-.plan-screen .result-summary .result-total p{font-size:11px;line-height:1.25;margin-top:3px}
-.plan-screen .result-summary .result-difference{border:0;padding:0;gap:3px;line-height:1.2}
-.plan-screen .result-summary .result-difference>strong{font-size:18px;line-height:1.2;letter-spacing:normal}
-.plan-screen .result-summary .result-difference>span{font-size:12px}
-.plan-screen .result-summary .result-difference>span:last-child{font-size:11px;line-height:1.25}
-.plan-money{margin:0;display:flex;flex-direction:column;gap:4px;border-top:1px solid var(--line);padding-top:10px;flex-shrink:0}
-.plan-money figcaption{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
-.plan-screen .plan-money h3{font-size:13px;line-height:1.25}
-.plan-money figcaption>span{font-size:11px;color:var(--muted);white-space:nowrap}
-.plan-money p{font-size:12px;line-height:1.25;color:var(--muted)}
-.plan-money .plan-stock-note{color:var(--bad)}
-.plan-money .text-button{font-size:12px;padding:0;align-self:flex-start}
-@media(min-width:901px) and (max-height:680px){.plan-money{padding-top:7px;gap:3px}.plan-money .compact-bridge svg{height:152px}.plan-screen .result-summary{gap:10px}.plan-screen .result-summary .result-total>strong{font-size:25px}.plan-screen .plan-next-step{gap:4px}.plan-screen .plan-next-step>p{font-size:12px}}
-@media(max-width:1100px) and (min-width:901px){.plan-screen .result-summary .result-total>strong{font-size:23px}.plan-screen .result-summary .result-difference>strong{font-size:17px}.plan-screen .result-summary{gap:8px}.plan-screen .plan-money h3{font-size:12px}}
-@media(max-width:900px),(max-height:620px){.plan-screen .result-summary{grid-column:1}.plan-screen .plan-money{grid-column:1;grid-row:3}.plan-screen .plan-next-step{grid-column:2;grid-row:2/4}.plan-screen .plan-result>.primary{grid-column:2;grid-row:4}}
-@media(max-width:600px){.plan-screen .result-summary .result-total>strong{font-size:25px}.plan-screen .result-summary .result-difference>strong{font-size:18px}.plan-screen .plan-money h3{font-size:13px}.plan-money .compact-bridge svg{height:170px}}
-
-.plan-money-detail,.plan-status-row{display:flex;justify-content:space-between;align-items:center;gap:8px}.plan-money-detail>span{font-size:11px;color:var(--muted);line-height:1.2}.plan-status-row .status{font-size:13px}.plan-status-row .text-button{white-space:nowrap}.plan-money-detail .text-button{white-space:nowrap;align-self:center}
-
-.plan-screen .result-summary .result-difference>strong.comparable{white-space:nowrap}
+/* Стакан недели, варианты недели и подписи учебных ставок: таблицы с прокруткой, линии вместо рамок */
+.plan-screen .plan-steps .basket-table-wrap{overflow-x:auto; min-width:0}
+.plan-screen .plan-steps .basket-table th,.plan-screen .plan-steps .basket-table td{font-size:var(--fs-caption)}
+.plan-screen .plan-variants{display:flex; flex-direction:column; gap:8px; padding-top:16px; border-top:1px solid var(--c-line)}
+.plan-screen .plan-variant-save{margin-left:auto; height:36px}
+.plan-screen .plan-variant-pick{display:flex; flex-wrap:wrap; gap:16px}
+.plan-screen .plan-variant-pick label{display:flex; flex-direction:column; gap:4px; flex:1 1 220px; min-width:0; font-size:var(--fs-caption); color:var(--c-muted)}
+.plan-screen .plan-variant-pick select{height:32px; padding:0 8px; border:1px solid var(--c-line); background:var(--c-bg); color:var(--c-text); font-size:var(--fs-body); font-family:inherit}
+.plan-screen .plan-history{display:flex; flex-direction:column; gap:8px; padding-top:16px; border-top:1px solid var(--c-line)}
+.plan-screen .plan-unconfirmed{margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:4px}
+.plan-screen .plan-facts small{display:block; font-size:var(--fs-caption); color:var(--c-muted); font-weight:400}

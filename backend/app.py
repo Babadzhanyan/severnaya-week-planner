@@ -8,14 +8,24 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from pydantic import ValidationError
-from . import model
+from . import anon_export, facts, model, publication_passport, scenarios
 from .files_capacity import router as files_capacity_router
 from .files_economics import router as files_economics_router
+from .files_costs import router as files_costs_router
+from .files_clients import router as files_clients_router
+from .files_recommendations import router as files_recommendations_router
+from .files_production import router as files_production_router
+from .files_demand import router as files_demand_router
 from .schemas import CommercialBody, EvaluationBody, FactBody, Params, RequestBody, RoiBody, SnapshotBody
 
 app = FastAPI(title="Планировщик «Северная»", version=model.VERSION, docs_url="/api/docs", openapi_url="/api/openapi.json", redoc_url=None)
 app.include_router(files_capacity_router)
 app.include_router(files_economics_router)
+app.include_router(files_costs_router)
+app.include_router(files_clients_router)
+app.include_router(files_recommendations_router)
+app.include_router(files_production_router)
+app.include_router(files_demand_router)
 
 
 class BodyLimitMiddleware:
@@ -56,10 +66,10 @@ app.add_middleware(BodyLimitMiddleware)
 async def russian_http_errors(request, exc):
     detail = exc.detail
     if isinstance(detail, str):
-        detail = [{"loc": ["request"], "msg": {404: "Адрес требует выбора доступного метода расчёта", 405: "Способ запроса требует проверки"}.get(exc.status_code, "Запрос требует проверки"), "type": "http_error"}]
+        detail = [{"loc": ["request"], "msg": {404: "Адрес требует выбора доступного метода расчета", 405: "Способ запроса требует проверки"}.get(exc.status_code, "Запрос требует проверки"), "type": "http_error"}]
     return JSONResponse(status_code=exc.status_code, content={"detail": detail}, headers=exc.headers)
 
-ERROR_NAMES = {**model.NAMES, "params": "Параметры плана", "route": "Схема разделки", "request": "Заявка", "requests": "Резерв заявок", "requestId": "Идентификатор заявки", "product": "Продукт", "quantity": "Количество", "price": "Цена", "stageCapacity": "Мощности переделов", "routeCosts": "Затраты маршрутов", "snapshot": "Утверждённый снимок", "confirmations": "Подтверждения", "forecastAbsorption": "Поглощение прогноза", "volume": "Объём", "share": "Доля", "label": "Подпись", "body": "Запрос", "deboning": "Обвалка", "packing": "Упаковка", "freezing": "Заморозка"}
+ERROR_NAMES = {**model.NAMES, "params": "Параметры плана", "route": "Схема разделки", "request": "Заявка", "requests": "Резерв заявок", "requestId": "Идентификатор заявки", "product": "Продукт", "quantity": "Количество", "price": "Цена", "stageCapacity": "Мощности переделов", "routeCosts": "Затраты маршрутов", "snapshot": "Утвержденный снимок", "confirmations": "Подтверждения", "forecastAbsorption": "Поглощение прогноза", "volume": "Объем", "share": "Доля", "label": "Подпись", "body": "Запрос", "deboning": "Обвалка", "packing": "Упаковка", "freezing": "Заморозка"}
 
 
 @app.exception_handler(RequestValidationError)
@@ -83,7 +93,7 @@ async def russian_validation_errors(request, exc):
         elif kind == "extra_forbidden":
             message = "Запрос содержит поле за пределами согласованной структуры"
         elif kind in ("too_long", "string_too_long"):
-            message = field + ": сократите объём до установленного предела"
+            message = field + ": сократите объем до установленного предела"
         elif kind in ("too_short", "string_too_short"):
             message = field + ": заполните значение"
         elif kind == "value_error":
@@ -141,7 +151,7 @@ def evaluate(body: EvaluationBody):
 def request_check(body: RequestBody):
     result = model.check_request(body.params.model_dump(), body.request.model_dump())
     if result.get("canApply"):
-        # Каждый принимаемый резерв остаётся допустимым вводом следующего запроса.
+        # Каждый принимаемый резерв остается допустимым вводом следующего запроса.
         try:
             Params.model_validate(result["params"])
         except ValidationError as exc:
@@ -168,7 +178,7 @@ def fact(body: FactBody):
     checked = model.snapshot(params, confirms)
     matches = saved["approved"] is True and saved["valid"] is True and saved["modelVersion"] == model.VERSION and checked["approved"] and saved["fingerprint"] == fingerprint(params, confirms) and same_result(saved["result"], checked["result"]) and saved["label"] == checked["label"]
     if not matches:
-        raise HTTPException(status_code=409, detail=[{"loc": ["body", "snapshot"], "msg": "Снимок требует повторного утверждения: параметры, расчёт и подтверждения должны совпадать", "type": "snapshot_mismatch"}])
+        raise HTTPException(status_code=409, detail=[{"loc": ["body", "snapshot"], "msg": "Снимок требует повторного утверждения: параметры, расчет и подтверждения должны совпадать", "type": "snapshot_mismatch"}])
     return model.fact(params)
 
 
@@ -180,3 +190,59 @@ def roi(body: RoiBody):
 @app.post("/api/commercial")
 def commercial(body: CommercialBody):
     return model.commercial(body.client.model_dump())
+
+
+@app.get("/api/week")
+def week():
+    try:
+        return anon_export.load_week()
+    except anon_export.WeekError as exc:
+        raise HTTPException(status_code=exc.status, detail=[{"loc": ["request"], "msg": exc.message, "type": exc.kind}])
+
+
+# Факты открыты в публичном режиме: агрегаты без строк клиентов и сотрудников. Требуется подтверждение владельца данных по разделу channels до выкладки.
+@app.get("/api/facts")
+def facts_payload():
+    try:
+        return facts.load_facts()
+    except facts.FactsError as exc:
+        raise HTTPException(status_code=exc.status, detail=[{"loc": ["request"], "msg": exc.message, "type": exc.kind}])
+
+
+@app.get("/api/passport")
+def passport():
+    # Паспорт читает только имена и размеры файлов; корни берутся из input_paths, как у файловых маршрутов.
+    return publication_passport.build_passport(None, publication_passport.APP_VERSION, model.VERSION, anon_export.SCHEMA_VERSION)
+
+
+@app.exception_handler(scenarios.ScenarioError)
+async def scenario_errors(request, exc):
+    return JSONResponse(status_code=exc.status, content=exc.body())
+
+
+@app.get("/api/scenarios")
+def scenario_list():
+    return scenarios.list_scenarios(scenarios.open_store())
+
+
+@app.post("/api/scenarios")
+def scenario_save(body: dict):
+    status, payload = scenarios.save_scenario(scenarios.open_store(), body)
+    return JSONResponse(status_code=status, content=payload)
+
+
+@app.get("/api/scenarios/{scenario_id}")
+def scenario_get(scenario_id: str):
+    return scenarios.get_scenario(scenarios.open_store(), scenario_id)
+
+
+@app.get("/api/scenarios/{scenario_id}/export")
+def scenario_export(scenario_id: str):
+    payload = scenarios.export_scenario(scenarios.open_store(), scenario_id)
+    return JSONResponse(content=payload, headers={"Content-Disposition": f'attachment; filename="{scenario_id}.json"'})
+
+
+@app.post("/api/scenarios/import")
+def scenario_import(payload: dict):
+    status, result = scenarios.import_scenario(scenarios.open_store(), payload)
+    return JSONResponse(status_code=status, content=result)

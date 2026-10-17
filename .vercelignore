@@ -6,3 +6,16 @@ __pycache__
 backend/tests
 model.test.js
 dist-demo
+backend/client_data
+backend/source_data/real_data_*
+backend/tests/fixtures_synthetic/real_data_clients.json
+aggregates_local
+calibration
+work
+scratchpad
+*.xlsx
+*.pptx
+*.pdf
+*.docx
+.env*
+.env.local

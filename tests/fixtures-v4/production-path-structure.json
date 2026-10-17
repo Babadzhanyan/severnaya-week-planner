@@ -1,0 +1,22 @@
+{
+  "note": "Синтетическая структура для проверки пути сырья. Значения не отражают производственные данные: проверяются идентификаторы операций, единица и наличие ссылки. Реальный набор real_data_capacity.json не читается.",
+  "rows": [
+    {"id": "receiving", "massBasis": "Синтетическая база: масса голов на приёмке, кг / сутки", "unit": "кг / сутки", "sourceRefs": ["fixture:production-path"]},
+    {"id": "hanging", "massBasis": "Синтетическая база: масса голов на подвеске, кг / сутки", "unit": "кг / сутки", "sourceRefs": ["fixture:production-path"]},
+    {"id": "slaughter", "massBasis": "Синтетическая база: масса на убое, кг / сутки", "unit": "кг / сутки", "sourceRefs": ["fixture:production-path"]},
+    {"id": "plucking", "massBasis": "Синтетическая база: масса на потрошении, кг / сутки", "unit": "кг / сутки", "sourceRefs": ["fixture:production-path"]},
+    {"id": "evisceration", "massBasis": "Синтетическая база: масса на эвисцерации, кг / сутки", "unit": "кг / сутки", "sourceRefs": ["fixture:production-path"]},
+    {"id": "water_cooling", "massBasis": "Синтетическая база: масса на водном охлаждении, кг / сутки", "unit": "кг / сутки", "sourceRefs": ["fixture:production-path"]},
+    {"id": "carcass_cold_store", "massBasis": "Синтетическая база: масса тушек в холодильнике, кг / сутки", "unit": "кг / сутки", "sourceRefs": ["fixture:production-path"]},
+    {"id": "sorting", "massBasis": "Синтетическая база: масса на сортировке, кг / сутки", "unit": "кг / сутки", "sourceRefs": ["fixture:production-path"]},
+    {"id": "cutting", "massBasis": "Синтетическая база: масса на разделке, кг / сутки", "unit": "кг / сутки", "sourceRefs": ["fixture:production-path"]},
+    {"id": "breast_fillet", "massBasis": "Синтетическая база: масса филе грудки, кг / сутки", "unit": "кг / сутки", "sourceRefs": ["fixture:production-path"]},
+    {"id": "thigh_fillet", "massBasis": "Синтетическая база: масса филе бедра, кг / сутки", "unit": "кг / сутки", "sourceRefs": ["fixture:production-path"]},
+    {"id": "bulk_carcass_pack", "massBasis": "Синтетическая база: масса валовой упаковки, кг / сутки", "unit": "кг / сутки", "sourceRefs": ["fixture:production-path"]},
+    {"id": "individual_carcass_pack", "massBasis": "Синтетическая база: масса индивидуальной упаковки, кг / сутки", "unit": "кг / сутки", "sourceRefs": ["fixture:production-path"]},
+    {"id": "ishida_pack", "massBasis": "Синтетическая база: масса на линии Ishida, кг / сутки", "unit": "кг / сутки", "sourceRefs": ["fixture:production-path"]},
+    {"id": "liver", "massBasis": "Синтетическая база: масса печени, кг / сутки", "unit": "кг / сутки", "sourceRefs": ["fixture:production-path"]},
+    {"id": "byproduct_pack", "massBasis": "Синтетическая база: масса упаковки субпродуктов, кг / сутки", "unit": "кг / сутки", "sourceRefs": ["fixture:production-path"]},
+    {"id": "feet_pack", "massBasis": "Синтетическая база: масса упаковки лап, кг / сутки", "unit": "кг / сутки", "sourceRefs": ["fixture:production-path"]}
+  ]
+}

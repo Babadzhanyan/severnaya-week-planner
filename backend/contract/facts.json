@@ -1,0 +1,155 @@
+{
+  "schemaVersion": 1,
+  "period": {
+    "month": "апрель 2026",
+    "quarter": "первый квартал 2026",
+    "year": "май 2025 – апрель 2026"
+  },
+  "kpi": [
+    {"value": "33,1", "label": "млрд руб. выручки за год (калькулятор: 32,86)"},
+    {"value": "96 %", "label": "выручки покрыто новой себестоимостью"},
+    {"value": "17", "label": "пар клиент и товар устойчиво в убытке"},
+    {"value": "−35 %", "label": "объем в сентябре к августу: причина не доказана"}
+  ],
+  "quarters": [
+    {"label": "май–июль 2025", "volumeMln": 55.2, "marginShare": 17.5},
+    {"label": "август–октябрь", "volumeMln": 44.1, "marginShare": 11.7},
+    {"label": "ноябрь–январь", "volumeMln": 52.4, "marginShare": 11.0},
+    {"label": "февраль–апрель 2026", "volumeMln": 56.9, "marginShare": 13.7}
+  ],
+  "chain": [
+    {"key": "forecast", "label": "Прогноз птицы", "lane": "Птичники", "inputs": [], "outputs": ["calls"], "capacity": null},
+    {"key": "calls", "label": "Обзвон, ср–чт", "lane": "Менеджеры", "inputs": ["forecast"], "outputs": ["pricing"], "capacity": null},
+    {"key": "pricing", "label": "Прайс и объем, пт", "lane": "Руководитель", "inputs": ["calls"], "outputs": ["shipmentPlan"], "capacity": null},
+    {"key": "shipmentPlan", "label": "План отгрузок", "lane": "Сбыт", "inputs": ["pricing"], "outputs": ["inventory"], "capacity": null},
+    {"key": "inventory", "label": "Инвентаризация", "lane": "Склад", "inputs": ["shipmentPlan"], "outputs": ["dailyCall"], "capacity": null},
+    {"key": "dailyCall", "label": "Звонок в 10:00", "lane": "Руководитель", "inputs": ["inventory"], "outputs": ["minOutput"], "capacity": null},
+    {"key": "minOutput", "label": "Минимум выпуска", "lane": "Убойный цех", "inputs": ["dailyCall"], "outputs": ["paymentShipment"], "capacity": "требуется подтверждение"},
+    {"key": "paymentShipment", "label": "Оплата и отгрузка", "lane": "Клиенты, казначейство", "inputs": ["minOutput"], "outputs": [], "capacity": null}
+  ],
+  "yields": [
+    {"code": "fillet", "label": "Филе", "sharePct": 20},
+    {"code": "legs", "label": "Окорочок", "sharePct": 30},
+    {"code": "wing", "label": "Крыло", "sharePct": 10.96},
+    {"code": "frame", "label": "Каркас", "sharePct": 17.95},
+    {"code": "neckLegsSkin", "label": "Шея, лапы, кожа", "sharePct": 13.97},
+    {"code": "offal", "label": "Потроха", "sharePct": 5.07},
+    {"code": "loss", "label": "Потери", "sharePct": 2.05}
+  ],
+  "capacity": [
+    {"label": "Разделка, план", "loadPct": 92.6},
+    {"label": "Упаковка тушки", "loadPct": 92.9},
+    {"label": "Упаковка ног", "loadPct": 126},
+    {"label": "Ливер", "loadPct": 110},
+    {"label": "Потрошение", "loadPct": 92.6},
+    {"label": "Вырезка грудки", "loadPct": 58.7},
+    {"label": "Вырезка бедра", "loadPct": 52.2},
+    {"label": "Упаковка ISHIDA", "loadPct": 68.4}
+  ],
+  "channels": [
+    {"label": "Опт", "sharePct": 76},
+    {"label": "Переработка", "sharePct": 19},
+    {"label": "Быстрое питание", "sharePct": 1.5},
+    {"label": "Сети", "sharePct": 1.2},
+    {"label": "Экспорт", "sharePct": 1.2},
+    {"label": "Интернет", "sharePct": 0.5},
+    {"label": "HoReCa", "sharePct": 0.2}
+  ],
+  "prices": [
+    {"label": "Бедро без кожи", "rubKg": 368.77},
+    {"label": "Филе", "rubKg": 299.22},
+    {"label": "Грудка с кожей", "rubKg": 204.1},
+    {"label": "Крыло", "rubKg": 167.22},
+    {"label": "Тушка", "rubKg": 149.07},
+    {"label": "Окорочок", "rubKg": 137.69}
+  ],
+  "concentration": [
+    {"top": 1, "sharePct": 21.8},
+    {"top": 5, "sharePct": 36.6},
+    {"top": 10, "sharePct": 49.4},
+    {"top": 20, "sharePct": 66.6},
+    {"top": 50, "sharePct": 86.9}
+  ],
+  "pain": [
+    {"role": "Владелец процесса", "cells": [
+      {"stage": "Триггер", "level": 2, "label": "Прогноз птицы"},
+      {"stage": "Сбор объема", "level": 3, "label": "Ручные таблицы"},
+      {"stage": "Прайс", "level": 3, "label": "Формулы нет"},
+      {"stage": "Отгрузка", "level": 2, "label": "Звонки"},
+      {"stage": "Факт", "level": 2, "label": "Нет разбивки"}
+    ]},
+    {"role": "Менеджеры", "cells": [
+      {"stage": "Триггер", "level": 1, "label": "Обзвон, среда"},
+      {"stage": "Сбор объема", "level": 3, "label": "Телефон, Excel"},
+      {"stage": "Прайс", "level": 2, "label": "Ориентиры вручную"},
+      {"stage": "Отгрузка", "level": 2, "label": "Транспорт срывает"},
+      {"stage": "Факт", "level": 1, "label": "Нет данных"}
+    ]},
+    {"role": "Склад", "cells": [
+      {"stage": "Триггер", "level": 2, "label": "Утренний подсчет"},
+      {"stage": "Сбор объема", "level": 3, "label": "Бумажный лист"},
+      {"stage": "Прайс", "level": 1, "label": "Не участвует"},
+      {"stage": "Отгрузка", "level": 1, "label": "Оплата, подтверждение"},
+      {"stage": "Факт", "level": 3, "label": "Пересорт"}
+    ]},
+    {"role": "Убойный цех", "cells": [
+      {"stage": "Триггер", "level": 2, "label": "Инвентаризация"},
+      {"stage": "Сбор объема", "level": 2, "label": "Ночная работа"},
+      {"stage": "Прайс", "level": 1, "label": "Не участвует"},
+      {"stage": "Отгрузка", "level": 3, "label": "Минимум выпуска"},
+      {"stage": "Факт", "level": 3, "label": "Нет ответа при плане"}
+    ]},
+    {"role": "Экономист", "cells": [
+      {"stage": "Триггер", "level": 1, "label": "Статистика маржи"},
+      {"stage": "Сбор объема", "level": 2, "label": "Ручные расчеты"},
+      {"stage": "Прайс", "level": 3, "label": "Порог маржи словом"},
+      {"stage": "Отгрузка", "level": 1, "label": "Не участвует"},
+      {"stage": "Факт", "level": 2, "label": "Маржа без базы"}
+    ]},
+    {"role": "Казначейство", "cells": [
+      {"stage": "Триггер", "level": 2, "label": "Оплаты в течение дня"},
+      {"stage": "Сбор объема", "level": 3, "label": "Устно, выписка"},
+      {"stage": "Прайс", "level": 1, "label": "Не участвует"},
+      {"stage": "Отгрузка", "level": 1, "label": "Платежное поручение"},
+      {"stage": "Факт", "level": 3, "label": "Не видно в системе"}
+    ]}
+  ],
+  "dataStatus": [
+    {"label": "Выпуск и выход по схеме", "status": "ok"},
+    {"label": "Цены, Q1 2026", "status": "ok"},
+    {"label": "Мощность разделки и упаковки", "status": "ok"},
+    {"label": "Себестоимость сырья (весовая)", "status": "ok"},
+    {"label": "Клиенты, агрегаты", "status": "ok"},
+    {"label": "Затраты: тушка и разделка", "status": "ok"},
+    {"label": "Затраты: филе и обвалка ножки", "status": "gap"},
+    {"label": "Цены заморозки", "status": "part"},
+    {"label": "Мощность заморозки", "status": "gap"},
+    {"label": "Остатки на складе", "status": "part"},
+    {"label": "Заказы недели", "status": "gap"},
+    {"label": "Выгрузка из учетных систем", "status": "gap"}
+  ],
+  "decisions": [
+    {"title": "Масштаб 208,5 млн кг в год", "status": "принято", "note": "Принято заказчиком. Неделя: 4 010 т"},
+    {"title": "Сырье 127,2 руб. / кг", "status": "принято", "note": "Весовая база, как на встрече 17.09"},
+    {"title": "Выручка для сверки 32,86 млрд руб.", "status": "принято", "note": "Калькулятор, лист «Калькулятор Год»"},
+    {"title": "7 рабочих дней в неделе", "status": "гипотеза", "note": "Проверить по графику цеха"},
+    {"title": "Себестоимость заморозки 2,8 руб. / кг", "status": "принято", "note": "Принято, поправим. Из презентации, слайд 1"},
+    {"title": "Цена заморозки ниже прайса на 10 %", "status": "гипотеза", "note": "Гипотеза эксперта. Заменить фактом после пилота"},
+    {"title": "Схема окорочка: 30 % или 34,7 %", "status": "решить", "note": "Нормы из технологической карты"},
+    {"title": "Минимальная партия и пороги статусов", "status": "решить", "note": "Пороги 81,8 % и 84,4 %: источник не найден"}
+  ],
+  "roadmap": [
+    {"week": "Неделя 1", "label": "Выгрузка данных и заказы недели"},
+    {"week": "Неделя 2", "label": "Калибровка по апрелю 2026, допуск 3 %"},
+    {"week": "Неделя 3", "label": "Пилот недели рядом с Excel"},
+    {"week": "Неделя 4", "label": "Решение о запуске и правила"}
+  ],
+  "sources": [
+    "калькулятор_v3 (апрель 2026)",
+    "маржинальность по клиентам Q1 2026",
+    "себестоимость по переделам v3",
+    "карта производственной мощности",
+    "годовой калькулятор (май 2025 – апрель 2026)",
+    "контракт week_config, версия v5 (агрегаты)"
+  ]
+}

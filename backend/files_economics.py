@@ -1,15 +1,16 @@
-"""Расчёт сохранённой экономики разделки из локального каталога источников."""
+"""Расчет сохраненной экономики разделки из локального каталога источников."""
 from copy import deepcopy
 import json
 import math
-import os
-from pathlib import Path
 from typing import Literal
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, ConfigDict, Field
 
-router = APIRouter(prefix="/api/files/economics", tags=["Расчёты исходных файлов"])
+from . import input_paths
+from .schemas import EconomicsCatalog
+
+router = APIRouter(prefix="/api/files/economics", tags=["Расчеты исходных файлов"])
 ROUTE_IDS = ("level_1", "level_2_leg", "level_2_back_thigh", "level_3", "level_4")
 PRODUCT_IDS = (
     "breast_skin", "breast_fillet", "breast_bone", "neck_breast_skin", "mdm_raw",
@@ -53,15 +54,14 @@ def _sanitize(value):
 
 
 def _load():
-    selected_dir = os.environ.get("SEVERNAYA_SOURCE_DATA_DIR")
-    if not selected_dir:
-        raise _error(404, "Для расчёта требуется подключённый каталог исходных файлов", "source_missing")
-    source_dir = Path(__file__).resolve().parent / "source_data" if selected_dir == "bundled" else Path(selected_dir)
+    source_dir = input_paths.source_root()
+    if source_dir is None:
+        raise _error(404, "Для расчета требуется подключенный каталог исходных файлов", "source_missing")
     try:
-        economics = json.loads((source_dir / "real_data_economics.json").read_text(encoding="utf-8"))
-        yields = json.loads((source_dir / "real_data_yields.json").read_text(encoding="utf-8"))
+        economics = json.loads(input_paths.economics(source_dir).read_text(encoding="utf-8"))
+        yields = json.loads(input_paths.yields(source_dir).read_text(encoding="utf-8"))
     except FileNotFoundError as exc:
-        raise _error(404, "Для расчёта требуется подключённый каталог исходных файлов", "source_missing") from exc
+        raise _error(404, "Для расчета требуется подключенный каталог исходных файлов", "source_missing") from exc
     except (OSError, ValueError) as exc:
         raise _error(503, "Каталог исходных файлов требует проверки формата", "source_invalid") from exc
     try:
@@ -84,7 +84,7 @@ def _same_number(actual, expected, *, tolerance=1e-8):
             raise ValueError("Пустое значение требует явного статуса")
     elif (isinstance(actual, bool) or not isinstance(actual, (int, float)) or
           not math.isfinite(actual) or not math.isclose(actual, expected, rel_tol=0, abs_tol=tolerance)):
-        raise ValueError("Сохранённое значение требует сверки")
+        raise ValueError("Сохраненное значение требует сверки")
 
 
 def _validate_sources(economics, yields):
@@ -141,16 +141,14 @@ def _validate_sources(economics, yields):
 
 
 def _catalog(economics, yields):
-    # Внешний каталог содержит только разделку; годовой аудит хранится в локальном отчёте.
+    # Внешний каталог содержит только разделку; годовой аудит хранится в локальном отчете.
+    # Имена книг, контрольные суммы и пути в ответ не попадают; сверка выполнена при загрузке.
     selected = {key: deepcopy(economics[key]) for key in
-                ("version", "purpose", "primary_source", "integration_contract", "whole_baseline", "products", "routes")
+                ("version", "purpose", "integration_contract", "whole_baseline", "products", "routes")
                 if key in economics}
-    selected["sources"] = [{key: value for key, value in row.items() if key in {"file", "sha256", "formula_error_count", "empty_formula_result_count"}}
-                           for row in economics.get("source_manifest", []) if row.get("file") == economics.get("primary_source")]
     selected_yields = {key: deepcopy(yields[key]) for key in
-                       ("schema_version", "audited_at", "selected_dataset", "selected_dataset_status", "products", "routes", "gaps")
+                       ("schema_version", "audited_at", "products", "routes", "gaps")
                        if key in yields}
-    selected_yields["sources"] = {"efficiency": deepcopy(yields.get("sources", {}).get("efficiency", {}))}
     for route in selected_yields.get("routes", []):
         for output in route.get("outputs", []):
             output.pop("annual_duplicate", None)
@@ -167,7 +165,7 @@ def _calculate(economics, route, input_kg, price_change=0, packaging_change=0):
         price, packaging = product["price_rub_per_product_kg"], product["packaging_rub_per_product_kg"]
         if fraction > 0 and product_id != "waste_loss" and (price is None or packaging is None):
             missing.append(product_id)
-        # Повторяется арифметика сохранённого Excel; null остаётся видимым через completeness.
+        # Повторяется арифметика сохраненного Excel; null остается видимым через completeness.
         revenue_terms.append(fraction * (price or 0) * price_multiplier)
         packaging_terms.append(fraction * (packaging or 0) * packaging_multiplier)
     revenue, packaging = math.fsum(revenue_terms), math.fsum(packaging_terms)
@@ -186,7 +184,7 @@ def _calculate(economics, route, input_kg, price_change=0, packaging_change=0):
     return totals, complete
 
 
-@router.get("")
+@router.get("", response_model=EconomicsCatalog, response_model_exclude_unset=True)
 def get_files_economics():
     economics, yields = _load()
     return _catalog(economics, yields)
@@ -214,7 +212,7 @@ def evaluate_files_economics(body: FilesEconomicsBody):
                            "rubPerKg": result["rubPerKg"], "completeness": complete})
     gaps = list(economics.get("integration_contract", {}).get("profit_requirements", []))
     if not completeness["complete"]:
-        gaps.insert(0, "Сохранённый Excel оценивает пустые цены и упаковку как 0; сумма требует дополнения данных")
+        gaps.insert(0, "Сохраненный Excel оценивает пустые цены и упаковку как 0; сумма требует дополнения данных")
     return {"routeId": body.routeId, "inputKg": body.cutInputKg,
             "period": economics.get("integration_contract", {}).get("finance_period"),
             "resultLabel": "Добавочный результат после упаковки", "baseline": baseline, "scenario": scenario,

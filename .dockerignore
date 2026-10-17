@@ -5,3 +5,6 @@ dist
 __pycache__
 backend/tests
 .env*
+backend/client_data
+backend/source_data/real_data_*
+backend/tests/fixtures_synthetic/real_data_clients.json

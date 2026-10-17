@@ -3,11 +3,14 @@
   "framework": "vite",
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
+  "env": {
+    "SEVERNAYA_SOURCE_DATA_DIR": "bundled",
+    "SEVERNAYA_PUBLIC_MODE": "1"
+  },
   "functions": {
     "api/index.py": {
       "maxDuration": 30,
-      "excludeFiles": "{node_modules/**,assets/**,src/**,tests/**,backend/tests/**,.venv/**}",
-      "includeFiles": "backend/source_data/**"
+      "excludeFiles": "{node_modules/**,assets/**,src/**,tests/**,backend/tests/**,.venv/**}"
     }
   },
   "rewrites": [
@@ -30,8 +33,5 @@
         }
       ]
     }
-  ],
-  "env": {
-    "SEVERNAYA_SOURCE_DATA_DIR": "bundled"
-  }
+  ]
 }

@@ -20,7 +20,10 @@ export async function api(endpoint, body, { signal } = {}) {
       case 'fact': return m.fact(body.snapshot?.params || body.params);
       case 'roi': return m.roi(body.params, body.options);
       case 'commercial': return commercial(body.client);
-      default: throw new Error('Запрошенный расчёт требует поддержки сервера');
+      // Сценарии и паспорт выпуска требуют серверного хранилища: в демонстрационном режиме оно не подключено.
+      default:
+        if (endpoint === 'passport' || endpoint.startsWith('scenarios')) throw new Error('Сервер сценариев не подключен');
+        throw new Error('Запрошенный расчет требует поддержки сервера');
     }
   }
   const response = await fetch(`${API_BASE}/api/${endpoint}`, {
@@ -29,10 +32,14 @@ export async function api(endpoint, body, { signal } = {}) {
     body: body === undefined ? undefined : JSON.stringify(body), signal,
   });
   let data;
-  try { data = await response.json(); } catch { throw new Error('Сервер расчётов вернул ответ другого формата'); }
+  try { data = await response.json(); } catch { throw new Error('Сервер расчетов вернул ответ другого формата'); }
   if (!response.ok) {
     const detail = data.detail;
-    throw new Error(Array.isArray(detail) ? detail.map(x => x.msg).join('; ') : detail || 'Сервер расчётов требует повторного запроса');
+    // Код ответа и тело сохраняются: вызывающий код различает конфликт (409), проверку (422) и недоступное хранилище (503).
+    const error = new Error(Array.isArray(detail) ? detail.map(x => x.msg).join('; ') : typeof detail === 'string' ? detail : 'Сервер расчетов требует повторного запроса');
+    error.status = response.status;
+    error.body = data;
+    throw error;
   }
   return data;
 }

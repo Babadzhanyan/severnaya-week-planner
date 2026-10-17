@@ -1,0 +1,92 @@
+/* Стакан цены и себестоимости филе. Цвета и шрифты – токены --c-* и --fs-* из components.css.
+   Одна анимация входа ступеней; без переходов и теней. Печать: без анимации, таблицы выводятся всегда. */
+
+.stakan{margin:0;min-width:0;display:flex;flex-direction:column;gap:8px}
+.stakan-caption{padding:0;font-size:var(--fs-body);font-weight:600;line-height:1.4;color:var(--c-text)}
+.stakan-frame{position:relative;min-width:0;width:100%}
+.stakan-svg{display:block;width:100%;max-width:100%;height:auto;overflow:visible;font-family:var(--f-ui)}
+
+/* Оси, выноски и подписи. Размер подписей не меньше 12 px */
+.stakan-baseline{stroke:var(--c-line);stroke-width:1}
+.stakan-tick,.stakan-unit,.stakan-head,.stakan-col-name,.stakan-col-delta,.stakan-col-word{font-size:12px;fill:var(--c-muted)}
+.stakan-callout-value,.stakan-col-value{font-weight:600;fill:var(--c-text)}
+.stakan-callout-value{font-size:12px}
+.stakan-callout-sub{font-size:12px;fill:var(--c-muted)}
+.stakan-col-value{font-size:14px}
+.stakan-total{font-size:12px;fill:var(--c-text)}
+.stakan-leader{stroke:var(--c-secondary);stroke-width:1}
+
+/* Ступени и столбцы: заливка по классу, контур выделения 2 px с отступом 2 px */
+.stakan-item{outline:none;cursor:pointer}
+.stakan-hit{fill:transparent;pointer-events:all}
+.stakan-step{fill:var(--c-secondary)}
+.stakan-step.is-main{fill:var(--c-data)}
+.stakan-col{fill:var(--c-secondary)}
+.stakan-col.is-total{fill:var(--c-data)}
+.stakan-outline{fill:none;stroke:var(--c-data);stroke-width:2;opacity:0;pointer-events:none}
+.stakan-item:hover .stakan-outline,
+.stakan-item:focus-visible .stakan-outline,
+.stakan-item[aria-pressed="true"] .stakan-outline{opacity:1}
+
+/* Подпись крупной ступени: белый текст на #003C72 */
+.stakan-main-pct{font-family:var(--f-head);font-size:28px;font-weight:700;fill:var(--c-bg)}
+.stakan-main-text{font-size:14px;fill:var(--c-bg)}
+
+/* Линия себестоимости: пунктир 1 px, внутри главной ступени белая */
+.stakan-cost-line{stroke:var(--c-muted);stroke-width:1;stroke-dasharray:4 3;fill:none;pointer-events:none}
+.stakan-cost-main{stroke:var(--c-bg);stroke-width:1;stroke-dasharray:4 3;pointer-events:none}
+
+/* Подсказка у элемента: только для чтения, без перехода */
+.stakan-tip{position:absolute;top:0;width:232px;box-sizing:border-box;padding:8px 10px;background:var(--c-bg);border:1px solid var(--c-line);font-size:var(--fs-caption);color:var(--c-muted);line-height:1.35;pointer-events:none;z-index:1}
+.stakan-tip-flag{margin:0 0 2px;font-weight:600;color:var(--c-data)}
+.stakan-tip-title{margin:0 0 4px;font-size:var(--fs-body);font-weight:600;color:var(--c-text)}
+.stakan-tip dl{margin:0}
+.stakan-tip dl>div{display:flex;justify-content:space-between;gap:8px}
+.stakan-tip dt{margin:0}
+.stakan-tip dd{margin:0;font-weight:600;color:var(--c-text);text-align:right;white-space:nowrap}
+
+/* Текст под графиком */
+.stakan-detail{margin:0;min-height:20px;font-size:var(--fs-body);line-height:1.4;color:var(--c-text)}
+.stakan-small{margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:4px 16px;font-size:var(--fs-caption);color:var(--c-text)}
+.stakan-small li{white-space:nowrap}
+.stakan-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.stakan-note,.stakan-foot,.stakan-source{margin:0;font-size:var(--fs-caption);line-height:1.35;color:var(--c-muted)}
+.stakan-check{margin:0;font-size:var(--fs-caption);line-height:1.35;color:var(--c-text)}
+.stakan-status{margin:0;font-size:var(--fs-body);color:var(--c-text)}
+.stakan-sym{font-weight:600}
+.stakan-sym.ok{color:var(--c-ok)}
+.stakan-sym.warn{color:var(--c-secondary)}
+.stakan-sym.risk{color:var(--c-risk)}
+.stakan-sym.none{color:var(--c-muted)}
+
+/* Таблицы: линии 1 px #D9E2EA только между строками, числа справа */
+.stakan-tables{display:grid;gap:16px}
+.stakan-tables[hidden]{display:none}
+.stakan-table-wrap{min-width:0;overflow-x:auto}
+.stakan-table{width:100%;border-collapse:collapse;font-size:var(--fs-body);color:var(--c-text);font-variant-numeric:tabular-nums}
+.stakan-table caption{caption-side:top;text-align:left;padding:0 0 6px;font-size:var(--fs-caption);color:var(--c-muted)}
+.stakan-table th,.stakan-table td{padding:6px 12px 6px 0;border-bottom:1px solid var(--c-line);text-align:left;vertical-align:top;font-weight:400}
+.stakan-table th{font-size:var(--fs-caption);color:var(--c-muted)}
+.stakan-table .num{text-align:right}
+.stakan-table tr.total td{font-weight:600}
+
+/* Вход ступеней: 360 мс, сдвиг 60 мс на ступень, только при допустимом движении */
+@media (prefers-reduced-motion: no-preference) {
+  .stakan-step{
+    transform-box:fill-box;
+    transform-origin:50% 100%;
+    animation:stakan-rise 360ms cubic-bezier(0.2,0.7,0.2,1) backwards;
+    animation-delay:calc(var(--i, 0) * 60ms);
+  }
+  @keyframes stakan-rise{
+    from{transform:scaleY(0)}
+    to{transform:scaleY(1)}
+  }
+}
+
+/* Печать: ступени в конечном размере с контуром для черно-белой печати, таблицы всегда, кнопки и подсказки скрыты */
+@media print {
+  .stakan-step,.stakan-col{animation:none!important;stroke:var(--c-data);stroke-width:1}
+  .stakan-outline,.stakan-tip,.stakan-toggle,.stakan-retry{display:none!important}
+  .stakan-tables[hidden]{display:grid!important}
+}

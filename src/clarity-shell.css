@@ -1,48 +1,108 @@
+/* Оболочка: верхняя панель, навигация по разделам с чипами шагов и рабочая область. Цвета по токенам styles.css. */
 #app.clarity-app{display:block;grid-template-columns:none}
-.clarity-app .shell{height:100%;display:grid;grid-template-rows:58px 48px minmax(0,1fr) 32px}
-.clarity-app .topbar{padding:0 24px;gap:25px}.clarity-brand{display:flex;gap:12px;align-items:baseline;text-decoration:none;color:var(--blue)}.clarity-brand strong{font-size:22px}.clarity-brand span{font-size:14px;color:var(--muted)}.clarity-app .period{font-size:13px;margin-left:auto}.clarity-app .period strong{font-size:14px}.clarity-app .top-actions{gap:14px}
-.work-navigation{display:flex;align-items:stretch;border-bottom:1px solid var(--line);padding:0 24px;gap:8px}.work-navigation .nav-button{width:auto;flex:1;min-height:0;justify-content:center;padding:8px 12px;border:0;border-bottom:3px solid transparent;color:var(--muted);background:transparent;gap:8px}.work-navigation .nav-button.active{border-bottom-color:var(--blue);color:var(--blue);background:#f4f5f6}.work-navigation .nav-number{margin:0;font-size:12px;color:inherit;display:grid;place-items:center;width:19px;height:19px;border:1px solid #c8d1d8;border-radius:50%}.work-navigation .nav-label{font-size:14px;line-height:1.2}.nav-help{border:0;background:white;color:var(--blue);padding:8px 12px;font-weight:600;font-size:17px}
-.clarity-app #content{padding:20px 24px 16px;gap:20px;overflow:hidden}.clarity-app #content[data-view=plan],.clarity-app #content[data-view=demand],.clarity-app #content[data-view=scenarios]{display:block}.clarity-app .bottomline{padding:0 24px;font-size:12px}.clarity-app .bottomline>div{display:flex;gap:22px}.clarity-app .bottomline button{padding:0;font-size:12px}.clarity-app .metrics{width:calc(100% - 288px)}.clarity-app .mobile-parameters{display:none}.clarity-app .server-notice{bottom:34px}
+.clarity-app .shell{height:100%;display:grid;grid-template-rows:58px 64px minmax(0,1fr) 32px}
+.clarity-app .topbar{padding:0 24px;gap:25px}
+.clarity-brand{display:flex;gap:12px;align-items:baseline;text-decoration:none;color:var(--data)}
+.clarity-brand strong{font-family:var(--font-head);font-size:23px;font-weight:700}
+.clarity-brand span{font-size:14px;color:var(--muted)}
+.clarity-app .period{font-size:13px;margin-left:auto}
+.clarity-app .period strong{font-size:14px}
+.clarity-app .top-actions{gap:14px}
+.work-navigation{display:flex;align-items:stretch;border-bottom:1px solid var(--line);padding:0 24px;gap:8px}
+.work-navigation .nav-button{width:auto;flex:1;min-height:0;justify-content:center;align-items:center;flex-wrap:wrap;padding:8px 12px;border:0;border-bottom:3px solid transparent;color:var(--muted);background:transparent;gap:8px}
+.work-navigation .nav-button.active{border-bottom-color:var(--data);color:var(--data);background:var(--surface)}
+.work-navigation .nav-number{margin:0;font-size:12px;color:inherit;display:grid;place-items:center;width:19px;height:19px;border:1px solid var(--steel);border-radius:50%}
+.work-navigation .nav-label{font-size:14px;line-height:1.2}
+.nav-chip{margin-left:auto}
+.nav-help{border:0;background:var(--bg);color:var(--data);padding:8px 12px;font-weight:600;font-size:17px}
+.clarity-app #content{padding:20px 24px 16px;gap:20px;overflow:hidden}
+.clarity-app #content[data-view=plan],.clarity-app #content[data-view=demand]{display:block}
+.clarity-app #content[data-view=overview]{display:block;overflow-y:auto;overflow-x:hidden}
+.clarity-app .bottomline{padding:0 24px;font-size:12px}
+.clarity-app .bottomline>div{display:flex;gap:22px}
+.clarity-app .bottomline button{padding:0;font-size:12px}
+.clarity-app .metrics{width:calc(100% - 288px)}
+.clarity-app .server-notice{bottom:34px}
 .pending-results .plan-production,.pending-results .plan-result{opacity:.55}
-@media(max-width:1100px){.clarity-app .topbar{padding:0 20px;gap:20px}.clarity-brand span{display:none}.clarity-app #content{padding:18px 20px 14px}.work-navigation{padding:0 20px;gap:4px}.work-navigation .nav-button{padding:8px}.work-navigation .nav-label{font-size:13px}}
-@media(max-height:800px) and (min-width:1001px){.clarity-app .shell{grid-template-rows:54px 44px minmax(0,1fr) 28px}.clarity-app #content{padding:16px 24px 12px}.clarity-app .bottomline{font-size:11px}.clarity-app .bottomline button{font-size:11px}}
-@media(max-width:900px),(max-height:620px){.clarity-app #content{overflow-y:auto;overflow-x:hidden}.clarity-app .workspace{min-height:430px}.clarity-app .metrics{width:100%}.clarity-app .action-pane{display:flex}.clarity-app .shell{grid-template-rows:54px 46px minmax(0,1fr) 32px}.work-navigation .nav-number{display:none}.clarity-app .period{gap:6px}.clarity-app .period>span{display:none}.clarity-app .top-actions{gap:7px}}
-@media(max-width:600px){.clarity-app .shell{grid-template-rows:54px 44px minmax(0,1fr) 36px}.clarity-app .topbar{padding:0 14px;gap:12px}.clarity-brand strong{font-size:20px}.clarity-app .topbar .period{display:none}.clarity-app .top-actions{margin-left:auto}.clarity-app .top-actions .sync-status{position:static;font-size:10px}.clarity-app .top-actions .badge{font-size:10px;max-width:110px;overflow:hidden;text-overflow:ellipsis}.clarity-app .top-actions .icon-button{display:none}.work-navigation{overflow-x:auto;overflow-y:hidden;padding:0 10px;gap:0}.work-navigation .nav-button{flex:0 0 auto;padding:7px 11px;white-space:nowrap}.work-navigation .nav-label{font-size:13px}.work-navigation .nav-help{flex:0 0 36px}.clarity-app #content{padding:16px 14px 22px}.clarity-app .bottomline{padding:0 14px;font-size:10px}.clarity-app .bottomline>div{gap:8px}.clarity-app .bottomline button{font-size:10px}.clarity-app .bottomline #context-line{max-width:140px;font-size:10px;line-height:1.15}.clarity-app .bottomline button[data-action=reset]{display:none}.clarity-app .workspace{display:flex;flex-direction:column;min-height:650px;gap:22px}.clarity-app .action-pane{border-left:0;border-top:1px solid var(--line);padding:18px 0 0}.clarity-app .metrics{gap:12px}.clarity-app .metric strong{font-size:23px}.clarity-app .page-heading h1{font-size:25px}.clarity-app .page-heading{display:flex;flex-wrap:wrap;gap:12px}.clarity-app .metrics .metric small{font-size:11px}}
-
-.clarity-app .approval-flow{flex:1 0 auto;min-height:220px}.clarity-app .signal-item{padding:7px 0}.clarity-app .action-pane{gap:10px}.clarity-app .signal-item .status{margin-bottom:3px}.clarity-app .signal-head{margin-bottom:2px}.clarity-app .signal-meta{margin-top:4px}.clarity-app .signal-link{margin-top:4px}
-@media(min-width:901px) and (max-height:800px){.clarity-app .action-pane>.eyebrow{font-size:12px}.clarity-app .action-pane>h2{font-size:17px}.clarity-app .action-pane{gap:8px}.clarity-app .signal-item{padding:5px 0}.clarity-app .signal-title{font-size:13px}.clarity-app .signal-meta{font-size:12px}.clarity-app .signal-link{font-size:11px}.clarity-app .action-pane>.primary{min-height:40px;padding:9px 12px}}
-
+.clarity-app .signal-item{padding:7px 0}
+.clarity-app .action-pane{gap:10px}
+.clarity-app .signal-head{margin-bottom:2px}
+.clarity-app .signal-meta{margin-top:4px}
+.clarity-app .signal-link{display:flex;margin-top:4px;color:var(--data)}
+.clarity-app .signal-link svg{width:16px;height:16px}
+@media(max-width:1100px){.clarity-app .topbar{padding:0 20px;gap:20px}.clarity-brand span{display:none}.clarity-app #content{padding:18px 20px 14px}.work-navigation{padding:0 20px;gap:4px}.work-navigation .nav-button{padding:8px}}
+@media(max-height:800px) and (min-width:1001px){.clarity-app .shell{grid-template-rows:54px 58px minmax(0,1fr) 28px}.clarity-app #content{padding:16px 24px 12px}.clarity-app .bottomline{font-size:11px}.clarity-app .bottomline button{font-size:11px}}
+@media(max-width:900px),(max-height:620px){.clarity-app #content{overflow-y:auto;overflow-x:hidden}.clarity-app .workspace{min-height:430px}.clarity-app .metrics{width:100%}.clarity-app .action-pane{display:flex}.clarity-app .shell{grid-template-rows:54px 58px minmax(0,1fr) 32px}.clarity-app .period{gap:6px}.clarity-app .period>span{display:none}.clarity-app .top-actions{gap:7px}}
+@media(max-width:600px){
+ .clarity-app .shell{grid-template-rows:54px 58px minmax(0,1fr) 36px}
+ .clarity-app .topbar{padding:0 14px;gap:12px}
+ .clarity-brand strong{font-size:20px}
+ .clarity-app .topbar .period{display:none}
+ .clarity-app .top-actions{margin-left:auto}
+ .clarity-app .top-actions .sync-status{position:static;font-size:10px}
+ .clarity-app .top-actions .badge{font-size:10px;max-width:110px;overflow:hidden;text-overflow:ellipsis}
+ .clarity-app .top-actions .icon-button{display:none}
+ .work-navigation{overflow-x:auto;overflow-y:hidden;padding:0 10px;gap:0}
+ .work-navigation .nav-button{flex:0 0 auto;padding:7px 11px;white-space:nowrap}
+ .work-navigation .nav-label{font-size:13px}
+ .work-navigation .nav-help{flex:0 0 36px}
+ .clarity-app #content{padding:16px 14px 22px}
+ .clarity-app .bottomline{padding:0 14px;font-size:10px}
+ .clarity-app .bottomline>div{gap:8px}
+ .clarity-app .bottomline button{font-size:10px}
+ .clarity-app .bottomline #context-line{max-width:140px;font-size:10px;line-height:1.15}
+ .clarity-app .workspace{display:flex;flex-direction:column;min-height:650px;gap:22px}
+ .clarity-app .action-pane{border-left:0;border-top:1px solid var(--line);padding:18px 0 0}
+ .clarity-app .metrics{gap:12px}
+ .clarity-app .page-heading{display:flex;flex-wrap:wrap;gap:12px}
+ .clarity-app .metrics .metric small{font-size:11px}
+}
 @media(max-width:600px){
  .clarity-app #content .workspace{flex:0 0 auto;min-height:0;height:auto}
  .clarity-app #content .visual-pane,.clarity-app #content .action-pane{flex:0 0 auto;height:auto;min-height:0}
  .clarity-app #content .chart-area{flex:0 0 auto;min-height:230px;height:auto}
  .clarity-app #content .mobile-bars{flex:0 0 auto;height:auto;min-height:220px}
  .clarity-app #content .effect-equation{flex:0 0 auto;min-height:170px;height:auto}
- .clarity-app #content .approval-flow{flex:0 0 auto;min-height:0;height:auto}
- .clarity-app #content .heading-actions .mobile-parameters{display:none!important}
- .clarity-app #content .heading-actions>button:not(.mobile-parameters){display:inline-flex}
 }
+/* Факт и итоги: блоки вклада и годового эффекта идут друг за другом с прокруткой, рабочая область сохраняет минимальную высоту */
+.clarity-app #content[data-view=actual]{display:block;overflow-y:auto;overflow-x:hidden}
+.clarity-app #content[data-view=actual] .workspace{flex:none;height:auto;min-height:360px}
+.clarity-app #content[data-view=actual] .metrics{min-height:0}
 
-/* Georgia Bold выделяет выводы; подписи и таблицы сохраняют плотность */
-.clarity-app h1,.clarity-app h2,.clarity-app h3,.modal h2,.modal h3,.tour-card h3{font-family:var(--font-head);font-weight:700;color:var(--blue)}
-.clarity-brand strong,.result-total>strong,.result-difference>strong,.quick-option strong,.metric>strong,.equation-total strong{font-family:var(--font-head);font-weight:700}
-.clarity-brand strong{font-size:23px;letter-spacing:normal}
-.clarity-app .page-heading h1{font-size:28px;line-height:1.15}
-.clarity-app .metric>strong{font-size:29px;letter-spacing:normal}
-.clarity-app .metric>strong.disabled-value{font-family:var(--font-body);font-size:21px;letter-spacing:0;white-space:normal}
-.clarity-app .visual-header h2,.clarity-app .action-pane h2{font-size:17px}
-.clarity-app .metric label,.clarity-app .metric small{font-size:12px}
-.clarity-app .metrics{gap:22px}
-.modal-header h2{font-size:25px;line-height:1.2}.tour-card h3{font-size:20px;line-height:1.2}
-@media(min-width:901px) and (max-height:800px){
- .clarity-app #content{gap:14px;padding-top:14px;padding-bottom:12px}
- .clarity-app .page-heading h1{font-size:25px}.clarity-app .metric>strong{font-size:26px}
- .clarity-app .visual-pane{gap:10px}.clarity-app .metrics{min-height:65px}
- .clarity-app .approval-flow{min-height:185px}
- .clarity-app .economics-bridge .data-table td{padding:7px 10px;font-size:13px}
- .clarity-app #content .effect-equation{min-height:90px}
- .clarity-app .action-pane{gap:7px}
+/* Экран плана задает свою шапку и зоны в plan-screen.css; здесь остаются размеры оболочки остальных экранов от 1100 px ширины. */
+@media (min-width:1100px){
+.clarity-app .shell{grid-template-rows:54px 48px minmax(0,1fr) 26px}
+.clarity-app .bottomline{height:26px;line-height:26px;font-size:12px}
 }
-@media(max-width:600px){.clarity-app .page-heading h1{font-size:24px}.clarity-app .metric>strong{font-size:23px}.clarity-brand strong{font-size:21px}.modal-header h2{font-size:21px}}
-
-.clarity-app .metric>strong.negative,.clarity-app .effect-equation strong.negative{color:var(--bad)}
+/* Кнопки решения: высота 36 px и подпись 14 px. На экране плана размеры переопределяются в plan-screen.css (40 px на 1366×768, подпись 14 px). Строка 36 + 14 + 6 px относится к прежнему бюджету 56 px. */
+.plan-screen .decision-action{display:grid;grid-template-rows:36px 14px;row-gap:6px;align-content:start;min-width:0}
+.plan-screen .plan-decision .decision-action>button{height:36px;min-height:36px;padding:0 8px;font-size:14px;line-height:1.2;white-space:nowrap;justify-self:start}
+/* Шаги навигации до 900 px: номер и название в первой строке, чип статуса – во второй строке кнопки шага, без выхода за границы кнопки. */
+@media (max-width:900px){
+ .work-navigation .nav-button{display:grid;grid-template-columns:auto minmax(0,1fr);justify-items:start;justify-content:center;align-items:center;gap:4px 8px;min-width:0;padding:4px 8px}
+ .work-navigation .nav-label{min-width:0;font-size:13px;line-height:1.2}
+ .work-navigation .nav-chip{grid-column:1 / -1;justify-self:center;margin:0;max-width:100%}
+}
+/* Ниже 1200 px по ширине: один столбец, страница прокручивается целиком. Экран плана дополнительно задан в plan-screen.css. */
+@media (max-width:1199px){
+  #root{height:auto;min-height:100dvh;overflow:visible}
+  .clarity-app .shell{height:auto;min-height:100dvh}
+  .clarity-app #content,.clarity-app #content[data-view]{overflow:visible}
+  .variants-screen .ss-results{grid-template-columns:minmax(0,1fr)}
+}
+/* Экран «Варианты»: заголовок-вывод над сравнением планов, область прокручивается по высоте окна. */
+.clarity-app #content[data-view=variants]{display:block;overflow-y:auto;overflow-x:hidden}
+.page-intro{display:grid;gap:4px;margin:0 0 16px}
+.page-intro .eyebrow{font-size:var(--fs-caption);color:var(--c-muted)}
+/* Тени не используются: уведомление об ошибке выделяется рамкой слева и цветом. */
+.server-notice{box-shadow:none}
+/* Справка «?»: одно окно с семью шагами; белый фон, без теней и анимаций. */
+.onboarding-overlay{position:fixed;inset:0;z-index:120;display:grid;place-items:center;padding:16px;background:rgba(26,26,26,.35)}
+.onboarding{width:min(600px,100%);max-height:calc(100dvh - 32px);overflow:auto;padding:24px 28px;background:var(--c-bg);color:var(--c-text)}
+.onboarding:focus{outline:none}
+.onboarding h2{margin:0 0 12px}
+.onboarding-steps{display:grid;gap:12px;margin:0;padding-left:24px}
+.onboarding-steps strong{display:block;font-size:var(--fs-body);font-weight:600}
+.onboarding-steps p{margin:2px 0 0;font-size:var(--fs-body);color:var(--c-muted)}
+.onboarding-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:12px;margin-top:20px}
+@media (max-width:600px){.onboarding{padding:18px}}

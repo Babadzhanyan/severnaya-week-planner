@@ -12,4 +12,13 @@ __pycache__/
 .vercel
 .env*
 dist-demo/
+backend/client_data/
+backend/source_data/real_data_*.json
 !.env.example
+
+# Рабочие копии с клиентскими данными
+work/**/*.gz
+work/clients_public_candidate/
+backend/source_data/real_data_*
+backend/tests/fixtures_synthetic/real_data_clients.json
+backend/tests/fixtures_synthetic/next_stage_clients/recommendations_by_client.json

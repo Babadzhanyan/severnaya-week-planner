@@ -94,14 +94,15 @@ class FilesEconomicsTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertEqual(set(data), {"economics", "yields"})
-        self.assertEqual(data["yields"]["sources"]["efficiency"]["file"], "пример.xlsx")
+        self.assertNotIn("sources", data["yields"])
         self.assertNotIn("/private/", response.text)
         self.assertNotIn("read_file", response.text)
         self.assertNotIn("annual_context", response.text)
         self.assertNotIn("quality", data["economics"])
         for key in ["reference_datasets", "pork_reference", "verification", "annual_duplicate"]:
             self.assertNotIn(key, response.text)
-        self.assertEqual(set(data["yields"]["sources"]), {"efficiency"})
+        self.assertNotIn("primary_source", data["economics"])
+        self.assertNotIn("sha256", response.text)
 
     def test_default_calculation_exposes_common_mass_and_exact_bridge(self):
         data = self.evaluate()
@@ -367,7 +368,7 @@ class FilesEconomicsTests(unittest.TestCase):
             data = response.json()
             self.assertEqual(len(data["economics"]["products"]), 22)
             self.assertEqual(len(data["yields"]["routes"]), 5)
-            self.assertEqual(set(data["yields"]["sources"]), {"efficiency"})
+            self.assertNotIn("sources", data["yields"])
             for excluded in ["/Users/", "/private/", '"path"', '"read_file"', '"annual_context"',
                              '"sales_context"', '"pork_reference"', '"reference_datasets"', '"other_books"']:
                 self.assertNotIn(excluded, response.text)

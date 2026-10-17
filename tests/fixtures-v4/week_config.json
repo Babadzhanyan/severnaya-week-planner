@@ -1,0 +1,145 @@
+{
+  "schemaVersion": 1,
+  "source": "aggregates",
+  "period": {
+    "label": "Синтетическая неделя",
+    "basis": "синтетика для приемочных проверок"
+  },
+  "scaleWeekKg": 100000,
+  "rawCostRubKg": 127.2,
+  "freezeCostRubKg": 6.0,
+  "products": {
+    "whole": {
+      "listPriceRubKg": 300.0,
+      "freezePriceRubKg": 200.0,
+      "priceSource": "синтетика для приемочных проверок"
+    },
+    "fillet": {
+      "listPriceRubKg": 300.0,
+      "freezePriceRubKg": 200.0,
+      "priceSource": "синтетика для приемочных проверок"
+    },
+    "legs": {
+      "listPriceRubKg": 300.0,
+      "freezePriceRubKg": 200.0,
+      "priceSource": "синтетика для приемочных проверок"
+    },
+    "wing": {
+      "listPriceRubKg": 300.0,
+      "freezePriceRubKg": 200.0,
+      "priceSource": "синтетика для приемочных проверок"
+    },
+    "frame": {
+      "listPriceRubKg": 300.0,
+      "freezePriceRubKg": 200.0,
+      "priceSource": "синтетика для приемочных проверок"
+    },
+    "breast": {
+      "listPriceRubKg": 300.0,
+      "freezePriceRubKg": 200.0,
+      "priceSource": "синтетика для приемочных проверок"
+    },
+    "legMeat": {
+      "listPriceRubKg": 300.0,
+      "freezePriceRubKg": 200.0,
+      "priceSource": "синтетика для приемочных проверок"
+    },
+    "legBone": {
+      "listPriceRubKg": 300.0,
+      "freezePriceRubKg": 200.0,
+      "priceSource": "синтетика для приемочных проверок"
+    },
+    "legSkin": {
+      "listPriceRubKg": 300.0,
+      "freezePriceRubKg": 200.0,
+      "priceSource": "синтетика для приемочных проверок"
+    }
+  },
+  "routes": {
+    "whole": {
+      "yields": {},
+      "variableCostRubKg": 130.5,
+      "sourceNote": "Синтетика: ставка целой тушки 130,5 включает сырье 114,9, убой 10,8 и упаковку 4,8 (пакет, Ревью_внедрения)"
+    },
+    "coarse": {
+      "yields": {
+        "breast": 0.4,
+        "legs": 0.35,
+        "wing": 0.11,
+        "frame": 0.13
+      },
+      "variableCostRubKg": 19.0,
+      "sourceNote": "Синтетика: учебная схема каталога"
+    },
+    "fillet": {
+      "yields": {
+        "fillet": 0.32,
+        "legs": 0.35,
+        "wing": 0.11,
+        "frame": 0.2
+      },
+      "variableCostRubKg": 20.3,
+      "sourceNote": "Синтетика: учебная схема каталога"
+    },
+    "deep": {
+      "yields": {
+        "fillet": 0.32,
+        "legMeat": 0.24,
+        "legBone": 0.075,
+        "legSkin": 0.025,
+        "wing": 0.11,
+        "frame": 0.2
+      },
+      "variableCostRubKg": 28.0,
+      "sourceNote": "Синтетика: учебная схема каталога"
+    }
+  },
+  "capacityTDay": {
+    "deboning": 40.0,
+    "packing": 100.0,
+    "packingLegs": 50.0,
+    "liver": 10.0,
+    "evisceration": 60.0,
+    "freezing": 6.0
+  },
+  "capacityWeekT": {
+    "deboning": 40.0,
+    "packing": 100.0,
+    "packingLegs": 50.0,
+    "liver": 10.0,
+    "evisceration": 60.0,
+    "freezing": 6.0
+  },
+  "sources": [
+    {
+      "field": "синтетика",
+      "file": "синтетическая фикстура",
+      "sheet": "нет",
+      "period": "синтетический период",
+      "status": "синтетика для приемочных проверок"
+    }
+  ],
+  "orders": [
+    {
+      "productId": "fillet",
+      "period": "2026-10",
+      "status": "confirmed",
+      "qtyKg": 1000,
+      "priceRubKg": 300.0,
+      "channel": "синтетический канал",
+      "source": "синтетическая фикстура"
+    }
+  ],
+  "costFacts": {
+    "fillet": {
+      "costRubKgOutput": 141.4867668079,
+      "period": "апрель 2026",
+      "source": "синтетика: сумма статей филе из пакета"
+    },
+    "legMeat": {
+      "costRubKgOutput": null,
+      "period": "апрель 2026",
+      "source": "Требуется подтверждение: владелец финансы"
+    }
+  }
+}

@@ -8,6 +8,7 @@ from decimal import Decimal, ROUND_HALF_UP
 import json
 import math
 from pathlib import Path
+import time
 
 CATALOG = json.loads(Path(__file__).with_name("catalog.json").read_text(encoding="utf-8"))
 PRODUCTS = CATALOG["products"]
@@ -17,12 +18,12 @@ VERSION = CATALOG["version"]
 EPS = 1e-7
 LABEL = "Иллюстрация: учебные данные"
 NAMES = {
-    "totalInput": "Доступное сырьё", "rawCost": "Цена сырья", "capacity": "Мощность разделки",
+    "totalInput": "Доступное сырье", "rawCost": "Цена сырья", "capacity": "Мощность разделки",
     "hours": "Рабочее время", "rate": "Скорость разделки", "minWhole": "Минимальный заказ тушки",
-    "cut": "Вход разделки", "coldCapacity": "Ёмкость хранения", "freezeCost": "Стоимость заморозки",
-    "prices": "цена реализации", "demand": "общий спрос", "orders": "подтверждённый заказ",
+    "cut": "Вход разделки", "coldCapacity": "Емкость хранения", "freezeCost": "Стоимость заморозки",
+    "prices": "цена реализации", "demand": "общий спрос", "orders": "подтвержденный заказ",
     "service": "стоимость обслуживания", "frozenPrices": "цена замороженного продукта",
-    "weeks": "Число недель", "execution": "Доля исполнения", "investment": "Объём вложений",
+    "weeks": "Число недель", "execution": "Доля исполнения", "investment": "Объем вложений",
     "annualOpex": "Стоимость сопровождения за год",
 }
 
@@ -101,7 +102,7 @@ def validate(p):
                 name = (ROUTES.get(item, {}).get("name", "Выбранный маршрут") + ": стоимость обработки") if key == "routeCosts" else {"deboning": "Мощность обвалки", "packing": "Мощность упаковки", "freezing": "Мощность заморозки"}.get(item, "Мощность передела")
                 errors.append(name + " требует числа ≥ 0")
     if finite(p["totalInput"]) and finite(p["cut"]) and p["cut"] > p["totalInput"] + EPS:
-        errors.append("Вход разделки превышает доступное сырьё")
+        errors.append("Вход разделки превышает доступное сырье")
     for request_id, request in request_items(p["requests"]):
         if not request or request.get("product") not in PRODUCTS or not finite(request.get("quantity")) or request["quantity"] <= 0 or not finite(request.get("price")) or request["price"] < 0 or not finite(request.get("service")) or request["service"] < 0:
             errors.append("Заявка " + request_id + " требует проверки количества и условий")
@@ -111,7 +112,7 @@ def validate(p):
             errors.append(PRODUCTS[product]["name"] + ": обязательства превышают общий спрос")
         reserved = total(r.get("quantity", 0) or 0 for _, r in request_items(p["requests"]) if r and r.get("product") == product)
         if reserved > p["orders"][product] + EPS:
-            errors.append(PRODUCTS[product]["name"] + ": резерв заявки превышает подтверждённый объём")
+            errors.append(PRODUCTS[product]["name"] + ": резерв заявки превышает подтвержденный объем")
     return errors
 
 
@@ -168,7 +169,7 @@ def evaluate(input_params=None):
     contribution = revenue - service_cost - raw_cost - route_cost - freeze_cost
     effective_capacity = min(p["capacity"], p["hours"] * p["rate"])
     stages = [stage("cutting", "Разделка", cut, effective_capacity, cut > EPS), stage("deboning", "Обвалка", cut * route["deboneInputShare"], p["stageCapacity"]["deboning"], route["deboneInputShare"] > 0 and cut > EPS), stage("packing", "Упаковка", total(produced.values()), p["stageCapacity"]["packing"], p["totalInput"] > EPS), stage("freezing", "Заморозка", inventory, p["stageCapacity"]["freezing"], inventory > EPS)]
-    storage = {"load": inventory, "capacity": p["coldCapacity"], "unit": "т единовременно", "utilization": inventory / p["coldCapacity"] if p["coldCapacity"] > 0 else (None if inventory > EPS else 0), "binding": inventory > EPS and inventory >= p["coldCapacity"] - EPS, "sourceStatus": "Учебная ёмкость хранения"}
+    storage = {"load": inventory, "capacity": p["coldCapacity"], "unit": "т единовременно", "utilization": inventory / p["coldCapacity"] if p["coldCapacity"] > 0 else (None if inventory > EPS else 0), "binding": inventory > EPS and inventory >= p["coldCapacity"] - EPS, "sourceStatus": "Учебная емкость хранения"}
     violations = []
     if whole + EPS < p["minWhole"]:
         violations.append("Тушка: разрыв обязательства " + display(p["minWhole"] - whole) + " т")
@@ -176,7 +177,7 @@ def evaluate(input_params=None):
         if s["load"] > s["capacity"] + EPS:
             violations.append(s["name"] + ": загрузка превышает мощность на " + display(s["load"] - s["capacity"]) + " т")
     if inventory > p["coldCapacity"] + EPS:
-        violations.append("Хранение: остаток превышает ёмкость на " + display(inventory - p["coldCapacity"]) + " т")
+        violations.append("Хранение: остаток превышает емкость на " + display(inventory - p["coldCapacity"]) + " т")
     for product in IDS:
         if allocations[product]["shortfall"] > EPS and not (product == "whole" and whole < p["minWhole"]):
             violations.append(PRODUCTS[product]["name"] + ": разрыв заказа " + display(allocations[product]["shortfall"]) + " т")
@@ -184,13 +185,13 @@ def evaluate(input_params=None):
         violations.append("Материальный баланс требует сверки выходов")
     signals = [{"level": "bad", "title": label, "detail": "Условие ограничивает утверждение", "action": "Изменить план", "owner": "Планирование"} for label in violations]
     if inventory > EPS:
-        signals.append({"level": "warn", "title": "Остаток " + display(inventory) + " т требует будущей реализации", "detail": "Текущая выручка учитывает размещённые продажи; будущая оценка запаса показана отдельно", "action": "Подтвердить спрос и срок", "owner": "Коммерция и склад"})
+        signals.append({"level": "warn", "title": "Остаток " + display(inventory) + " т требует будущей реализации", "detail": "Текущая выручка учитывает размещенные продажи; будущая оценка запаса показана отдельно", "action": "Подтвердить спрос и срок", "owner": "Коммерция и склад"})
     for s in stages:
         if s["active"] and s["binding"] and s["load"] <= s["capacity"] + EPS:
             signals.append({"level": "warn", "title": s["name"] + ": мощность задействована полностью", "detail": "Дополнительный выпуск требует изменения мощности или маршрута", "action": "Проверить доступные часы", "owner": "Производство"})
     if not violations:
         signals.append({"level": "ok", "title": "План выполняет заданные ограничения", "detail": "Выходы, обязательства и ресурсы проверены на учебных параметрах", "action": "Сравнить варианты", "owner": "Планирование"})
-    return {"valid": True, "feasible": not violations, "errors": [], "violations": violations, "signals": signals, "params": p, "route": p["route"], "cut": cut, "whole": whole, "produced": produced, "loss": loss, "massBalance": mass_balance, "allocations": allocations, "revenue": revenue, "serviceCost": service_cost, "rawCost": raw_cost, "routeCost": route_cost, "freezeCost": freeze_cost, "contribution": contribution, "inventoryT": inventory, "inventoryValue": inventory_value, "expectedContribution": contribution + inventory_value, "stages": stages, "storage": storage, "effectiveCapacity": effective_capacity, "upstream": {"name": "Охлаждённая тушка после убоя", "quantity": p["totalInput"], "unit": "т", "scope": "Вход модели; живой вес и убой требуют отдельного пересчёта"}, "label": LABEL}
+    return {"valid": True, "feasible": not violations, "errors": [], "violations": violations, "signals": signals, "params": p, "route": p["route"], "cut": cut, "whole": whole, "produced": produced, "loss": loss, "massBalance": mass_balance, "allocations": allocations, "revenue": revenue, "serviceCost": service_cost, "rawCost": raw_cost, "routeCost": route_cost, "freezeCost": freeze_cost, "contribution": contribution, "inventoryT": inventory, "inventoryValue": inventory_value, "expectedContribution": contribution + inventory_value, "stages": stages, "storage": storage, "effectiveCapacity": effective_capacity, "upstream": {"name": "Охлажденная тушка после убоя", "quantity": p["totalInput"], "unit": "т", "scope": "Вход модели; живой вес и убой требуют отдельного пересчета"}, "label": LABEL}
 
 
 def candidate(p, cut, identifier, name, route=None):
@@ -213,7 +214,7 @@ def alternatives(input_params=None):
     candidates = [candidate(p, 0, "whole", "Вся партия тушкой")] if p["route"] == "whole" else [candidate(p, p["totalInput"] * share, "option-" + str(index), name) for index, (share, name) in enumerate(((.3, "Разделка 30%"), (.4, "Разделка 40%"), (.5, "Разделка 50%")))]
     best = best_contribution([c for c in candidates if c["result"]["feasible"]], "result")
     baseline = candidate(p, p["totalInput"] * .4, "baseline", "База: филе и ножки, 40%", "fillet")
-    return {"candidates": candidates, "best": best, "baseline": baseline, "comparable": baseline["result"]["feasible"], "method": "Лучший из проверенных вариантов по результату размещённых продаж", "label": LABEL}
+    return {"candidates": candidates, "best": best, "baseline": baseline, "comparable": baseline["result"]["feasible"], "method": "Лучший из проверенных вариантов по результату размещенных продаж", "label": LABEL}
 
 
 def check_request(input_params, request):
@@ -269,7 +270,7 @@ def snapshot(input_params, confirmations=None):
     missing = [keys for keys in (("com", "commercial"), ("prod", "production"), ("fin", "finance")) if not any(confirms.get(key) is True for key in keys)]
     if not result["feasible"] or missing:
         return {"valid": False, "approved": False, "errors": result["violations"] + (["Подтверждения коммерции, производства и финансов завершают согласование"] if missing else [])}
-    return {"valid": True, "approved": True, "params": deepcopy(result["params"]), "result": deepcopy(result), "confirmations": deepcopy(confirms), "label": "Утверждённый учебный снимок"}
+    return {"valid": True, "approved": True, "params": deepcopy(result["params"]), "result": deepcopy(result), "confirmations": deepcopy(confirms), "label": "Утвержденный учебный снимок"}
 
 
 def fact(input_params):
@@ -288,7 +289,7 @@ def fact(input_params):
     actual = evaluate(p)
     price_delta = price_result["contribution"] - plan["contribution"]
     cost_delta = actual["contribution"] - price_result["contribution"]
-    return {"valid": True, "plan": plan["contribution"], "actual": actual["contribution"], "delta": actual["contribution"] - plan["contribution"], "priceDelta": price_delta, "costDelta": cost_delta, "execution": actual["contribution"] / plan["contribution"] if plan["contribution"] > 0 else None, "planResult": plan, "actualResult": actual, "rows": [{"id": "plan", "name": "Утверждённый план", "value": plan["contribution"], "kind": "total"}, {"id": "price", "name": "Цена филе", "value": price_delta, "kind": "delta", "owner": "Коммерция", "formula": "Объём проданного филе × изменение цены"}, {"id": "cost", "name": "Затраты разделки", "value": cost_delta, "kind": "delta", "owner": "Производство", "formula": "Вход разделки × −0,2 руб. / кг"}, {"id": "actual", "name": "Учебный факт", "value": actual["contribution"], "kind": "total"}], "label": "Иллюстрация: снижение цены филе в пределах 5 руб. / кг, затраты разделки +0,2 руб. / кг"}
+    return {"valid": True, "plan": plan["contribution"], "actual": actual["contribution"], "delta": actual["contribution"] - plan["contribution"], "priceDelta": price_delta, "costDelta": cost_delta, "execution": actual["contribution"] / plan["contribution"] if plan["contribution"] > 0 else None, "planResult": plan, "actualResult": actual, "rows": [{"id": "plan", "name": "Утвержденный план", "value": plan["contribution"], "kind": "total"}, {"id": "price", "name": "Цена филе", "value": price_delta, "kind": "delta", "owner": "Коммерция", "formula": "Объем проданного филе × изменение цены"}, {"id": "cost", "name": "Затраты разделки", "value": cost_delta, "kind": "delta", "owner": "Производство", "formula": "Вход разделки × −0,2 руб. / кг"}, {"id": "actual", "name": "Учебный факт", "value": actual["contribution"], "kind": "total"}], "label": "Иллюстрация: снижение цены филе в пределах 5 руб. / кг, затраты разделки +0,2 руб. / кг"}
 
 
 def roi(input_params, options=None):
@@ -314,7 +315,7 @@ def roi(input_params, options=None):
     complete = o["annualOpex"] is not None and o["investment"] is not None
     net_effect = annual_effect - o["annualOpex"] if o["annualOpex"] is not None else None
     first_cash = net_effect - o["investment"] if complete else None
-    return {"eligible": True, "valid": True, "errors": [], **o, "budgetComplete": complete, "weeklyEffect": weekly_effect, "grossEffect": gross_effect, "annualEffect": annual_effect, "netEffect": net_effect, "firstYearCash": first_cash, "roi": first_cash / o["investment"] if complete and o["investment"] > 0 else None, "paybackYears": o["investment"] / net_effect if complete and o["investment"] > 0 and net_effect > 0 else None, "baseline": baseline, "result": result, "label": "Учебное повторение одинаковых недель", "conditions": ["Одинаковые вход, цены, спрос и мощности во всех неделях", "Продана вся корзина", "Налоги и изменение оборотного капитала требуют отдельного расчёта"]}
+    return {"eligible": True, "valid": True, "errors": [], **o, "budgetComplete": complete, "weeklyEffect": weekly_effect, "grossEffect": gross_effect, "annualEffect": annual_effect, "netEffect": net_effect, "firstYearCash": first_cash, "roi": first_cash / o["investment"] if complete and o["investment"] > 0 else None, "paybackYears": o["investment"] / net_effect if complete and o["investment"] > 0 and net_effect > 0 else None, "baseline": baseline, "result": result, "label": "Учебное повторение одинаковых недель", "conditions": ["Одинаковые вход, цены, спрос и мощности во всех неделях", "Продана вся корзина", "Налоги и изменение оборотного капитала требуют отдельного расчета"]}
 
 
 def commercial(client):
@@ -325,7 +326,7 @@ def commercial(client):
 def change_levers(input_params, comparison=None):
     p = normalize(input_params)
     b = normalize(comparison or {**defaults(), "cut": 40})
-    fields = [("totalInput", "Доступная тушка", "т"), ("rawCost", "Цена сырья", "руб. / кг"), ("capacity", "Мощность разделки", "т"), ("hours", "Доступные часы", "ч"), ("rate", "Скорость разделки", "т/ч"), ("minWhole", "Заказ тушки", "т"), ("cut", "Вход разделки", "т"), ("coldCapacity", "Ёмкость хранения", "т")]
+    fields = [("totalInput", "Доступная тушка", "т"), ("rawCost", "Цена сырья", "руб. / кг"), ("capacity", "Мощность разделки", "т"), ("hours", "Доступные часы", "ч"), ("rate", "Скорость разделки", "т/ч"), ("minWhole", "Заказ тушки", "т"), ("cut", "Вход разделки", "т"), ("coldCapacity", "Емкость хранения", "т")]
     changes = [{"key": key, "name": name, "before": b[key], "after": p[key], "unit": unit} for key, name, unit in fields if p[key] != b[key]]
     if p["route"] != b["route"]:
         changes.append({"key": "route", "name": "Схема разделки", "before": ROUTES[b["route"]]["name"], "after": ROUTES[p["route"]]["name"], "unit": ""})
@@ -340,3 +341,162 @@ def change_levers(input_params, comparison=None):
         if p["stageCapacity"][stage_id] != b["stageCapacity"][stage_id]:
             changes.append({"key": "stageCapacity." + stage_id, "name": name + ": мощность", "before": b["stageCapacity"][stage_id], "after": p["stageCapacity"][stage_id], "unit": "т/неделю"})
     return changes
+
+
+# Денежный регистр и граница: мост вклада, сверка сумм, мост запаса, стакан себестоимости, пакет рычагов,
+# сеточный перебор объема разделки и смесь маршрутов. Функции не меняют выход evaluate, паритет с model.js сохраняется.
+STOCK_SIGN = {"opening": 1, "purchase": 1, "output": 1, "transfer": -1, "shipment": -1, "writeoff": -1}
+
+
+def bridge_sum(items):
+    """JS: bridgeSum. Сумма статей денежного моста. Статья kind total – серверный итог: сверка с допуском EPS."""
+    summary = total(item["valueRub"] for item in items if item.get("kind") != "total")
+    server = [item for item in items if item.get("kind") == "total"]
+    if not server:
+        return {"sumRub": summary, "serverTotalRub": None, "diffRub": None, "reconciled": None}
+    diff = summary - server[-1]["valueRub"]
+    return {"sumRub": summary, "serverTotalRub": server[-1]["valueRub"], "diffRub": diff, "reconciled": abs(diff) <= EPS}
+
+
+def money_bridge(result):
+    """JS: moneyBridge. Мост вклада варианта на одном горизонте: выручка всей корзины, сырье один раз, изменяемые операции,
+    стоимость обслуживания, расход заморозки и вклад (серверный итог evaluate)."""
+    if result.get("contribution") is None:
+        return {"items": [], "sumRub": None, "serverTotalRub": None, "diffRub": None, "reconciled": None, "reason": "Нет допустимого расчета"}
+    items = [
+        {"id": "revenue", "label": "Выручка всей корзины", "valueRub": result["revenue"]},
+        {"id": "raw", "label": "Сырье один раз", "valueRub": -result["rawCost"]},
+        {"id": "route", "label": "Изменяемые операции", "valueRub": -result["routeCost"]},
+        {"id": "service", "label": "Стоимость обслуживания заказов", "valueRub": -result["serviceCost"]},
+        {"id": "freeze", "label": "Расход заморозки", "valueRub": -result["freezeCost"]},
+        {"id": "contribution", "label": "Вклад варианта", "valueRub": result["contribution"], "kind": "total"},
+    ]
+    return {"items": items, **bridge_sum(items), "reason": None}
+
+
+def contribution_split(result):
+    """JS: contributionSplit. Разделение результата: вклад управляемого решения, распределенная производственная себестоимость
+    (сырье и операции), полная себестоимость, прибыль периода и движение денег. Без подтверждения финансов статьи пустые со статусом."""
+    if result.get("contribution") is None:
+        return None
+    return {
+        "managedContributionRub": result["contribution"],
+        "distributedProductionCostRub": result["rawCost"] + result["routeCost"],
+        "fullCostRub": None, "fullCostStatus": "Требуется подтверждение: состав полной себестоимости (владелец: финансы)",
+        "periodProfitRub": None, "periodProfitStatus": "Требуется подтверждение: налоговая основа (владелец: финансы)",
+        "cashFlowRub": None, "cashFlowStatus": "Требуется подтверждение: сроки оплаты и оборотный капитал (владелец: финансы)",
+    }
+
+
+def stock_bridge(movements, closing=None):
+    """JS: stockBridge. Мост запаса по партиям: начальный запас + закупка + выпуск − внутренняя передача − отгрузка − списание
+    = конечный запас. movements: [{lot, kind, kg, valueRub}], kg и valueRub неотрицательны, знак задает kind.
+    closing: {партия: кг} из учета; сверка по каждой партии. Неизвестный kind, отрицательный объем или остаток не проходят."""
+    lots, errors = {}, []
+    for m in movements:
+        kind = m.get("kind")
+        if kind not in STOCK_SIGN or not finite(m.get("kg")) or m["kg"] < 0 or not finite(m.get("valueRub")):
+            errors.append("Движение партии " + str(m.get("lot")) + " требует известного вида и неотрицательного объема")
+            continue
+        lot = lots.setdefault(m["lot"], {"flows": {key: 0 for key in STOCK_SIGN}, "closingKg": 0, "closingValueRub": 0})
+        lot["flows"][kind] += m["kg"]
+        lot["closingKg"] += STOCK_SIGN[kind] * m["kg"]
+        lot["closingValueRub"] += STOCK_SIGN[kind] * m["valueRub"]
+    negative = [name for name, lot in lots.items() if lot["closingKg"] < -EPS]
+    matches = None
+    if closing is not None:
+        matches = {name: abs(lots.get(name, {"closingKg": 0})["closingKg"] - kg) <= EPS for name, kg in closing.items()}
+    totals = {"closingKg": total(lot["closingKg"] for lot in lots.values()), "closingValueRub": total(lot["closingValueRub"] for lot in lots.values()),
+              "flows": {key: total(lot["flows"][key] for lot in lots.values()) for key in STOCK_SIGN}}
+    balanced = not errors and not negative and (matches is None or all(matches.values()))
+    return {"lots": lots, "totals": totals, "negativeLots": negative, "matches": matches, "errors": errors, "balanced": balanced}
+
+
+def cost_stack(parts):
+    """JS: costStack. Накопительный стакан себестоимости, руб / кг выпуска: каждая часть продолжает сумму предыдущих, итог начинается от нуля."""
+    steps, running = [], 0
+    for part in parts:
+        steps.append({"id": part["id"], "label": part["label"], "valueRubKg": part["valueRubKg"],
+                      "fromRubKg": running, "toRubKg": running + part["valueRubKg"]})
+        running += part["valueRubKg"]
+    steps.append({"id": "total", "label": "Итог, руб. / кг выпуска", "valueRubKg": running, "fromRubKg": 0, "toRubKg": running, "kind": "total"})
+    return {"steps": steps, "totalRubKg": running}
+
+
+def merge_patch(base, patch):
+    """JS: mergePatch. Слияние патча входа: вложенные словари объединяются, прочие значения заменяются."""
+    out = deepcopy(base)
+    for key, value in patch.items():
+        out[key] = merge_patch(out[key], value) if isinstance(value, dict) and isinstance(out.get(key), dict) else deepcopy(value)
+    return out
+
+
+def lever_residual(input_params, levers):
+    """JS: leverResidual. Пакет рычагов: levers = {имя: патч входа}. Частный эффект каждого рычага считается от базы;
+    остаток взаимодействий = совместный эффект − сумма частных эффектов, отдельной строкой."""
+    base = evaluate(input_params)["contribution"]
+    if base is None:
+        return None
+    individual, joint_patch = {}, {}
+    for name, patch in levers.items():
+        individual[name] = evaluate(merge_patch(input_params or {}, patch))["contribution"] - base
+        joint_patch = merge_patch(joint_patch, patch)
+    joint = evaluate(merge_patch(input_params or {}, joint_patch))["contribution"] - base
+    return {"baseRub": base, "individualRub": individual, "jointRub": joint, "interactionRub": joint - total(individual.values())}
+
+
+def search_cut(input_params=None, area=None):
+    """JS: searchCut. Сеточный перебор объема разделки на области {fromT, toT, stepT}; по умолчанию 30–50 т с шагом 0,25 т.
+    Лучший проверенный вариант – максимум вклада среди допустимых (при равенстве меньший объем). Оптимум не доказан:
+    статус решателя фиксирует допуск (шаг сетки), время и отсутствие разрыва. Обязательства, мощности и баланс проверяет evaluate.
+    ponytail: одна переменная и 81 точка; SciPy HiGHS подключаем при двух и более переменных или целочисленных партиях."""
+    started = time.perf_counter()
+    a = {"fromT": 30, "toT": 50, "stepT": .25, **(area or {})}
+    p = normalize(input_params)
+    steps = math.floor((a["toT"] - a["fromT"]) / a["stepT"] + .5)
+    points = []
+    for k in range(steps + 1):
+        cut = a["fromT"] + k * a["stepT"]
+        result = evaluate({**p, "cut": cut})
+        points.append({"cutT": cut, "contribution": result["contribution"], "feasible": result["feasible"]})
+    feasible = [point for point in points if point["feasible"]]
+    best = None
+    for point in feasible:
+        if best is None or point["contribution"] > best["contribution"] + EPS:
+            best = point
+    return {"area": {"fromT": a["fromT"], "toT": a["toT"], "stepT": a["stepT"], "points": len(points)}, "points": points,
+            "feasibleCount": len(feasible), "best": best,
+            "solver": {"name": "сеточный перебор", "status": "лучший проверенный вариант" if best else "Нет допустимого варианта",
+                       "provenOptimum": False, "toleranceT": a["stepT"], "gap": None, "gapNote": "Оптимум не доказан: разрыв не вычислен",
+                       "timeMs": round((time.perf_counter() - started) * 1000, 3)},
+            "label": LABEL}
+
+
+def mix_outputs(total_input_t, mix):
+    """JS: mixOutputs. Смесь маршрутов недели: mix = {код маршрута: объем разделки, т}; тушка – остаток входа.
+    Совместный выход маршрута делится по его выходам, потери учитываются отдельно. Баланс: выход плюс потери равны входу."""
+    errors = [code for code, cut_t in mix.items() if code not in ROUTES or not finite(cut_t) or cut_t < 0]
+    if errors or not finite(total_input_t) or total_input_t < 0:
+        return {"valid": False, "errors": errors or ["Вход и объемы разделки требуют чисел не меньше нуля"]}
+    produced, loss = zero(), 0
+    cut_total = total(mix.values())
+    for code, cut_t in mix.items():
+        route = ROUTES[code]
+        for product, share in route["yields"].items():
+            produced[product] += cut_t * 1000 * share
+        loss += cut_t * 1000 * route["loss"]
+    produced["whole"] = (total_input_t - cut_total) * 1000
+    balance = total_input_t * 1000 - total(produced.values()) - loss
+    return {"valid": True, "errors": [], "produced": produced, "lossKg": loss, "cutT": cut_total, "massBalanceKg": balance, "balanced": abs(balance) <= 1e-6}
+
+
+# Классификация статей регистра (Д05, работа 1): база килограмма, операция, изменяемость, налоговая основа, период, момент признания.
+# Предложение L3. Финансы подтверждают базу и налоговую основу; налоговая основа до подтверждения – «Требуется подтверждение».
+COST_CLASSES = [
+    {"id": "raw", "name": "Сырье", "kgBase": "кг входа тушки", "operation": "сырье", "variability": "переменная", "taxBasis": "Требуется подтверждение", "period": "неделя", "recognition": "при списании в разделку"},
+    {"id": "processing", "name": "Операции маршрута", "kgBase": "кг входа разделки", "operation": "убой, разделка, обвалка", "variability": "переменная", "taxBasis": "Требуется подтверждение", "period": "неделя", "recognition": "при выпуске"},
+    {"id": "packing", "name": "Упаковка", "kgBase": "кг выпуска", "operation": "упаковка", "variability": "переменная", "taxBasis": "Требуется подтверждение", "period": "неделя", "recognition": "при выпуске"},
+    {"id": "freeze", "name": "Заморозка", "kgBase": "кг запаса", "operation": "заморозка и хранение", "variability": "переменная", "taxBasis": "Требуется подтверждение", "period": "неделя", "recognition": "при заморозке"},
+    {"id": "service", "name": "Обслуживание заказов", "kgBase": "кг отгрузки", "operation": "отгрузка", "variability": "переменная", "taxBasis": "Требуется подтверждение", "period": "неделя", "recognition": "при отгрузке"},
+    {"id": "discount", "name": "Скидки и бонусы", "kgBase": "руб. выручки", "operation": "коммерческие условия", "variability": "переменная", "taxBasis": "Требуется подтверждение", "period": "период договора", "recognition": "при отгрузке"},
+]

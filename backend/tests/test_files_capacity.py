@@ -72,7 +72,9 @@ def test_catalog_baseline_and_private_paths(source):
     assert data["baseline"]["maxFinishedKgDay"] == 600
     assert data["baseline"]["shortfallKgDay"] == 400
     assert data["baseline"]["limitingId"] == "feet_pack"
-    assert data["source"]["file"] == "пример.xlsx"
+    assert set(data["source"]) == {"status", "capturedAt", "liveData"}
+    assert "sha256" not in response.text and "sourceRefs" not in response.text
+    assert stage(data, "feet_pack")["label"] == "Упаковка лап" and "name" not in stage(data, "feet_pack")
     assert "/private" not in response.text and '"path"' not in response.text
     assert stage(data, "feet_pack")["load"] == pytest.approx(100 / 60)
     assert data["moneyEffect"] is None
@@ -236,7 +238,7 @@ def test_stage_retains_formula_assumption_and_source_status(source):
     row = stage(evaluate({}), "evisceration")
     assert row["assumption"] == "Производительность содержит сценарный прирост"
     assert row["formula"] == stage(data, "evisceration")["formula"]
-    assert row["sourceStatus"] == "Сохранённый расчёт файла"
+    assert row["sourceStatus"] == "Сохраненный расчет файла"
 
 
 def test_exact_24_gross_hours_is_accepted(source):
@@ -254,7 +256,7 @@ def test_bundled_published_source_is_complete_and_has_safe_metadata(monkeypatch)
     assert response.status_code == 200, response.text
     data = response.json()
     assert len(data["rows"]) == 17
-    assert data["source"]["status"] == "Сохранённый расчёт файла"
+    assert data["source"]["status"] == "Сохраненный расчет файла"
     assert "/Users/" not in response.text and '"path"' not in response.text
     assert data["source"]["liveData"] is False
     assert "30%" in stage(data, "evisceration")["assumption"]

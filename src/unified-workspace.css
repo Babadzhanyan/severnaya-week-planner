@@ -1,0 +1,8 @@
+/* Каркас экранов: данные недели и спрос – блоки одного раздела, без вкладок и отдельных экранов клиентов и цепочки. */
+.retained-view{height:100%;min-height:0}
+.retained-view[hidden],.file-app[hidden]{display:none!important}
+.clarity-app #content[data-view=files],.clarity-app #content[data-view=demand]{display:block;padding:0;overflow-y:auto;overflow-x:hidden}
+.clarity-app #content .file-app{display:flex;flex-direction:column;gap:14px;height:auto;min-height:0}
+.clarity-app #content[data-view=demand]{position:relative}
+.clarity-app #content[data-view=demand]:has(>.retained-view:not([hidden]) .sales-demand-screen){display:block;padding:0}
+.return-products{position:absolute;right:15px;top:3px;z-index:2;border:0;background:var(--bg);color:var(--data);padding:5px 10px;font:600 12px var(--font-body)}

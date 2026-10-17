@@ -1,12 +1,170 @@
-.scenario-screen{--ss-blue:#003c72;--ss-line:#dbe1e6;--ss-muted:#5b6570;display:flex;flex-direction:column;gap:14px;min-height:0;width:100%;height:100%;box-sizing:border-box;color:#1a2530;font-family:var(--font-body,'Source Sans Pro',Arial,sans-serif);background:#fff}
-.scenario-screen *{box-sizing:border-box}.scenario-screen h1,.scenario-screen h2,.scenario-screen p{margin:0}.scenario-screen button,.scenario-screen input,.scenario-screen select{font:inherit}.scenario-screen button{cursor:pointer;min-height:0;line-height:1.2}.scenario-screen button:disabled{cursor:default;opacity:.58}.scenario-screen button:focus-visible,.scenario-screen input:focus-visible,.scenario-screen select:focus-visible{outline:2px solid #003c72;outline-offset:3px}
-.ss-heading{display:flex;justify-content:space-between;gap:20px;align-items:center;flex-shrink:0}.ss-heading h1{font-size:27px;line-height:1.12;color:var(--ss-blue)}.ss-step-label{font-size:13px;color:var(--ss-muted)}
-.ss-controls{display:flex;align-items:flex-end;gap:22px;padding:8px 12px;background:#f3f6f8;border:1px solid var(--ss-line);flex-shrink:0}.ss-field label{display:block;font-size:13px;line-height:1.15;font-weight:600;margin-bottom:4px}.ss-field select,.ss-field input{height:34px;min-height:34px;border:1px solid #aab8c4;border-radius:3px;background:#fff;color:#1a2530;padding:5px 9px;font-size:16px;line-height:1.2}.ss-route{flex:0 1 285px;min-width:205px}.ss-route select{width:100%}.ss-cut>div{display:flex;align-items:center;gap:7px}.ss-cut input{width:83px}.ss-cut span{font-size:14px}.ss-whole{font-size:14px;padding-bottom:7px;white-space:nowrap}.ss-whole strong{color:var(--ss-blue);margin-left:8px}.ss-control-links{display:flex;gap:18px;margin-left:auto;padding-bottom:7px}.ss-control-links button,.ss-section-top>button{padding:0;background:none;border:0;color:var(--ss-blue);font-size:14px;text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
-.ss-results{display:grid;grid-template-columns:1.05fr 1fr;gap:26px;min-height:224px;flex:1}.ss-results[data-updating=true]{opacity:.62}.ss-options,.ss-explanation{min-width:0;min-height:0;display:flex;flex-direction:column;gap:7px}.ss-explanation{border-left:1px solid var(--ss-line);padding-left:25px}.scenario-screen h2{font-size:17px;line-height:1.2}
-.ss-table-head,.ss-candidate{display:grid;grid-template-columns:1fr 1.1fr .85fr;gap:12px;align-items:center}.ss-table-head{padding:0 12px 4px 30px;font-size:12px;line-height:1.15;color:var(--ss-muted);border-bottom:1px solid var(--ss-line)}.ss-candidates{display:flex;flex-direction:column;min-height:0}.scenario-screen .ss-candidate{width:100%;min-height:51px;text-align:left;border:0;border-bottom:1px solid var(--ss-line);border-left:3px solid transparent;border-radius:0;background:#fff;padding:7px 11px 7px 8px;color:inherit}.ss-candidate:hover{background:#f5f8fa}.ss-candidate.ss-selected{border-left-color:var(--ss-blue);background:#f1f6fa}.ss-candidate-plan{display:flex;gap:8px;align-items:center;min-width:0}.ss-selection{display:block;flex:0 0 12px;width:12px;height:12px;border:1px solid #8ca1b2;border-radius:50%;background:white}.ss-selected .ss-selection{border:4px solid var(--ss-blue)}.ss-candidate-plan>span{display:flex;flex-direction:column;gap:2px}.ss-candidate-plan strong{font-size:16px;line-height:1.15;font-weight:600;color:var(--ss-blue)}.ss-candidate-plan small{font-size:12px;line-height:1.15;color:var(--ss-muted)}.ss-candidate-money{display:flex;flex-direction:column;gap:3px}.ss-candidate-value{font-family:var(--font-head,Georgia,serif);font-size:18px;font-weight:700;color:var(--ss-blue);line-height:1.1;white-space:nowrap}.ss-candidate-delta{font-size:12px;color:var(--ss-muted);line-height:1.15;white-space:nowrap}.ss-candidate-state{font-size:13px;line-height:1.2;color:#2d674d}.ss-choice-label{display:block;margin-top:3px;font-size:11px;color:var(--ss-blue);font-weight:600}.ss-baseline{font-size:12px;color:var(--ss-muted);line-height:1.2;margin-top:auto!important}
-.ss-section-top{display:flex;align-items:center;justify-content:space-between;gap:12px}.ss-money-note,.ss-stock-note{font-size:12px;color:var(--ss-muted);line-height:1.2}.ss-stock-note{color:#8b5425}.ss-risk{color:#a6372d}
-.ss-capacity{border-top:1px solid var(--ss-line);padding-top:9px;display:flex;flex-direction:column;gap:7px;flex-shrink:0}.ss-stage-list{display:flex;gap:20px;align-items:flex-start}.ss-stage{flex:1;min-width:0}.ss-stage-heading{display:flex;justify-content:space-between;gap:8px;font-size:14px;line-height:1.15}.ss-stage-heading strong{font-weight:600}.ss-stage-heading b{font-weight:600;color:var(--ss-blue)}.ss-stage p,.ss-storage p{font-size:12px;line-height:1.2;color:var(--ss-muted);margin:3px 0 5px}.ss-stage-track{height:4px;background:#e3e8ec;display:block}.ss-stage-track>span{display:block;height:100%;background:var(--ss-blue)}.ss-stage-risk .ss-stage-track>span{background:#a6372d}.ss-stage-risk .ss-stage-heading b{color:#a6372d}.ss-storage{border-left:1px solid var(--ss-line);padding-left:20px;min-width:165px}.ss-storage strong{font-size:14px;line-height:1.15;font-weight:600;display:block}.ss-storage span{font-size:11px;color:var(--ss-muted)}.ss-limit{font-size:13px;line-height:1.2;padding:6px 10px;border-left:3px solid var(--ss-blue);background:#f3f6f8}.ss-limit.ss-risk{border-color:#a6372d;background:#faf2f0}
-.ss-footer{display:flex;gap:20px;justify-content:space-between;align-items:center;border-top:1px solid var(--ss-line);padding-top:8px;flex-shrink:0}.ss-footer p{font-size:14px;line-height:1.2;font-weight:600;color:#1a2530}.ss-footer small{display:block;font-size:11px;line-height:1.2;font-weight:400;color:var(--ss-muted);margin-top:3px}.scenario-screen .ss-primary{border:1px solid var(--ss-blue);background:var(--ss-blue);color:#fff;padding:10px 18px;font-size:15px;font-weight:600;min-height:40px;line-height:1.2;border-radius:3px;white-space:nowrap}
-@media(min-width:901px) and (max-height:800px){.scenario-screen{gap:8px}.ss-heading h1{font-size:25px}.ss-controls{padding:4px 12px}.ss-field label{margin-bottom:3px}.ss-field select,.ss-field input{height:32px;min-height:32px}.ss-results{min-height:218px;gap:24px}.scenario-screen h2{font-size:16px}.ss-options,.ss-explanation{gap:6px}.scenario-screen .ss-candidate{min-height:49px;padding-top:6px;padding-bottom:6px}.ss-candidate-value{font-size:17px}.ss-capacity{padding-top:7px;gap:5px}.ss-stage-list{gap:18px}.ss-limit{padding:5px 9px;font-size:12px}.ss-footer{padding-top:6px}.scenario-screen .ss-primary{min-height:38px;padding:9px 16px}}
-@media(max-width:1100px){.ss-control-links{gap:10px}.ss-controls{gap:14px}.ss-route{flex-basis:230px}.ss-results{gap:18px}.ss-explanation{padding-left:17px}.ss-table-head,.ss-candidate{gap:8px}.ss-candidate-value{font-size:16px}.ss-stage-list{gap:12px}.ss-storage{min-width:145px;padding-left:12px}}
-@media(max-width:767px){.scenario-screen{height:auto;gap:14px}.ss-heading h1{font-size:23px}.ss-step-label{display:none}.ss-controls{flex-wrap:wrap;gap:12px}.ss-route{flex:1 1 100%}.ss-cut{flex:1}.ss-whole{padding-bottom:7px}.ss-control-links{margin-left:0;width:100%;justify-content:space-between;padding-bottom:0}.ss-results{display:flex;flex-direction:column;gap:17px}.ss-explanation{border-left:0;border-top:1px solid var(--ss-line);padding:14px 0 0}.ss-table-head{font-size:11px;padding-left:27px}.ss-table-head,.ss-candidate{grid-template-columns:1fr 1.1fr .8fr;gap:7px}.scenario-screen .ss-candidate{min-height:59px;padding:8px 6px}.ss-candidate-plan{gap:6px}.ss-candidate-plan strong{font-size:15px}.ss-candidate-plan small{font-size:11px}.ss-candidate-value{font-size:14px;white-space:normal}.ss-candidate-delta{font-size:11px;white-space:normal}.ss-candidate-state{font-size:12px}.ss-choice-label{font-size:11px}.ss-section-top h2{font-size:16px}.ss-stage-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.ss-storage{border-left:0;padding-left:0;min-width:0}.ss-footer{align-items:stretch;flex-direction:column;gap:10px}.scenario-screen .ss-primary{white-space:normal}.scenario-screen .money-bridge{flex:none;height:178px}.scenario-screen .money-bridge svg{height:178px;flex:none}.ss-limit{font-size:12px}}
+/* Выбор плана: план слева, выручка и мощности справа. Правила общие для плана и для экрана «Варианты». Палитра дизайн-системы, без теней и рамок по периметру. */
+.scenario-screen{--ss-blue:#003c72;--ss-line:#dbe1e6;--ss-muted:#5b6570;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:28px;align-items:start;min-height:0;width:100%;box-sizing:border-box;color:#1a2530;font-family:var(--font-body,'Source Sans Pro',Arial,sans-serif);background:#fff}
+.scenario-screen *{box-sizing:border-box}
+.scenario-screen h2,.scenario-screen p{margin:0}
+.scenario-screen button,.scenario-screen input,.scenario-screen select{font:inherit}
+.scenario-screen button{cursor:pointer;min-height:0;line-height:1.2}
+.scenario-screen button:disabled{cursor:default;opacity:.58}
+.scenario-screen button:focus-visible,.scenario-screen input:focus-visible,.scenario-screen select:focus-visible{outline:2px solid #003c72;outline-offset:3px}
+.scenario-screen h2{font-size:17px;line-height:1.2}
+.scenario-screen [data-updating=true]{opacity:.62}
+.ss-main,.ss-side{min-width:0;min-height:0;display:flex;flex-direction:column;gap:8px}
+.ss-side{border-left:1px solid var(--ss-line);padding-left:25px}
+.ss-heading{display:flex;justify-content:space-between;gap:20px;align-items:center;flex-shrink:0}
+.ss-controls{display:flex;flex-wrap:wrap;align-items:flex-end;gap:10px 22px;padding:8px 12px;background:#f3f6f8;border:1px solid var(--ss-line);flex-shrink:0}
+.ss-field label{display:block;font-size:13px;line-height:1.15;font-weight:600;margin-bottom:4px}
+.ss-field select,.ss-field input{height:34px;min-height:34px;border:1px solid #aab8c4;border-radius:3px;background:#fff;color:#1a2530;padding:5px 9px;font-size:16px;line-height:1.2}
+.ss-route{flex:1 1 230px;min-width:205px}
+.ss-route select{width:100%}
+.ss-cut>div{display:flex;align-items:center;gap:7px}
+.ss-cut input{width:83px}
+.ss-cut span{font-size:14px}
+.ss-whole{font-size:14px;padding-bottom:7px;white-space:nowrap}
+.ss-whole strong{color:var(--ss-blue);margin-left:8px}
+.ss-control-links{display:flex;flex-wrap:wrap;gap:6px 18px;margin-left:auto;padding-bottom:7px}
+.ss-control-links button,.ss-section-top>button{padding:0;background:none;border:0;color:var(--ss-blue);font-size:14px;text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
+.ss-options,.ss-explanation{min-width:0;min-height:0;display:flex;flex-direction:column;gap:7px}
+.ss-table-head,.ss-candidate{display:grid;grid-template-columns:1fr 1.1fr .85fr;gap:12px;align-items:center}
+.ss-table-head{padding:0 12px 4px 30px;font-size:12px;line-height:1.15;color:var(--ss-muted);border-bottom:1px solid var(--ss-line)}
+.ss-candidates{display:flex;flex-direction:column;min-height:0}
+.scenario-screen .ss-candidate{width:100%;min-height:51px;text-align:left;border:0;border-bottom:1px solid var(--ss-line);border-left:3px solid transparent;border-radius:0;background:#fff;padding:7px 11px 7px 8px;color:inherit}
+.ss-candidate:hover{background:#f5f8fa}
+.ss-candidate.ss-selected{border-left-color:var(--ss-blue);background:#f1f6fa}
+.ss-candidate-plan{display:flex;gap:8px;align-items:center;min-width:0}
+.ss-selection{display:block;flex:0 0 12px;width:12px;height:12px;border:1px solid #8ca1b2;border-radius:50%;background:white}
+.ss-selected .ss-selection{border:4px solid var(--ss-blue)}
+.ss-candidate-plan>span{display:flex;flex-direction:column;gap:2px}
+.ss-candidate-plan strong{font-size:16px;line-height:1.15;font-weight:600;color:var(--ss-blue)}
+.ss-candidate-plan small{font-size:12px;line-height:1.15;color:var(--ss-muted)}
+.ss-candidate-money{display:flex;flex-direction:column;gap:3px}
+.ss-candidate-value{font-family:var(--font-head,Georgia,serif);font-size:18px;font-weight:700;color:var(--ss-blue);line-height:1.1;white-space:nowrap}
+.ss-candidate-delta{font-size:12px;color:var(--ss-muted);line-height:1.15;white-space:nowrap}
+.ss-candidate-state{font-size:13px;line-height:1.2;color:#2d674d}
+.ss-choice-label{display:block;margin-top:3px;font-size:11px;color:var(--ss-blue);font-weight:600}
+.ss-baseline{font-size:12px;color:var(--ss-muted);line-height:1.2;margin-top:auto!important}
+.ss-section-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.ss-money-note,.ss-stock-note{font-size:12px;color:var(--ss-muted);line-height:1.2}
+.ss-stock-note{color:#8b5425}
+.ss-risk{color:#a6372d}
+.ss-capacity{border-top:1px solid var(--ss-line);padding-top:9px;display:flex;flex-direction:column;gap:7px;flex-shrink:0}
+.ss-stage-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 20px;align-items:start}
+.ss-stage{min-width:0}
+.ss-stage-heading{display:flex;justify-content:space-between;gap:8px;font-size:14px;line-height:1.15}
+.ss-stage-heading strong{font-weight:600}
+.ss-stage-heading b{font-weight:600;color:var(--ss-blue)}
+.ss-stage p,.ss-storage p{font-size:12px;line-height:1.2;color:var(--ss-muted);margin:3px 0 5px}
+.ss-stage-track{height:4px;background:#e3e8ec;display:block}
+.ss-stage-track>span{display:block;height:100%;background:var(--ss-blue)}
+.ss-stage-risk .ss-stage-track>span{background:#a6372d}
+.ss-stage-risk .ss-stage-heading b{color:#a6372d}
+.ss-storage{border-left:1px solid var(--ss-line);padding-left:16px;min-width:0}
+.ss-storage strong{font-size:14px;line-height:1.15;font-weight:600;display:block}
+.ss-storage span{font-size:11px;color:var(--ss-muted)}
+.ss-limit{font-size:13px;line-height:1.2;padding:6px 10px;border-left:3px solid var(--ss-blue);background:#f3f6f8}
+.ss-limit.ss-risk{border-color:#a6372d;background:#faf2f0}
+.ss-footer{display:flex;gap:20px;justify-content:space-between;align-items:center;border-top:1px solid var(--ss-line);padding-top:8px;flex-shrink:0;margin-top:auto}
+.ss-footer p{font-size:14px;line-height:1.2;font-weight:600;color:#1a2530}
+.ss-footer small{display:block;font-size:11px;line-height:1.2;font-weight:400;color:var(--ss-muted);margin-top:3px}
+.scenario-screen .ss-primary{border:1px solid var(--ss-blue);background:var(--ss-blue);color:#fff;padding:10px 18px;font-size:15px;font-weight:600;min-height:40px;line-height:1.2;border-radius:3px;white-space:nowrap}
+.scenario-screen .money-bridge svg{min-height:0}
+@media(max-width:900px){.scenario-screen{grid-template-columns:minmax(0,1fr)}.ss-side{border-left:0;padding-left:0}.ss-footer{flex-direction:column;align-items:stretch;gap:10px}}
+
+/* Сохраненные варианты: список, выбранная строка, действия и сравнение. Палитра дизайн-системы, без теней и рамок по периметру. */
+.vs-root{display:flex;flex-direction:column;gap:32px;min-width:0;color:#1a1a1a}
+.vs{display:flex;flex-direction:column;gap:14px;min-width:0;font-family:'Source Sans Pro','Source Sans 3',Arial,sans-serif;font-size:14px;line-height:1.4;color:#1a1a1a}
+.vs p,.vs h3,.vs h4{margin:0}
+.vs h3{font-family:Georgia,'Times New Roman',serif;font-size:20px;line-height:1.3;font-weight:700}
+.vs h4{font-size:14px;font-weight:600;margin-bottom:8px}
+.vs-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;padding-top:14px;border-top:1px solid #d9e2ea}
+.vs-head p{margin-top:4px;color:#52677d}
+.vs-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.vs-btn{display:inline-flex;align-items:center;justify-content:center;min-height:36px;margin:0;padding:0 16px;border:1px solid #d9e2ea;border-radius:2px;background:#fff;color:#1a1a1a;font:600 14px/1.2 'Source Sans Pro','Source Sans 3',Arial,sans-serif;cursor:pointer}
+.vs-btn:hover:not(:disabled){border-color:#003c72}
+.vs-btn:disabled{background:#e6eef5;border-color:#e6eef5;color:#52677d;cursor:default}
+.vs-btn:focus-visible,.vs-pick:focus-visible,.vs-check:focus-visible,.vs-inline input:focus-visible,.vs-file:focus-within{outline:2px solid #003c72;outline-offset:2px}
+.vs-file{position:relative}
+.vs-file input{position:absolute;left:0;top:0;width:1px;height:1px;opacity:0;overflow:hidden}
+.vs-line{font-size:14px;line-height:1.4}
+/* Полоска уведомления под заголовком: место занято всегда, поэтому появление сообщения не сдвигает выбор схемы. */
+.vs-slot{min-height:28px}
+.vs-notice{padding:4px 0;border-top:1px solid #d9e2ea;border-bottom:1px solid #d9e2ea;font-size:14px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+/* Сообщение общего состояния на экране «Варианты» выводится полоской; всплывающая строка внизу на этом экране скрыта. */
+.vs-notice-toast{display:none}
+body:has(.variants-screen) .vs-notice-toast{display:-webkit-box}
+body:has(.variants-screen) #toast{display:none}
+.vs-ok{color:#2e8b57}
+.vs-risk{color:#c0392b}
+.vs-watch{color:#6e8ca8}
+.vs-empty{padding:8px 0;color:#52677d}
+.vs-scroll{min-width:0;overflow-x:auto}
+.vs-table{width:100%;min-width:560px;border-collapse:collapse;font-size:14px}
+.vs-table th{padding:0 10px 6px 0;border-bottom:1px solid #d9e2ea;font-size:12px;font-weight:400;line-height:1.35;color:#52677d;text-align:left;vertical-align:bottom}
+.vs-table td{padding:8px 10px 8px 0;border-bottom:1px solid #d9e2ea;vertical-align:top}
+.vs-table .num{text-align:right;font-variant-numeric:tabular-nums}
+.vs-table small{display:block;font-size:12px;color:#52677d}
+.vs-table tr.vs-selected td{background:#fff3d1}
+.vs-pick{margin:0;padding:0;border:0;background:none;color:#1a1a1a;font:600 14px/1.3 'Source Sans Pro','Source Sans 3',Arial,sans-serif;text-align:left;cursor:pointer}
+.vs-pick[aria-pressed=true]{font-weight:700}
+.vs-check{width:16px;height:16px;margin:0;accent-color:#003c72}
+.vs-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.vs-selected-bar{display:flex;flex-direction:column;gap:12px;padding-top:12px;border-top:1px solid #d9e2ea}
+.vs-selected-name span{color:#52677d}
+.vs-inline{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end}
+.vs-inline p{width:100%}
+.vs-inline label{display:flex;flex-direction:column;gap:4px;min-width:240px;font-size:12px;color:#52677d}
+.vs-inline input{height:32px;padding:0 8px;border:1px solid #d9e2ea;border-radius:2px;background:#fff;color:#1a1a1a;font:14px 'Source Sans Pro','Source Sans 3',Arial,sans-serif}
+.vs-summary{margin:0;white-space:pre-line;font:14px/1.5 'Source Sans Pro','Source Sans 3',Arial,sans-serif;color:#1a1a1a}
+.vs-compare{display:flex;flex-direction:column;gap:4px;padding-top:12px;border-top:1px solid #d9e2ea}
+.vs-hint{color:#52677d}
+@media(max-width:767px){.vs-head{flex-direction:column;align-items:stretch}.vs-tools{width:100%}.vs-btn{flex:1 1 auto}}
+
+/* Экран «Варианты» в своей вкладке: высота по области экрана, основная область без прокрутки на 1280×650 и 1366×768.
+   Слева список вариантов с собственной прокруткой и сравнение внизу; справа выбор плана, выручка и мощности. */
+.variants-screen{display:flex;flex-direction:column;height:100%;min-height:0}
+.variants-screen .vs-root{flex:1 1 0;min-height:0;display:grid;grid-template-columns:minmax(300px,30%) minmax(0,1fr);gap:0 24px;align-items:stretch}
+.variants-screen .vs{min-height:0;gap:8px}
+.variants-screen .vs-head{flex-direction:column;align-items:stretch;gap:8px;padding-top:10px}
+.variants-screen .vs-head p{margin-top:2px;font-size:12px;line-height:1.3}
+.variants-screen .vs-head .vs-btn,.variants-screen .vs-selected-bar .vs-btn{min-height:32px;padding:0 10px;font-size:13px}
+.variants-screen .vs-selected-bar{flex:none;gap:6px;padding-top:6px}
+.variants-screen .vs>.vs-scroll{flex:1 1 auto;min-height:56px;overflow:auto}
+.variants-screen .vs-table{min-width:0}
+.variants-screen .vs-table thead th{position:sticky;top:0;background:#fff}
+/* Сравнение внизу списка: сжимается и прокручивается сам, список сохраняет минимум две строки. */
+.variants-screen .vs-compare{flex:0 1 auto;min-height:48px;overflow:auto;padding-top:8px;gap:2px}
+.variants-screen .vs-compare h4{margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.variants-screen .vs-empty,.variants-screen .vs-line,.variants-screen .vs-hint{flex:none}
+.variants-screen .vs-line{font-size:13px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.variants-screen .vs-selected-name{display:flex;flex-direction:column;gap:2px;min-width:0}
+.variants-screen .vs-selected-name strong{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.variants-screen .vs-selected-name span{font-size:12px}
+.variants-screen .scenario-screen{height:100%;min-height:0;align-items:stretch;column-gap:24px}
+.variants-screen .ss-side{padding-left:24px}
+.variants-screen .ss-explanation,.variants-screen .ss-capacity{flex:none}
+.variants-screen .ss-explanation .money-bridge{flex:none}
+.variants-screen .ss-explanation .money-bridge svg{height:130px;min-height:0;max-height:none}
+.variants-screen .ss-stage-list{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px 12px}
+.variants-screen .ss-stage-heading{font-size:13px}
+.variants-screen .ss-limit{font-size:12px}
+.variants-screen .vs-table th:last-child,.variants-screen .vs-table td:last-child{white-space:nowrap}
+.variants-screen .ss-main{gap:5px}
+.variants-screen .ss-options{flex:none;min-height:auto;gap:5px}
+.variants-screen .ss-controls{padding:5px 8px;gap:6px 14px}
+.variants-screen .ss-whole,.variants-screen .ss-control-links{padding-bottom:0}
+.variants-screen .ss-whole{font-size:13px}
+.variants-screen .ss-control-links{gap:6px 12px}
+.variants-screen .ss-control-links button{font-size:13px}
+.variants-screen .ss-table-head{padding-bottom:2px}
+.variants-screen .scenario-screen .ss-candidate{min-height:40px;padding-top:3px;padding-bottom:3px}
+.variants-screen .ss-footer{padding-top:6px}
+.variants-screen .ss-footer .ss-primary{min-height:36px;padding:8px 14px;font-size:14px}
+@media (min-height:700px){.variants-screen .ss-main{gap:8px}.variants-screen .ss-options{gap:7px}.variants-screen .ss-explanation .money-bridge svg{height:190px}.variants-screen .scenario-screen .ss-candidate{min-height:52px;padding-top:7px;padding-bottom:7px}.variants-screen .ss-controls{padding:8px 12px}.variants-screen .ss-footer{padding-top:8px}.variants-screen .ss-footer .ss-primary{min-height:40px;padding:10px 18px;font-size:15px}}
+/* Ниже 1200 px по ширине страница прокручивается целиком, как и остальные экраны оболочки. */
+@media (max-width:1199px){
+  .variants-screen{height:auto}
+  .variants-screen .vs-root{flex:none;grid-template-columns:minmax(0,1fr);gap:24px}
+  .variants-screen .vs>.vs-scroll{flex:none;max-height:320px}
+  .variants-screen .vs-compare{max-height:none;overflow:visible}
+  .variants-screen .scenario-screen{height:auto;row-gap:20px}
+  .variants-screen .ss-explanation .money-bridge svg{height:190px}
+}

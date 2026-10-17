@@ -1,0 +1,83 @@
+/* Обзор недели: токены на корне обзора. Светлая тема по умолчанию; темная – по системе или по data-theme="dark". */
+.ov-root{
+  --bg:#FFFFFF; --card:#F6F9FB; --fg:#1A1A1A; --muted:#52677D; --data:#003C72; --steel:#6E8CA8;
+  --mist:#E6EEF5; --track:#C9D6E2; --line:#D9E2EA; --accent:#F2AA00; --accent-soft:#FCEBC0;
+  --ok:#23744A; --risk:#C0392B; --on-solid:#FFFFFF;
+  font-family:Arial,Helvetica,sans-serif; color:var(--fg);
+}
+@media (prefers-color-scheme: dark){
+  .ov-root:not([data-theme="light"]){
+    --bg:#0E1B28; --card:#132233; --fg:#EDF3F8; --muted:#9FB3C8; --data:#8DB8E0; --steel:#6E8CA8;
+    --mist:#1B3047; --track:#2E4660; --line:#2A3F55; --accent-soft:#3A3117;
+    --ok:#4CB27A; --risk:#E0695B; --on-solid:#0E1B28;
+  }
+}
+.ov-root[data-theme="dark"]{
+  --bg:#0E1B28; --card:#132233; --fg:#EDF3F8; --muted:#9FB3C8; --data:#8DB8E0; --steel:#6E8CA8;
+  --mist:#1B3047; --track:#2E4660; --line:#2A3F55; --accent-soft:#3A3117;
+  --ok:#4CB27A; --risk:#E0695B; --on-solid:#0E1B28;
+}
+.overview{display:flex;flex-direction:column;gap:20px;min-width:0;padding:20px;background:var(--bg);border-radius:12px}
+.ov-head h1{font-family:Georgia,"Times New Roman",serif;font-size:32px;line-height:1.15;margin:4px 0 0;color:var(--fg);text-wrap:balance}
+.ov-eyebrow{font-size:14px;color:var(--muted);margin:0}
+.ov-sub{color:var(--muted);margin:6px 0 0;font-size:15px}
+.ov-actions{margin-top:14px}
+.ov-status{font-size:14px;color:var(--muted)}
+.ov-error{color:var(--risk)}
+.ov-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.ov-kpi{display:flex;flex-direction:column;gap:4px;min-width:0;padding:14px 16px;background:var(--card);border-radius:10px}
+.ov-kpi b{font-family:Georgia,"Times New Roman",serif;font-size:30px;line-height:1.1;color:var(--data)}
+.ov-kpi span{font-size:13px;line-height:1.35;color:var(--muted)}
+.ov-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.ov-block{display:flex;flex-direction:column;gap:12px;min-width:0;padding:18px;background:var(--card);border-radius:10px}
+.ov-block>h3{font-family:Georgia,"Times New Roman",serif;font-size:18px;line-height:1.25;margin:0;color:var(--fg)}
+.ov-wide{grid-column:1/-1}
+/* Цепочка: шаги по порядку, стрелки между ними */
+.ov-chain{display:flex;flex-wrap:wrap;gap:8px 4px;margin:0;padding:0;list-style:none;align-items:stretch}
+.ov-chain li{position:relative;display:flex;flex-direction:column;gap:2px;min-width:0;padding:8px 12px;background:var(--mist);border-radius:8px;font-size:14px;flex:1 1 130px}
+.ov-chain li:not(:last-child)::after{content:"→";position:absolute;right:-12px;top:50%;transform:translateY(-50%);color:var(--steel);font-size:16px}
+.ov-lane{font-size:12px;color:var(--muted)}
+/* Объем по кварталам: столбцы, значение и маржа под ними */
+.ov-qbars{display:flex;align-items:flex-end;gap:14px;height:200px;padding-top:6px}
+.ov-q{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;min-width:0}
+.ov-q-bar{flex-shrink:0;width:100%;max-width:110px;background:var(--steel);border-radius:6px 6px 0 0}
+.ov-q b{font-family:Georgia,serif;font-size:18px;color:var(--data);margin-top:6px}
+.ov-q span{font-size:12px;color:var(--muted);text-align:center}
+.ov-q em{font-style:normal;font-size:12px;color:var(--fg);background:var(--mist);border-radius:6px;padding:1px 6px;margin-top:4px}
+/* Доли в шкале 0–100%: каналы и клиенты */
+.ov-bars{display:flex;flex-direction:column;gap:8px}
+.ov-bar-row{display:grid;grid-template-columns:minmax(110px,200px) minmax(0,1fr) 56px;gap:10px;align-items:center;font-size:14px}
+.ov-bar-track{height:12px;background:var(--track);border-radius:6px;overflow:hidden}
+.ov-bar-track i{display:block;height:100%;background:var(--data);border-radius:6px}
+.ov-bar-row b{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+/* Статусы и чипы: текст на заливке контрастен в обеих темах */
+.ov-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px}
+.ov-tile{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px;background:var(--mist);border-radius:8px;font-size:14px;min-width:0}
+.ov-chip{font-style:normal;font-size:12px;font-weight:700;padding:2px 9px;border-radius:999px;white-space:nowrap;display:inline-block}
+.ov-chip.ok{background:var(--ok);color:var(--on-solid)}
+.ov-chip.part{background:var(--accent);color:#1A1A1A}
+.ov-chip.gap{background:var(--risk);color:var(--on-solid)}
+.ov-chip.hyp{background:var(--accent-soft);color:var(--fg)}
+/* Решения */
+.ov-decisions{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+.ov-decision{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:12px 14px;background:var(--mist);border-radius:8px;min-width:0}
+.ov-decision b{font-size:15px;line-height:1.3}
+.ov-decision small{font-size:13px;color:var(--muted);line-height:1.35}
+/* Ссылки на экраны недели: кнопка-пилюля с цветом темы */
+.ov-links{display:flex;flex-wrap:wrap;gap:8px}
+.ov-root .ov-link{min-height:40px;padding:8px 14px;border:1px solid var(--data);border-radius:999px;background:transparent;color:var(--data);font:inherit;font-size:14px;cursor:pointer}
+.ov-root .ov-link:hover{background:var(--mist)}
+.ov-foot{font-size:12px;line-height:1.5;color:var(--muted);border-top:1px solid var(--line);padding-top:12px}
+@media (max-width:1000px){
+  .ov-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .ov-grid{grid-template-columns:minmax(0,1fr)}
+  .ov-wide{grid-column:auto}
+}
+@media (max-width:600px){
+  .overview{padding:16px}
+  .ov-head h1{font-size:26px}
+  .ov-kpi b{font-size:24px}
+  .ov-bar-row{grid-template-columns:minmax(0,1fr) 56px}
+  .ov-bar-row .ov-bar-track{grid-column:1/-1;order:3}
+  .ov-chain li:not(:last-child)::after{display:none}
+}

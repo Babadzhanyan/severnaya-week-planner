@@ -1,0 +1,21 @@
+/* Диалог утверждения версии недели: белый фон, без теней и анимаций. Цвета по токенам styles.css: --data, --muted, --line, --risk. */
+.approval-overlay{position:fixed;inset:0;z-index:125;display:grid;place-items:center;padding:16px;background:rgba(26,26,26,.35)}
+.approval-dialog{width:min(480px,100%);max-height:calc(100vh - 32px);overflow:auto;padding:28px;background:#fff;color:var(--fg);}
+.approval-dialog:focus{outline:none}
+.approval-dialog h2{margin:0 0 10px;font-size:24px;line-height:1.25;color:var(--fg)}
+.approval-dialog>p{margin:0;font-size:16px;line-height:1.5}
+.approval-totals{margin:20px 0 0;padding:0}
+.approval-totals>div{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:10px 0;border-top:1px solid var(--line);font-size:16px}
+.approval-totals dt{color:var(--muted)}
+.approval-totals dd{margin:0;text-align:right;font-variant-numeric:tabular-nums;color:var(--fg)}
+.approval-error{margin:14px 0 0;color:var(--risk)}
+.approval-actions{display:flex;justify-content:flex-end;gap:12px;margin-top:24px}
+.approval-actions button{min-height:44px;padding:8px 18px;border-radius:3px;font-size:16px;cursor:pointer}
+.approval-actions .primary{border:1px solid var(--data);background:var(--data);color:#fff}
+.approval-actions .secondary{border:1px solid var(--data);background:#fff;color:var(--data)}
+.approval-actions button:disabled{opacity:.5;cursor:default}
+.approval-actions button:focus-visible{outline:2px solid var(--data);outline-offset:2px}
+.approval-totals{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:20px 0 0}
+.approval-totals>div{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:12px;border-top:0;background:var(--mist)}
+.approval-totals dd{text-align:left}
+.approval-totals .kpi-value{font-size:28px}

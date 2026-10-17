@@ -21,5 +21,6 @@ jobs:
       - run: npm run build
       - run: node tests/legacy-model.test.cjs
       - run: npm run test:charts
+      - run: node tests/client-economics.test.mjs && node tests/workspace-entry.test.mjs && node tests/production-path.test.mjs && node tests/plan-waterfall.test.mjs && node tests/commercial-decisions.test.mjs && node tests/sales-demand.test.mjs && node tests/file-inputs.test.mjs && node tests/client-workspace.test.mjs
       - run: pip install -r requirements.txt -r backend/requirements-test.txt
       - run: python -m pytest backend/tests -q

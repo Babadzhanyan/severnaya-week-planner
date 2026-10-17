@@ -1,0 +1,25 @@
+/* Печать и PDF: на экране документ варианта не виден. При печати остается только он: белый фон, таблица и мост вклада, без кнопок и анимации. */
+.print-root{display:none}
+
+@media print{
+  @page{size:A4;margin:14mm 14mm 24mm}
+  html,body{background:#fff!important;color:#1a1a1a!important;margin:0!important;padding:0!important}
+  body>*:not(.print-root){display:none!important}
+  .print-root{display:block!important;position:static;width:100%;color:#1a1a1a;font-family:'Source Sans Pro','Source Sans 3',Arial,sans-serif;font-size:14px;line-height:1.4;padding-bottom:20mm}
+  .print-root *{animation:none!important;transition:none!important;box-shadow:none!important;text-shadow:none!important}
+  .print-root button,.print-root input,.print-root select,.print-root label{display:none!important}
+  .print-root h1{margin:0 0 4px;font-family:Georgia,'Times New Roman',serif;font-size:28px;line-height:1.25;font-weight:700}
+  .print-root h2{margin:0 0 8px;font-family:Georgia,'Times New Roman',serif;font-size:20px;line-height:1.3;font-weight:700}
+  .print-root p{margin:0}
+  .print-eyebrow,.print-sub,.print-note{color:#52677d}
+  .print-sub{font-size:14px}
+  .print-head{padding-bottom:10px;border-bottom:1px solid #d9e2ea;margin-bottom:14px}
+  .print-table{width:100%;border-collapse:collapse;margin-bottom:18px}
+  .print-table th,.print-table td{padding:6px 0;border-bottom:1px solid #d9e2ea;text-align:left;vertical-align:top}
+  .print-table th{width:55%;font-weight:400;color:#52677d}
+  .print-table td.num{text-align:right;font-variant-numeric:tabular-nums}
+  .print-chart{margin-bottom:14px;break-inside:avoid}
+  .print-chart svg{max-width:100%;height:auto}
+  .print-note{font-size:12px;line-height:1.35}
+  .print-foot{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:space-between;gap:16px;padding-top:4px;border-top:1px solid #d9e2ea;background:#fff;font-size:12px;line-height:1.35;color:#52677d}
+}

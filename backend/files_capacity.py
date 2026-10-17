@@ -1,4 +1,4 @@
-"""Расчёт мощностей из отдельного локального набора предприятия."""
+"""Расчет мощностей из отдельного локального набора предприятия."""
 from copy import deepcopy
 import json
 import math
@@ -7,7 +7,10 @@ from pathlib import Path
 from typing import Annotated, Literal
 
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel, ConfigDict, Field, ValidationError
+from pydantic import BaseModel, ConfigDict, Field, ValidationError, field_validator
+
+from . import input_paths, units
+from .schemas import CapacityCatalog, CapacityEvaluation
 
 router = APIRouter(prefix="/api/files/capacity", tags=["Мощности из файлов"])
 Number = Annotated[float, Field(strict=True, ge=0, allow_inf_nan=False)]
@@ -42,9 +45,15 @@ class CapacityInputs(BaseModel):
 class SourcePassport(BaseModel):
     file: str = Field(min_length=1)
     sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
-    status: Literal["Сохранённый расчёт файла"]
+    status: Literal["Сохраненный расчет файла"]
     capturedAt: str = Field(min_length=1)
     liveData: Literal[False]
+
+    @field_validator("status", mode="before")
+    @classmethod
+    def _status_plain_e(cls, value):
+        # Нормализация статуса из входного файла: буква с диакритикой приводится к е
+        return value.replace("\u0451", "е") if isinstance(value, str) else value
 
 
 class SourcePeriod(BaseModel):
@@ -131,7 +140,7 @@ def load_source():
         fail(404, "Данные предприятия требуют подключения локальной папки источников", "source_missing")
     source_dir = Path(__file__).resolve().parent / "source_data" if directory == "bundled" else Path(directory)
     try:
-        raw = json.loads((source_dir / "real_data_capacity.json").read_text(encoding="utf-8"))
+        raw = json.loads(input_paths.capacity(source_dir).read_text(encoding="utf-8"))
         json.dumps(raw, allow_nan=False)
         data = SourceData.model_validate(raw)
         rows = {row.id: row for row in data.rows}
@@ -139,6 +148,8 @@ def load_source():
             raise ValueError("stage_ids")
         if any(row.massBasis != STAGE_MASS_BASES[row.id] for row in data.rows):
             raise ValueError("mass_basis")
+        if not data.period.volumeLabel.strip() or not data.period.yieldStructureLabel.strip():
+            raise ValueError("period_label")
         if not math.isclose(data.plan.finishedKgDay, data.plan.wholeKgDay + data.plan.cutKgDay, rel_tol=1e-8, abs_tol=1e-6):
             raise ValueError("plan_balance")
         if not math.isclose(rows["cutting"].demand, data.plan.cutKgDay, rel_tol=1e-8, abs_tol=1e-6) or not math.isclose(
@@ -164,7 +175,7 @@ def load_source():
         ):
             raise ValueError("cutting_capacity")
     except FileNotFoundError:
-        fail(404, "Файл real_data_capacity.json требует размещения в подключённой папке источников", "source_missing")
+        fail(404, "Файл набора мощностей требует размещения в подключенной папке источников", "source_missing")
     except (OSError, ValueError, TypeError, ValidationError):
         fail(503, "Набор мощностей требует проверки структуры, единиц и формул источника", "source_invalid")
     return raw, data
@@ -196,8 +207,24 @@ def stage_rows(data, inputs):
         row["load"] = row["demand"] / row["capacity"] if row["capacity"] else (None if row["demand"] else 0)
         row["headroom"] = row["capacity"] - row["demand"]
         row["status"] = "Превышение мощности" if row["headroom"] < -1e-6 else "Высокая загрузка" if (row["load"] or 0) > .9 else "Резерв мощности"
+        row.update(units.resource_metrics(row, data.plan.model_dump(), data.calendars.availability.value,
+                                          len(data.cuttingLines) if original.id == "cutting" else None))
+        row["sourceCells"] = [{"sheet": ref.sheet, "cells": ref.cells} for ref in original.sourceRefs]
+        row["period"] = data.period.volumeLabel
+        row["calendarAvailability"] = data.calendars.availability.value
+        row["conversionRule"] = units.RULE_TEXT
+        row["weighingPointStatus"] = units.WEIGHING_POINT_STATUS
+        row["loadPct"] = units.load_percent(row["demand"], row["capacity"])
+        row["card"] = units.resource_card(row["demand"], row["capacity"], row["unit"], data.period.volumeLabel,
+                                          row["sourceCells"], row["status"])
         result.append(clean_metadata(row))
     return result
+
+
+def unit_passports():
+    """Паспорта единиц, не зависящие от файла мощности: паспорт веса тушки, неделя 4 010 т, учебный диагноз 4 009 %, пример 30 тыс. голов."""
+    return {"carcass": units.carcass_passport(), "historicalWeek": units.historical_week_equivalent(),
+            "trainingDiagnosis": units.training_load_diagnosis(), "flockExample": units.flock_example()}
 
 
 def network(rows, plan):
@@ -234,26 +261,31 @@ def evaluate_source(raw, data, inputs):
                          "stageCapacityDeltaKgDay": changed["capacity"] - changed["baseCapacity"],
                          "extraPersonHoursDay": changed["extraPersonHoursDay"],
                          "scenario": separate_network, **effect(baseline, separate_network)})
-    return {"inputs": inputs.model_dump(), "source": clean_metadata(raw.get("source", {})),
+    bulk = next(row for row in rows if row["id"] == units.BULK_PACK_ID)
+    packed = sum(row["demand"] for row in rows if row["id"] in (units.BULK_PACK_ID, units.INDIVIDUAL_PACK_ID))
+    return {"inputs": inputs.model_dump(), "source": {**clean_metadata(raw.get("source", {})), "status": data.source.status},
             "period": clean_metadata(raw.get("period", {})), "calendars": clean_metadata(raw.get("calendars", {})),
             "plan": clean_metadata(raw.get("plan", {})), "gaps": deepcopy(raw.get("gaps", [])),
+            "flowSplit": units.flow_split(data.plan.model_dump(), packed),
+            "referenceCheck": units.reference_check(bulk["demand"], bulk["capacity"]),
+            "unitPassports": unit_passports(),
             "rows": rows, "baseline": baseline, "scenario": scenario, "leverEffects": isolated,
             "combinedEffect": effect(baseline, scenario), "moneyEffect": None,
-            "assumption": "Расчёт сохраняет состав продукции, нормы выхода и маршруты сохранённого плана",
-            "moneyStatus": "Денежный эффект требует подтверждённых заказов и стоимости дополнительных ресурсов",
+            "assumption": "Расчет сохраняет состав продукции, нормы выхода и маршруты сохраненного плана",
+            "moneyStatus": "Денежный эффект требует подтвержденных заказов и стоимости дополнительных ресурсов",
             "staffingAssumption": "Добавка изменяет общий фонд персонала; распределение между сменами подтверждает производство",
             "timeAssumption": "Добавка времени относится к чистой работе линии за сутки; график учитывает доступность"}
 
 
-@router.get("")
+@router.get("", response_model=CapacityCatalog, response_model_exclude_unset=True)
 def capacity_catalog():
     raw, data = load_source()
     return {**evaluate_source(raw, data, CapacityInputs()), "defaults": CapacityInputs().model_dump()}
 
 
-@router.post("/evaluate")
+@router.post("/evaluate", response_model=CapacityEvaluation, response_model_exclude_unset=True)
 def capacity_evaluate(inputs: CapacityInputs):
     raw, data = load_source()
     if any((line.shifts * line.netHours + inputs.cuttingNetHoursDelta) / data.calendars.availability.value > 24 for line in data.cuttingLines):
-        fail(422, "Время по графику каждой линии с учётом доступности требует значения до 24 часов в сутки", "daily_hours_limit")
+        fail(422, "Время по графику каждой линии с учетом доступности требует значения до 24 часов в сутки", "daily_hours_limit")
     return evaluate_source(raw, data, inputs)

@@ -1,0 +1,10 @@
+/* Данные недели: блоки на одном экране. Цвета по токенам: --data, --accent, --line. */
+.data-week{display:flex;flex-direction:column;min-width:0}
+.data-block{min-width:0}
+.data-block+.data-block{margin-top:24px;padding-top:16px;border-top:1px solid var(--line)}
+.data-block[hidden]{display:none}
+.data-block-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding:16px 24px 8px}
+.data-block-title{margin:0;font-size:24px;font-weight:700;line-height:1.3;color:var(--data)}
+.data-block-head .text-button{font-size:13px;min-height:28px;padding:2px 0}
+@media(max-width:600px){.data-block-head{padding:12px 14px 6px}.data-block-title{font-size:20px}}
+.training-badge{display:inline-flex;align-items:center;min-height:28px;padding:2px 10px;border-radius:999px;background:var(--accent);color:var(--ink-on-accent);font-size:13px;font-weight:600;white-space:nowrap}

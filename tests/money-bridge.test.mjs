@@ -46,7 +46,7 @@ try {
     }
     const ranges = [[0,r.revenue], [r.revenue,r.revenue-r.rawCost], [r.revenue-r.rawCost,r.contribution], [0,r.contribution]];
     const values = [r.revenue, -r.rawCost, -processing, r.contribution];
-    const names = ['Выручка','Сырьё','Обработка','Вклад недели'];
+    const names = ['Выручка','Сырье','Обработка','Вклад недели'];
     for (const compact of [false, true]) {
       const label = `${name} / ${compact ? 'компактный' : 'обычный'}`;
       const warnings = [], previousError = console.error;
@@ -86,7 +86,7 @@ try {
           near(Number(connector.y2), y(to), `${label}: горизонтальный переход ${i}`);
         }
         if (i === 3 && r.contribution < 0) {
-          check(rect.fill === '#a6372d', `${label}: отрицательный итог выделен`);
+          check(rect.fill === '#C0392B', `${label}: отрицательный итог выделен`);
           near(Number(rect.y), y(0), `${label}: убыток начинается от нуля`);
           check(text[0].text.startsWith('−'), `${label}: знак убытка`);
         }
@@ -95,7 +95,7 @@ try {
     console.log(`Проверено: ${name}`);
   }
   const customCases = [
-    ['Сохранённый расчёт', [155, -140, 5, -4, 16], [true, false, false, false, true]],
+    ['Сохраненный расчет', [155, -140, 5, -4, 16], [true, false, false, false, true]],
     ['Промежуточный максимум', [5, 7, -4, -2, 6], [true, false, false, false, true]],
     ['Отрицательный результат', [10, -15, 2, -1, -4], [true, false, false, false, true]],
     ['Переход через ноль', [0, -12, 15, -1, 2], [true, false, false, false, true]],
@@ -103,6 +103,7 @@ try {
     ['Все ступени нулевые', [0,0,0,0,0], [true, false, false, false, true]],
     ['Доли рубля', [.05,-.04,.005,-.002,.013], [true, false, false, false, true]],
     ['Точная исходная цена', [153.466060,-141.59138833330678,4.622280343936141,-4.608580,11.888372010629366], [true, false, false, false, true]],
+    ['Малая сумма сверки', [177, -158, 0, -.0000384, 18.9999616], [true, false, false, false, true]],
     ['Шесть ступеней', [100,-20,-30,5,-10,45], [true, false, false, false, false, true]],
   ];
   for (const [name,values,totals] of customCases) {
@@ -115,7 +116,7 @@ try {
     const svg=tags(html,'svg')[0],groups=tags(svg.text,'g');
     check(svg.viewBox==='0 0 410 230',`${name}: размер нового графика`);
     check(groups.length===items.length,`${name}: все ступени показаны`);
-    check(svg['aria-label'].includes('руб. / кг'),`${name}: единица исходного расчёта`);
+    check(svg['aria-label'].includes('руб. / кг'),`${name}: единица исходного расчета`);
     check(!html.includes('NaN')&&!html.includes('Infinity'),`${name}: конечные координаты`);
     groups.forEach((g,i)=>{
       const rect=tags(g.text,'rect')[0],texts=tags(g.text,'text'),connector=tags(g.text,'line')[0];
@@ -126,7 +127,7 @@ try {
       check(Number(rect.y)>=40-1e-7&&Number(rect.y)+Number(rect.height)<=166+1e-7,`${name}: границы общей шкалы ${i}`);
       check(g.tabindex==='0'&&g['aria-label'].includes('руб. / кг'),`${name}: подсказка с клавиатуры ${i}`);
       const shown=Number(texts[0].text.replace('−','-').replace(/\s/g,'').replace(',','.'));
-      near(shown,Number(values[i].toPrecision(3)),`${name}: три значащих цифры ${i}`);
+      if(name==='Малая сумма сверки'&&i===3){check(texts[0].text==='≈0',`${name}: читаемая малая сумма`);check(tags(g.text,'title')[0].text.includes('0,0000384'),`${name}: точная сумма в подсказке`);}else near(shown,Number(values[i].toPrecision(3)),`${name}: три значащих цифры ${i}`);
       if(name==='Точная исходная цена') {
         check(texts[0].text===['153','−142','+4,62','−4,61','11,9'][i],`${name}: короткая подпись ${i}`);
         const exactValue=values[i].toLocaleString('ru-RU',{maximumFractionDigits:20}).replace(/^-/,'−');
@@ -135,14 +136,14 @@ try {
       }
       if(!items[i].total&&values[i]>0)check(texts[0].text.startsWith('+'),`${name}: знак положительного изменения ${i}`);
       if(connector){near(Number(connector.y1),y(to),`${name}: переход ${i}`);near(Number(connector.y2),y(to),`${name}: горизонтальный переход ${i}`);}
-      if(i===items.length-1&&values[i]<0)check(rect.fill==='#a6372d',`${name}: отрицательный итог`);
-      if(i===items.length-1&&values[i]>0)check(rect.fill==='#28704f',`${name}: положительный итог`);
+      if(i===items.length-1&&values[i]<0)check(rect.fill==='#C0392B',`${name}: отрицательный итог`);
+      if(i===items.length-1&&values[i]>0)check(rect.fill==='#2E8B57',`${name}: положительный итог`);
       if(names[i].includes('\n'))check(tags(g.text,'tspan').length===2,`${name}: две строки подписи`);
     });
     console.log(`Проверено: ${name}`);
   }
   const unavailable=renderToStaticMarkup(React.createElement(MoneyBridge,{items:[{name:'Сумма',value:NaN,total:true}],divisor:1}));
-  check(unavailable.includes('Требуется расчёт')&&!unavailable.includes('<svg'), 'Пропущенное число получает явный статус');
+  check(unavailable.includes('Требуется расчет')&&!unavailable.includes('<svg'), 'Пропущенное число получает явный статус');
   console.log(`Готово: ${cases.length+customCases.length} сценариев, ${cases.length*2+customCases.length} рендеров, ${checks} проверок`);
 } finally {
   await server.close();
